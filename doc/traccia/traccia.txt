@@ -1,0 +1,36 @@
+A.2. Build Your Own Botnet v. 1(Giovanni Bottazzi).
+Si sviluppi un software per workstation (no mobile) [9].
+
+OBIETTIVO PRINCIPALE
+1) Il software deve essere in grado di contattare (http GET) una o più URL INTERNET. 
+
+2) Per ciascuna URL bisogna prevedere una serie di variabili:
+		a) dettaglio delle URL da contattare (minimo 2 diverse);
+
+		b) periodicità di contatto, che può essere fissa (tempo impostato in secondi) 
+		   o random in un intervallo min-max fisso (tempo sempre impostato in secondi);
+
+		c) numero massimo di contatti per ciascuna URL;
+
+		d) impostazione di uno “sleep mode”, da intendere come insieme di condizioni 
+		   per non effettuare alcuna azione (es. giorni dispari della settimana, orario AM o PM, ecc.);
+
+		e) personalizzazione del campo user-agent (es.: “BYOB v. 1”).
+
+3) I valori delle variabili dovranno essere impostati attraverso un file (txt) di CONFIGURAZIONE.
+
+4) I contatti ed i parametri di configurazione dovranno esser LOGGATI in un file di testo contenente, 
+   oltre alle informazioni di configurazione, anche il timestamp di contatto delle URL ed il dettaglio delle URL contattate.
+
+
+ESTENSIONI
+1) Le variabili precedenti dovranno essere impostate dall’utente tramite GUI.
+
+2) Aggiungere inoltre tra le variabili impostabili anche l’indirizzo di un proxy pubblico (URL o IP) da usare per i contatti.
+
+3) Raccogliere e scrivere su un file TXT le informazioni relative al Sistema Operativo 
+   e al/i browser presenti sulla postazione su cui il software è installato.
+
+RIFERIMENTI
+[9] SANS – Institute. “BYOB: Build Your Own Botnet”. https://www.sans.org/reading-
+room/whitepapers/threats/byob-build-botnet-33729

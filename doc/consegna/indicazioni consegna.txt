@@ -1,0 +1,20 @@
+Consegna (cosa, dove, come e quando consegnare)
+
+Cosa consegnare: Relazione: in formato cartaceo
+	         CD/DVD contenente: il codice sorgente commentato,
+				    l'eseguibile, 
+				    tutta la documentazione che pensate possa aiutare a capire 
+				    come installare ed eseguire il software la relazione in formato pdf.
+
+Come e Dove consegnare: Il materiale (CD/DVD + Relazione Stampata) deve essere consegnato presso 
+			la stanza D1-21 ad una delle seguenti persone: ing. Bottazzi, ing. Querini.
+
+Quando consegnare: Concordare la consegna con gli ing. Bottazzi o Querini. 
+		   La data ultima per la consegna del progetto è febbraio 2017, 
+		   e verrà comunicata in tempo utile.
+
+Incontro (opzionale): è possibile organizzare un incontro per una presentazione orale (+ powerpoint) 
+		      di massimo 15 minuti del lavoro svolto. 
+		      Questa presentazione è opzionale e, senza, il lavoro non sarà penalizzato. 
+		      Per organizzare l'incontro usate l'indirizzo italiano.didattica@gmail.com 
+		      o contattate direttamente il responsabile del progetto.	

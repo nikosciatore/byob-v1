@@ -1,0 +1,68 @@
+#Pianificazione e descrizione delle attività da svolgere
+
++-----------------+
+|  PIANIFICAZIONE |
++-----------------+
+
+	START
+		PROGETTAZIONE
+			?? Ott 16 : P1, P2, P3, P4, P5, P6, P7
+		SVILUPPO APPLICAZIONE
+			?? Ott 16 : S0, S1
+			?? Ott 16 : S3
+			?? Ott 16 : S4
+		SVILUPPO ESTENSIONI
+			?? Nov 16 : ES1, ES2, ES3
+		TESTING
+			?? Nov 16 : T1
+		RELAZIONE
+			?? Nov 16 : C1
+		CONSEGNA
+			?? Dic 16 : C2 (Consegna)
+	END
+
++----------------------------+
+| DESCRIZIONE DELLE ATTIVITÀ |
++----------------------------+
+	PROGETTAZIONE
+		P1 Scelta linguaggio (C, Java, ..)
+		P2 Scelta formato relazione (LaTeX, Word, ..)
+		P3 Definizione struttura file di configurazione
+		P4 Definizione struttura file di log
+		P5 Definizione strutture di dati
+		P6 Definizione dei metodi
+		P7 Diagramma di flusso
+		
+		Riferiementi:
+			https://sites.google.com/site/italianodidattica/didattica/ssi-info/progetti/Progetti2016.pdf		
+			".../doc/traccia/traccia.txt"
+	
+	SVILUPPO
+		S0 Inizializzazione Repository GIT
+		S1 Lettura file config.txt e caricamento nelle strutture dati
+		S3 Core dell'applicazione
+		S4 Generazione file log.txt
+		
+		Estensioni		
+			ES1 Sviluppo GUI
+				ES1A scrittura config.txt
+			
+			ES2 Aggiungere indirizzo proxy pubblico (URL o IP) da usare per i contatti
+
+			ES3 Raccogliere informazioni su S.O. e Browsers (system_info.txt)
+
+		Riferiementi:
+			[9] SANS – Institute. “BYOB: Build Your Own Botnet”. https://www.sans.org/reading-room/whitepapers/threats/byob-build-botnet-33729
+			".../doc/riferimenti/byob-build-botnet-33729.pdf"
+			
+	TESTING
+		T1 Scelta URLs da contattare
+
+	CONSEGNA: 
+		C1 Relazione 
+		C2 Consegna materiale
+
+		Riferiementi:
+			https://sites.google.com/site/italianodidattica/didattica/ssi-info/progetti
+			".../doc/consegna/indicazioni consegna.txt"
+
