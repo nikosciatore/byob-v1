@@ -1,0 +1,15 @@
+START
+	init
+		gather informations about host's operating system and browsers (nmap)
+		read configuration file (xml parser)
+		*generate unique bot ID 
+		*connection to the C&C
+		*open tcp listening port waiting C&C commands (thread)
+		for each entry in config file create a thread that send request periodically 
+			log information about requests
+		
+	exit
+		
+END
+
+*optional

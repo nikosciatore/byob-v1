@@ -1,0 +1,2 @@
+#This file contain information about operating system and browsers of the host machine,
+#it is write from bot during initialization

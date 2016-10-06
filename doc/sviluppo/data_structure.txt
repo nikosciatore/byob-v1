@@ -1,0 +1,16 @@
+class Bot{
+	unsigned long ID
+	String status
+	List<urlEntry> contactList;
+}
+
+class urlEntry{
+	String url
+	unsigned int periodRangeSec
+	unsigned int maxContactNumber
+	String sleepMode ("1100|1110000|1100")
+	String userAgent
+	String proxy
+
+
+}

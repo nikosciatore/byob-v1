@@ -27,11 +27,11 @@
 	PROGETTAZIONE
 		P1 Scelta linguaggio (C, Java, ..)
 		P2 Scelta formato relazione (LaTeX, Word, ..)
-		P3 Definizione struttura file di configurazione
+		P3 Definizione formato e struttura file di configurazione (.xml, .txt)
 		P4 Definizione struttura file di log
-		P5 Definizione strutture di dati
-		P6 Definizione dei metodi
-		P7 Diagramma di flusso
+		P5 Diagramma di flusso (doc/sviluppo/flow_diagram.txt)
+		P6 Definizione strutture di dati
+		P7 Definizione dei metodi
 		
 		Riferiementi:
 			https://sites.google.com/site/italianodidattica/didattica/ssi-info/progetti/Progetti2016.pdf		
