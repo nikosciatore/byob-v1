@@ -1,2 +1,6 @@
-# format:  timestamp         url 	           period_range(s)  max_contact_number  sleep_mode  user_agent
-# example: 06/10/2016 09:53  http://www.google.it  10-20            100 		even|AM     BYOBv1  
+# legend:
+# timestamp
+# url
+# period_range(s)  max_contact_number  sleep_mode
+# user_agent proxy
+

@@ -1,6 +1,7 @@
 START
 	init
 		gather informations about host's operating system and browsers (nmap)
+			(send to GUI and write to sysinfo.txt)
 		read configuration file (xml parser)
 		*generate unique bot ID 
 		*connection to the C&C

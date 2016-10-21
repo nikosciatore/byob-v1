@@ -1,0 +1,6 @@
+#This file contain information about operating system and browsers of the host machine,
+#it is write from bot during initialization
+
+java gather system information
+http://stackoverflow.com/questions/4704073/how-can-i-get-system-hardware-info-via-java
+https://support.hyperic.com/display/SIGAR/Home

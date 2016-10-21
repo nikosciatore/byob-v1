@@ -1,6 +1,7 @@
 package byobv1;
 
 import java.io.BufferedReader;
+import java.io.BufferedWriter;
 import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -14,11 +15,6 @@ import byobv1.model.SleepMode;
 import byobv1.model.URLEntry;
 
 public class Config {
-	ArrayList<URLEntry> configuration;
-
-	public Config() {
-		configuration = new ArrayList<URLEntry>();
-	}
 	
 	public ArrayList<URLEntry> readFile(Path file){
 		ArrayList<URLEntry> returnValue = new ArrayList<>();
@@ -34,9 +30,11 @@ public class Config {
 		    	tempEntry = parseEntry(line);
 		    	returnValue.add(tempEntry);
 		    }
+		    reader.close();
 		} catch (IOException x) {
 		    System.err.format("IOException: %s%n", x);
 		}
+		
 		return returnValue;
 	}
 	
@@ -48,7 +46,7 @@ public class Config {
 		Integer maxContact;
 		SleepMode sleepMode;
 		String userAgent;
-		String proxy;
+		URL proxy;
 		
 		for (int i = 0; i < entries.size(); i=i+2) {
 			switch (entries.get(i)) {
@@ -73,7 +71,7 @@ public class Config {
 				returnValue.setUserAgent(userAgent);
 				break;
 			case "--proxy":
-				proxy = entries.get(i+1);
+				proxy = parseUrl(entries.get(i+1));
 				returnValue.setProxy(proxy);
 				break;
 			default:
@@ -88,7 +86,7 @@ public class Config {
 		SleepMode returnValue;
 		String [] strings;
 		strings = string.split("-");
-		returnValue = new SleepMode(strings[0], strings[1], strings[2], strings[3]);
+		returnValue = new SleepMode(strings[0], strings[1], strings[2]);
 		return returnValue;
 	}
 
@@ -110,12 +108,16 @@ public class Config {
 		return url;
 	}
 
-	public void writeFile(ArrayList<URLEntry> configuration){
-		//TODO
-	}
-	
-	public void addURLEntry(URLEntry urlEntry){
-		configuration.add(urlEntry);
-	}
-	
+	public void writeFile(Path file, ArrayList<URLEntry> configuration){
+		Charset charset = Charset.forName("ISO-8859-1");
+		try (BufferedWriter writer = Files.newBufferedWriter(file, charset)) {
+			for (int i = 0; i < configuration.size(); i++) {
+				writer.write(configuration.get(i).toString());
+				writer.newLine();
+			}
+			writer.close();
+		} catch (IOException x) {
+		    System.err.format("IOException: %s%n", x);
+		}
+	}	
 }

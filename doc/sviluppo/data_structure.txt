@@ -11,6 +11,14 @@ class urlEntry{
 	String sleepMode ("1100|1110000|1100")
 	String userAgent
 	String proxy
-
-
 }
+
+class Log{
+	
+}
+
+class Config{
+	
+}
+
+

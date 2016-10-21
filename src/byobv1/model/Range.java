@@ -18,4 +18,9 @@ public class Range {
 		min = Integer.parseInt(string1);
 		max = Integer.parseInt(string2);
 	}
+	
+	@Override
+	public String toString() {
+		return min.toString()+"-"+max.toString();
+	}
 }

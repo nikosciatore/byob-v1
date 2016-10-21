@@ -1,0 +1,28 @@
+# Configuration file for byob-v1 application
+#  
+# Each row of this configuration file identify an URL to contact and it's related setting 
+# 	     KEY: VALUE        			DESCRIPTION
+# 
+# 	     url: 'url'          		- the URL to contact
+# 
+#   periodRange(s): min-max      			- time (in [min, max] interval) between consecutive contacts
+# 			   			  time is randomly selected in range [min-max], 
+# 			   			  same values of min and max mean fixed period    
+# 
+# maxContactNumber: max          			- number of times the url will be contacted
+# 
+#        sleepMode: 10..00-10000-1110000-1100     - conditions under which the application doesn't send requests
+# 						  ONE indicate that the bot is active ZERO that the bot is sleeping
+# 						  the first group of bit represent the month of the year,
+# 						  the second represent the week of the month,
+# 						  the third represent the day of the week,
+# 						  and the fourth represent six hour of the day.
+# 						  So, 100000000000-10000-1000000-1000 indicate that the bot is active from 
+# 						  00:00 to 06:00 of sunday of the first week of january
+# 
+#        userAgent: BYOBv1			- name and revision of the application that send the request
+# 
+#            proxy: url|ip			- indirizzo di un proxy pubblico da usare per i contatti
+# 
+# format:  url 			period_range(s) max_contact_number sleep_mode           	      user_agent       proxy
+# example: http://www.google.it   10-20 		100 		   100000000000-10000-1000000-1000    BYOBv1  	       url o ip

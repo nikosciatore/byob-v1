@@ -11,5 +11,9 @@ public class LogEntry extends URLEntry {
 			  urlEntry.sleepMode, urlEntry.userAgent, urlEntry.proxy);
 		this.timestamp = timestamp;
 	}
-	
+
+	@Override
+	public String toString() {
+		return timestamp.toString() + "\n" + super.toStringForLog();
+	}
 }

@@ -6,10 +6,10 @@
 
 	START
 		PROGETTAZIONE
-			?? Ott 16 : P1, P2, P3, P4, P5, P6, P7
+			10 Ott 16 : P1, P2, P3, P4, P5, P6, P7
 		SVILUPPO APPLICAZIONE
-			?? Ott 16 : S0, S1
-			?? Ott 16 : S3
+			19 Ott 16 : S0, S1
+			21 Ott 16 : S3
 			?? Ott 16 : S4
 		SVILUPPO ESTENSIONI
 			?? Nov 16 : ES1, ES2, ES3
@@ -25,9 +25,9 @@
 | DESCRIZIONE DELLE ATTIVITÀ |
 +----------------------------+
 	PROGETTAZIONE
-		P1 Scelta linguaggio (C, Java, ..)
-		P2 Scelta formato relazione (LaTeX, Word, ..)
-		P3 Definizione formato e struttura file di configurazione (.xml, .txt)
+		P1 Scelta linguaggio (Java (C))
+		P2 Scelta formato relazione (LaTeX)
+		P3 Definizione formato e struttura file di configurazione (.txt)
 		P4 Definizione struttura file di log
 		P5 Diagramma di flusso (doc/sviluppo/flow_diagram.txt)
 		P6 Definizione strutture di dati
