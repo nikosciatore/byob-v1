@@ -9,7 +9,7 @@ import byobv1.model.Bot;
 
 public class Main {
 	
-	static boolean DEBUG = true;
+	public static boolean DEBUG = true;
 	
 	static Bot bot;
 	static Config config;
@@ -39,6 +39,9 @@ public class Main {
 	}
 
 	private static void start() {
+		
+		System.out.println(bot.getContactsList().get(0).isNowActiveTime());
+		
 		Timer timer = new Timer();
 
 		timer.scheduleAtFixedRate(
@@ -50,7 +53,7 @@ public class Main {
 		        }
 		    },
 		    0,      // run first occurrence immediately
-		    3000);  // run every three seconds
+		    bot.getContactsList().get(0).getPeriod());  // run every three seconds
 		
 //		for (int i = 0; i < bot.getContactsList().size(); i++) {
 //			

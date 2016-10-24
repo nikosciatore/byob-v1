@@ -1,8 +1,24 @@
 package byobv1.model;
 
 public class Range {
-	Integer min;
-	Integer max;
+	private Integer min;
+	public Integer getMin() {
+		return min;
+	}
+
+	public void setMin(Integer min) {
+		this.min = min;
+	}
+
+	public Integer getMax() {
+		return max;
+	}
+
+	public void setMax(Integer max) {
+		this.max = max;
+	}
+
+	private Integer max;
 	
 	public Range() {
 		min = new Integer(0);
@@ -22,5 +38,9 @@ public class Range {
 	@Override
 	public String toString() {
 		return min.toString()+"-"+max.toString();
+	}
+	
+	public Integer getRange(){
+		return max - min;
 	}
 }

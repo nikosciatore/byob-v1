@@ -1,6 +1,11 @@
 package byobv1.model;
 
 import java.net.URL;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
+import byobv1.Main;
 
 public class URLEntry {
 	protected Integer ID;
@@ -120,5 +125,35 @@ public class URLEntry {
 	  return url + "\n" + period + " " + maxcontact + " " + sleepmode + "\n" + useragent + " " + proxy;
 	}
 
+	public boolean isNowActiveTime(){
+		DateFormat monthFormat = new SimpleDateFormat("MM");
+		DateFormat dayFormat = new SimpleDateFormat("dd");
+		DateFormat hourFormat = new SimpleDateFormat("HH");
+		
+		Date date = new Date();
+		
+		Integer month,day,hour;
+		month = Integer.parseInt(monthFormat.format(date));
+		day = Integer.parseInt(dayFormat.format(date));
+		hour = Integer.parseInt(hourFormat.format(date));
+		
+		SleepMode now = SleepMode.integersToSleepMode(month, day, hour);
+		
+		if(Main.DEBUG){
+			System.out.println(now.toString());
+			System.out.println(sleepMode.toString());
+		}
+		
+		return sleepMode.isIncluded(now);
+	}
+
+	public Integer getPeriod(){
+		Integer returnValue, range;
+		range = periodicRangeSec.getRange();
+		
+		returnValue = (int) (periodicRangeSec.getMin() + (Math.random()*range));
+		
+		return returnValue;
+	}
 }
 
