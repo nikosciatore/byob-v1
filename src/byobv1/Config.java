@@ -27,7 +27,7 @@ public class Config {
 		    	if(line.length()==0 || line.charAt(0)=='#'){
 		    		continue;
 		    	}
-		    	tempEntry = parseEntry(line);
+		    	tempEntry = parseEntry(line, returnValue.size());
 		    	returnValue.add(tempEntry);
 		    }
 		    reader.close();
@@ -38,7 +38,7 @@ public class Config {
 		return returnValue;
 	}
 	
-	private URLEntry parseEntry(String line) {
+	private URLEntry parseEntry(String line, int readedEntry) {
 		URLEntry returnValue = new URLEntry();
 		ArrayList<String> entries = Utility.splitInArrayList(line);
 		URL url;
@@ -47,6 +47,8 @@ public class Config {
 		SleepMode sleepMode;
 		String userAgent;
 		URL proxy;
+		
+		returnValue.setID(readedEntry + 1);
 		
 		for (int i = 0; i < entries.size(); i=i+2) {
 			switch (entries.get(i)) {
@@ -93,8 +95,11 @@ public class Config {
 	private Range parsePeriod(String string) {
 		Range returnValue;
 		String [] strings;
+		Integer min,max;
 		strings = string.split("-");
-		returnValue = new Range(strings[0], strings[1]);
+		min = Integer.parseInt(strings[0]);
+		max = Integer.parseInt(strings[1]);			
+		returnValue = new Range(min, max);
 		return returnValue;
 	}
 
@@ -118,6 +123,17 @@ public class Config {
 			writer.close();
 		} catch (IOException x) {
 		    System.err.format("IOException: %s%n", x);
+		}
+	}
+
+	public boolean hasBeenModified(Path configFilePath, ArrayList<URLEntry> contactList) {
+		
+		ArrayList<URLEntry> configFile	= readFile(configFilePath);
+		
+		if(configFile.equals(contactList)){
+			return false;
+		}else{
+			return true;
 		}
 	}	
 }

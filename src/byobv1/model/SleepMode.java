@@ -6,9 +6,42 @@ public class SleepMode {
 	String hour;
 		
 	public SleepMode(String month,	String day,	String hour) {
-		this.month = month;
-		this.day = day;
-		this.hour = hour;
+		
+		StringBuilder monthString = new StringBuilder("000000000000");
+		StringBuilder dayString = new StringBuilder("0000000000000000000000000000000");
+		StringBuilder hourString = new StringBuilder("000000000000000000000000");
+		
+		int groupNumber;
+		
+		for (int i = 0; i < monthString.length(); i++) {
+			groupNumber = getGroupNumber(i, monthString, month);
+			if(month.charAt(groupNumber) == '1'){
+				monthString.setCharAt(i, '1');
+			}
+		}
+
+		for (int i = 0; i < dayString.length(); i++) {
+			groupNumber = getGroupNumber(i, dayString, day);
+			if(day.charAt(groupNumber) == '1'){
+				dayString.setCharAt(i, '1');
+			}
+		}
+
+		for (int i = 0; i < hourString.length(); i++) {
+			groupNumber = getGroupNumber(i, hourString, hour);
+			if(hour.charAt(groupNumber) == '1'){
+				hourString.setCharAt(i, '1');
+			}
+		}
+		
+		this.month = monthString.toString();
+		this.day = dayString.toString();
+		this.hour = hourString.toString();
+	}
+
+	private int getGroupNumber(int index, StringBuilder stringBuilder, String string) {
+		int returnValue = (int) index/(stringBuilder.length()/string.length());
+		return Math.min(returnValue, string.length() - 1);
 	}
 
 	public SleepMode() {
@@ -23,10 +56,10 @@ public class SleepMode {
 
 		StringBuilder monthString = new StringBuilder("000000000000");
 		StringBuilder dayString = new StringBuilder("0000000000000000000000000000000");
-		StringBuilder hourString = new StringBuilder("0000");
-		monthString.setCharAt(month, '1');
-		dayString.setCharAt(day, '1');
-		hourString.setCharAt((int)hour/6, '1');
+		StringBuilder hourString = new StringBuilder("000000000000000000000000");
+		monthString.setCharAt(month - 1, '1');
+		dayString.setCharAt(day - 1, '1');
+		hourString.setCharAt(hour - 1, '1');
 		
 		returnValue.month = monthString.toString();
 		returnValue.day = dayString.toString();

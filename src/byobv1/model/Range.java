@@ -29,11 +29,6 @@ public class Range {
 		this.min = min;
 		this.max = max;
 	}
-
-	public Range(String string1, String string2) {
-		min = Integer.parseInt(string1);
-		max = Integer.parseInt(string2);
-	}
 	
 	@Override
 	public String toString() {

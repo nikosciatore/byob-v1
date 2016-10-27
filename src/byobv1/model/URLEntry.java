@@ -5,8 +5,6 @@ import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
-import byobv1.Main;
-
 public class URLEntry {
 	protected Integer ID;
 	protected URL URL;
@@ -39,8 +37,8 @@ public class URLEntry {
 		return ID;
 	}
 
-	public void setID(Integer iD) {
-		ID = iD;
+	public void setID(Integer ID) {
+		this.ID = ID;
 	}
 
 	public URL getURL() {
@@ -139,21 +137,25 @@ public class URLEntry {
 		
 		SleepMode now = SleepMode.integersToSleepMode(month, day, hour);
 		
-		if(Main.DEBUG){
-			System.out.println(now.toString());
-			System.out.println(sleepMode.toString());
-		}
-		
 		return sleepMode.isIncluded(now);
 	}
 
 	public Integer getPeriod(){
-		Integer returnValue, range;
+		Integer returnValue, range, randomValueInteger;
+		Double randomValueDouble;
 		range = periodicRangeSec.getRange();
 		
-		returnValue = (int) (periodicRangeSec.getMin() + (Math.random()*range));
+		randomValueDouble = Math.random()*range;
+		if(randomValueDouble - randomValueDouble.intValue() < 0.5){
+			randomValueInteger = randomValueDouble.intValue();
+		}else{
+			randomValueInteger = randomValueDouble.intValue() + 1;			
+		}
+		returnValue = periodicRangeSec.getMin() + randomValueInteger;
 		
 		return returnValue;
 	}
+	
+
 }
 

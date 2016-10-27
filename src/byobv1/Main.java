@@ -2,8 +2,8 @@ package byobv1;
 
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.ArrayList;
 import java.util.Timer;
-import java.util.TimerTask;
 
 import byobv1.model.Bot;
 
@@ -17,6 +17,8 @@ public class Main {
 	
 	static Path prjDirPath, dataDirPath, configFilePath, logFilePath;		
 
+	static ArrayList<ContactThread> contactThreadList;
+	
 	public static void main(String[] args) {
 
 		init();		
@@ -26,38 +28,10 @@ public class Main {
 		
 	}
 
-	private static void exit() {
-		config.writeFile(configFilePath, bot.getContactsList());
-		System.out.println("Exit");
-		
-	}
-
 	private static void startGUI() {
-		//TODO
+		//TODO gui
 		/*JavaFX*/
 		/*the method implements the first extension*/		
-	}
-
-	private static void start() {
-		
-		System.out.println(bot.getContactsList().get(0).isNowActiveTime());
-		
-		Timer timer = new Timer();
-
-		timer.scheduleAtFixedRate(
-		    new TimerTask()
-		    {
-		        public void run()
-		        {
-		            System.out.println("3 seconds passed");
-		        }
-		    },
-		    0,      // run first occurrence immediately
-		    bot.getContactsList().get(0).getPeriod());  // run every three seconds
-		
-//		for (int i = 0; i < bot.getContactsList().size(); i++) {
-//			
-//		}
 	}
 
 	private static void init() {
@@ -79,9 +53,31 @@ public class Main {
 	}
 
 	private static void gatherInfo() {
-		//TODO
+		//TODO gather info
 //		System.out.println(System.getProperty("os.name\n"));
 		/*the method implements the third extension*/		
+	}
+	
+	private static void start() {
+		contactThreadList = new ArrayList<ContactThread>();
+		Timer timer = new Timer();
+		
+		for (int i = 0; i < bot.getContactsList().size(); i++) {
+			ContactThread cThread = new ContactThread(bot.getContactsList().get(i), timer);
+			contactThreadList.add(cThread);
+			timer.schedule(cThread, 0);
+		}
+		
+		
+	}
+	
+	private static void exit() {
+//		if(config.hasBeenModified(configFilePath, bot.getContactsList())){
+			config.writeFile(configFilePath, bot.getContactsList());
+//			System.out.println("config file written");
+//		}
+		System.out.println("Exit");
+		
 	}
 
 }
