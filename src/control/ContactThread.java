@@ -1,4 +1,4 @@
-package byobv1;
+package control;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
@@ -6,7 +6,7 @@ import java.util.Date;
 import java.util.Timer;
 import java.util.TimerTask;
 
-import byobv1.model.URLEntry;
+import model.URLEntry;
 
 public class ContactThread extends TimerTask{
 
@@ -22,7 +22,7 @@ public class ContactThread extends TimerTask{
 	
 	@Override
 	public void run() {
-        Integer periodTime = urlEntry.getPeriod();
+        Integer periodTime = urlEntry.generatePeriod();
         int maxContactNumber;
         
         if(urlEntry.isNowActiveTime()){

@@ -1,4 +1,4 @@
-package byobv1.model;
+package model;
 
 public class Range {
 	private Integer min;

@@ -1,4 +1,4 @@
-package byobv1;
+package control;
 
 
 import java.io.BufferedWriter;
@@ -9,7 +9,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.StandardOpenOption;
 
-import byobv1.model.LogEntry;
+import model.LogEntry;
 
 public class Log {
 	

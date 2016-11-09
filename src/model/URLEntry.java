@@ -1,5 +1,6 @@
-package byobv1.model;
+package model;
 
+import java.net.MalformedURLException;
 import java.net.URL;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
@@ -8,16 +9,17 @@ import java.util.Date;
 public class URLEntry {
 	protected Integer ID;
 	protected URL URL;
-	protected Range periodicRangeSec;
+	protected Range period;
 	protected Integer maxContactNumber;
 	protected SleepMode sleepMode;
 	protected String userAgent;
 	protected URL proxy;
 
-	public URLEntry(URL URL, Range periodicRangeSec, Integer maxContactNumber, 
+	public URLEntry(Integer ID, URL URL, Range periodicRangeSec, Integer maxContactNumber, 
 					SleepMode sleepMode, String userAgent, URL proxy) {
+		this.ID = ID;
 		this.URL = URL;
-		this.periodicRangeSec = periodicRangeSec;
+		this.period = periodicRangeSec;
 		this.maxContactNumber = maxContactNumber;
 		this.sleepMode = sleepMode;
 		this.userAgent = userAgent;
@@ -26,7 +28,7 @@ public class URLEntry {
 	
 	public URLEntry() {
 		URL = null;
-		periodicRangeSec = null;
+		period = null;
 		maxContactNumber = null;
 		sleepMode = null;
 		userAgent = null;
@@ -50,11 +52,11 @@ public class URLEntry {
 	}
 
 	public Range getPeriodicRangeSec() {
-		return periodicRangeSec;
+		return period;
 	}
 
-	public void setPeriodicRangeSec(Range periodicRangeSec) {
-		this.periodicRangeSec = periodicRangeSec;
+	public void setPeriod(Range periodicRangeSec) {
+		this.period = periodicRangeSec;
 	}
 
 	public Integer getMaxContactNumber() {
@@ -95,7 +97,7 @@ public class URLEntry {
 		String url, period, maxcontact, sleepmode, useragent, proxy;
 
 		url = this.URL.toString();
-		period = this.periodicRangeSec.toString();
+		period = this.period.toString();
 		maxcontact = this.maxContactNumber.toString();
 		sleepmode = this.sleepMode.toString();
 		useragent = this.userAgent;
@@ -114,7 +116,7 @@ public class URLEntry {
 		String url, period, maxcontact, sleepmode, useragent, proxy;
 
 		url = this.URL.toString();
-		period = this.periodicRangeSec.toString();
+		period = this.period.toString();
 		maxcontact = this.maxContactNumber.toString();
 		sleepmode = this.sleepMode.toString();
 		useragent = this.userAgent;
@@ -140,10 +142,10 @@ public class URLEntry {
 		return sleepMode.isIncluded(now);
 	}
 
-	public Integer getPeriod(){
+	public Integer generatePeriod(){
 		Integer returnValue, range, randomValueInteger;
 		Double randomValueDouble;
-		range = periodicRangeSec.getRange();
+		range = period.getRange();
 		
 		randomValueDouble = Math.random()*range;
 		if(randomValueDouble - randomValueDouble.intValue() < 0.5){
@@ -151,11 +153,45 @@ public class URLEntry {
 		}else{
 			randomValueInteger = randomValueDouble.intValue() + 1;			
 		}
-		returnValue = periodicRangeSec.getMin() + randomValueInteger;
+		returnValue = period.getMin() + randomValueInteger;
 		
 		return returnValue;
 	}
-	
 
+	public void setURL(String URLString) {
+		try {
+			this.URL = new URL(URLString);
+		} catch (MalformedURLException e) {
+			e.printStackTrace();
+		}
+	}
+
+	public void setPeriod(String periodString) {
+		String [] strings;
+		Integer min,max;
+		strings = periodString.split("-");
+		min = Integer.parseInt(strings[0]);
+		max = Integer.parseInt(strings[1]);			
+		this.period = new Range(min, max);
+	}
+
+	public void setProxy(String proxyString) {
+		try {
+			this.proxy = new URL(proxyString);
+		} catch (MalformedURLException e) {
+			e.printStackTrace();
+		}	
+	}
+
+	public void setMaxContactNumber(String maxContactNumberString) {
+		this.maxContactNumber = Integer.parseInt(maxContactNumberString);
+	}
+
+	public void setSleepMode(String sleepModeString) {
+		String [] strings;
+		strings = sleepModeString.split("-");
+		this.sleepMode = new SleepMode(strings[0], strings[1], strings[2]);
+	}
+	
 }
 

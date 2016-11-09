@@ -1,4 +1,4 @@
-package byobv1.model;
+package model;
 
 public enum BotStatus {
 	INIT,IDLE,ACTIVE,SLEEP

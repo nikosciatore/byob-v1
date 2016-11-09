@@ -1,18 +1,13 @@
-package byobv1;
+package control;
 
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.IOException;
-import java.net.MalformedURLException;
-import java.net.URL;
 import java.nio.charset.Charset;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.ArrayList;
-
-import byobv1.model.Range;
-import byobv1.model.SleepMode;
-import byobv1.model.URLEntry;
+import model.URLEntry;
 
 public class Config {
 	
@@ -41,40 +36,28 @@ public class Config {
 	private URLEntry parseEntry(String line, int readedEntry) {
 		URLEntry returnValue = new URLEntry();
 		ArrayList<String> entries = Utility.splitInArrayList(line);
-		URL url;
-		Range period;
-		Integer maxContact;
-		SleepMode sleepMode;
-		String userAgent;
-		URL proxy;
 		
 		returnValue.setID(readedEntry + 1);
 		
-		for (int i = 0; i < entries.size(); i=i+2) {
+		for (int i = 0; i < entries.size(); i=i+2) {			
 			switch (entries.get(i)) {
 			case "--url":
-				url = parseUrl(entries.get(i+1));
-				returnValue.setURL(url);
+				returnValue.setURL(entries.get(i+1));
 				break;
 			case "--period":
-				period = parsePeriod(entries.get(i+1));
-				returnValue.setPeriodicRangeSec(period);
+				returnValue.setPeriod(entries.get(i+1));
 				break;
 			case "--maxcontact":
-				maxContact = Integer.parseInt(entries.get(i+1));
-				returnValue.setMaxContactNumber(maxContact);
+				returnValue.setMaxContactNumber(entries.get(i+1));
 				break;
 			case "--sleepmode":
-				sleepMode = parseSleepMode(entries.get(i+1));
-				returnValue.setSleepMode(sleepMode);
+				returnValue.setSleepMode(entries.get(i+1));
 				break;
 			case "--useragent":
-				userAgent = entries.get(i+1);
-				returnValue.setUserAgent(userAgent);
+				returnValue.setUserAgent(entries.get(i+1));
 				break;
 			case "--proxy":
-				proxy = parseUrl(entries.get(i+1));
-				returnValue.setProxy(proxy);
+				returnValue.setProxy(entries.get(i+1));
 				break;
 			default:
 				//log: unknow field in configuration file
@@ -82,35 +65,6 @@ public class Config {
 			}
 		}
 		return returnValue;
-	}
-
-	private SleepMode parseSleepMode(String string) {
-		SleepMode returnValue;
-		String [] strings;
-		strings = string.split("-");
-		returnValue = new SleepMode(strings[0], strings[1], strings[2]);
-		return returnValue;
-	}
-
-	private Range parsePeriod(String string) {
-		Range returnValue;
-		String [] strings;
-		Integer min,max;
-		strings = string.split("-");
-		min = Integer.parseInt(strings[0]);
-		max = Integer.parseInt(strings[1]);			
-		returnValue = new Range(min, max);
-		return returnValue;
-	}
-
-	private URL parseUrl(String urlString) {
-		URL url = null;
-		try {
-			url = new URL(urlString);
-		} catch (MalformedURLException e) {
-			e.printStackTrace();
-		}
-		return url;
 	}
 
 	public void writeFile(Path file, ArrayList<URLEntry> configuration){
