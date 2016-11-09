@@ -115,6 +115,10 @@ public class Bot {
 		}
 	}
 
+	public void editContact(URLEntry newUrlEntry) {
+		contactsList.set(newUrlEntry.getID()-1, newUrlEntry);
+	}
+
 
 
 }

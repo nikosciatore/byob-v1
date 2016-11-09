@@ -162,7 +162,11 @@ public class URLEntry {
 		try {
 			this.URL = new URL(URLString);
 		} catch (MalformedURLException e) {
-			e.printStackTrace();
+			try {
+				this.URL = new URL("http://www.example.com");
+			} catch (MalformedURLException e1) {
+				e1.printStackTrace();
+			}
 		}
 	}
 
@@ -170,8 +174,15 @@ public class URLEntry {
 		String [] strings;
 		Integer min,max;
 		strings = periodString.split("-");
-		min = Integer.parseInt(strings[0]);
-		max = Integer.parseInt(strings[1]);			
+
+		try {
+			min = Integer.parseInt(strings[0]);
+			max = Integer.parseInt(strings[1]);			
+		} catch (Exception e) {
+			min = new Integer(1);
+			max = new Integer(1);
+		}
+		
 		this.period = new Range(min, max);
 	}
 
@@ -179,12 +190,20 @@ public class URLEntry {
 		try {
 			this.proxy = new URL(proxyString);
 		} catch (MalformedURLException e) {
-			e.printStackTrace();
-		}	
+			try {
+				this.proxy = new URL("http://www.example.com");
+			} catch (MalformedURLException e1) {
+				e1.printStackTrace();
+			}
+		}
 	}
 
 	public void setMaxContactNumber(String maxContactNumberString) {
-		this.maxContactNumber = Integer.parseInt(maxContactNumberString);
+		try {
+			this.maxContactNumber = Integer.parseInt(maxContactNumberString);
+		} catch (NumberFormatException e) {
+			this.maxContactNumber = new Integer(0);
+		}
 	}
 
 	public void setSleepMode(String sleepModeString) {

@@ -14,6 +14,7 @@ import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
+import model.AppMode;
 import model.URLEntry;
 import model.URLEntryProperty;
 
@@ -33,10 +34,14 @@ public class UserInterfaceController implements Initializable{
 
 	ObservableList<URLEntryProperty> contactsObservableList;
 	
+	AppMode appMode;
+	
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {		
 		
+		appMode = AppMode.INIT;
 		tableViewInit();
+		appMode = AppMode.IDLE;
 
 	}
 
@@ -69,21 +74,24 @@ public class UserInterfaceController implements Initializable{
 
 	@FXML protected void newContact(ActionEvent event){
 		setUserInterface("newContact");
+		appMode = AppMode.NEW;		
 	}
 
 	@FXML protected void editContact(ActionEvent event){
 		setUserInterface("editContact");
+		appMode = AppMode.EDIT;
 	}
 
 	@FXML protected void deleteContact(ActionEvent event){
-		String idString = contactsTableView.getSelectionModel().getSelectedItem().getID();
-		Integer id = Integer.parseInt(idString);
-		Main.bot.removeContact(id);
-		contactsObservableList.remove(id);
-		contactsTableView.refresh();
-		contactsTableView.getItems().remove(contactsTableView.getSelectionModel().getSelectedItem());
-
-		setUserInterface("deleteContact");
+		try {
+			String idString = contactsTableView.getSelectionModel().getSelectedItem().getID();
+			Integer id = Integer.parseInt(idString);
+			Main.bot.removeContact(id);
+			contactsTableView.getItems().remove(contactsTableView.getSelectionModel().getSelectedItem());
+			setUserInterface("deleteContact");
+		} catch (NullPointerException e) {
+			/*nessun elemento nella lista dei contatti*/
+		}
 		
 		
 	}
@@ -102,16 +110,19 @@ public class UserInterfaceController implements Initializable{
 			newUrlEntry.setUserAgent(userAgentTextField.getText());
 			newUrlEntry.setProxy(proxyTextField.getText());
 			
-			Main.bot.addContact(newUrlEntry);
-			
+			if(appMode == AppMode.NEW){
+				Main.bot.addContact(newUrlEntry);
+				contactsTableView.getItems().add(new URLEntryProperty(newUrlEntry));
+			}else if(appMode == AppMode.EDIT){
+				String idString = contactsTableView.getSelectionModel().getSelectedItem().getID();
+				Integer id = Integer.parseInt(idString);
+				newUrlEntry.setID(id);
+				Main.bot.editContact(newUrlEntry);
+				contactsTableView.getItems().set(id-1, new URLEntryProperty(newUrlEntry));
+			}
 			setUserInterface("saveContact");
-
-			contactsObservableList.add(new URLEntryProperty(newUrlEntry));
-			contactsTableView.requestFocus();
 			
-			int lastItemIndex = contactsObservableList.size()-1;
-			contactsTableView.getSelectionModel().select(lastItemIndex);
-			contactsTableView.scrollTo(lastItemIndex);
+			appMode = AppMode.IDLE;
 		}
 	}
 	
@@ -163,6 +174,13 @@ public class UserInterfaceController implements Initializable{
 			deleteContactButton.setDisable(false);
 			setTextFieldsEditable(false);
 			contactsTableView.requestFocus();
+
+			if(appMode==AppMode.NEW){
+				int lastItemIndex = contactsObservableList.size()-1;
+				contactsTableView.getSelectionModel().select(lastItemIndex);
+				contactsTableView.scrollTo(lastItemIndex);
+			}
+
 			break;
 
 		default:
