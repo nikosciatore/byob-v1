@@ -20,7 +20,8 @@ import model.URLEntryProperty;
 
 public class UserInterfaceController implements Initializable{
 
-	@FXML private Button newContactButton, editContactButton, deleteContactButton, cancelButton, saveContactButton;
+	@FXML private Button newContactButton, editContactButton, deleteContactButton, cancelButton, saveContactButton,
+						 startBotButton, stopBotButton, pauseResumeBotButton;
 	@FXML private TableView<URLEntryProperty> contactsTableView;
 	
 	@FXML private TableColumn<URLEntryProperty, String> idTableCol, urlTableCol, periodTableCol,
@@ -111,14 +112,21 @@ public class UserInterfaceController implements Initializable{
 			newUrlEntry.setProxy(proxyTextField.getText());
 			
 			if(appMode == AppMode.NEW){
-				Main.bot.addContact(newUrlEntry);
+				newUrlEntry = Main.bot.addContact(newUrlEntry);
 				contactsTableView.getItems().add(new URLEntryProperty(newUrlEntry));
 			}else if(appMode == AppMode.EDIT){
 				String idString = contactsTableView.getSelectionModel().getSelectedItem().getID();
 				Integer id = Integer.parseInt(idString);
 				newUrlEntry.setID(id);
 				Main.bot.editContact(newUrlEntry);
-				contactsTableView.getItems().set(id-1, new URLEntryProperty(newUrlEntry));
+
+				int i;
+				for (i = 0; i < contactsTableView.getItems().size(); i++) {
+					if(contactsTableView.getItems().get(i).getID().equals(newUrlEntry.getID().toString())){
+						break;
+					}
+				}
+				contactsTableView.getItems().set(i, new URLEntryProperty(newUrlEntry));
 			}
 			setUserInterface("saveContact");
 			
@@ -126,6 +134,26 @@ public class UserInterfaceController implements Initializable{
 		}
 	}
 	
+	@FXML protected void startBot(ActionEvent event){
+		Main.bot.start();
+		setUserInterface("startBot");
+	}
+
+	@FXML protected void stopBot(ActionEvent event){
+		Main.bot.stop();	
+		setUserInterface("stopBot");
+	}
+
+	@FXML protected void pauseResumeBot(ActionEvent event){
+		if(pauseResumeBotButton.getText().equals("PAUSE")){
+			Main.bot.pause();
+			setUserInterface("pauseBot");
+		}else if(pauseResumeBotButton.getText().equals("RESUME")){
+			Main.bot.resume();
+			setUserInterface("resumeBot");
+		}
+	}
+
 	@FXML protected void quitApplication(ActionEvent event){
 		Main.stage.close();
 	}
@@ -140,7 +168,7 @@ public class UserInterfaceController implements Initializable{
 			saveContactButton.setDisable(false);
 			cancelButton.setDisable(false);
 
-			fillTextFields("http://www.example.com","10-20","100","1000-10-10","BYOBv1","http://www.example.com");
+			fillTextFields("http://www.example.com","1-2","5","1-1-1","BYOBv1","http://www.example.com");
 			setTextFieldsEditable(true);
 			urlTextField.requestFocus();
 			
@@ -180,9 +208,23 @@ public class UserInterfaceController implements Initializable{
 				contactsTableView.getSelectionModel().select(lastItemIndex);
 				contactsTableView.scrollTo(lastItemIndex);
 			}
-
 			break;
-
+		case "startBot":
+			startBotButton.setDisable(true);
+			stopBotButton.setDisable(false);
+			pauseResumeBotButton.setDisable(false);
+			break;
+		case "stopBot":
+			startBotButton.setDisable(false);
+			stopBotButton.setDisable(true);
+			pauseResumeBotButton.setDisable(true);
+			break;
+		case "pauseBot":
+			pauseResumeBotButton.setText("RESUME");
+			break;
+		case "resumeBot":
+			pauseResumeBotButton.setText("PAUSE");
+			break;
 		default:
 			break;
 		}

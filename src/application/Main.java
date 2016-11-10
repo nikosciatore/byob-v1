@@ -27,7 +27,6 @@ public class Main extends Application {
 		stage = primaryStage;
 		bot = new Bot();
 		bot.init();
-//		bot.start();
 
 		root = (VBox)FXMLLoader.load(getClass().getResource("user_interface.fxml"));
 		scene = new Scene(root);

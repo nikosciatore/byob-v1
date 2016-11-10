@@ -12,12 +12,27 @@ public class ContactThread extends TimerTask{
 
 	URLEntry urlEntry;
 	Timer timer;
-	static int contactNumber;
+	Integer contactNumber;
 	
 	
+	public int getContactNumber() {
+		return contactNumber;
+	}
+
+	public void setContactNumber(int contactNumber) {
+		this.contactNumber = contactNumber;
+	}
+
 	public ContactThread(URLEntry urlEntry, Timer timer) {
 		this.urlEntry = urlEntry;
 		this.timer = timer;
+		this.contactNumber = 0;
+	}
+
+	public ContactThread(URLEntry urlEntry, Timer timer, Integer contactNumber) {
+		this.urlEntry = urlEntry;
+		this.timer = timer;
+		this.contactNumber = contactNumber;
 	}
 	
 	@Override
@@ -32,7 +47,7 @@ public class ContactThread extends TimerTask{
             
             maxContactNumber = urlEntry.getMaxContactNumber();
             if(contactNumber < maxContactNumber){
-                timer.schedule(new ContactThread(urlEntry, timer), periodTime * 1000);
+                timer.schedule(new ContactThread(urlEntry, timer, contactNumber), periodTime * 1000);
             }
         }
 
@@ -44,6 +59,7 @@ public class ContactThread extends TimerTask{
 		
 		DateFormat dateFormat = new SimpleDateFormat("HH:mm:ss");
 		Date date = new Date();
+		
 		
 		System.out.println(urlEntry.getID() + " " + dateFormat.format(date) + " " + urlEntry.getURL());
 

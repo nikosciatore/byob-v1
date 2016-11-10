@@ -12,12 +12,13 @@ public class Bot {
 	Integer id;
 	BotStatus status;
 	ArrayList<URLEntry> contactsList;
+	Timer timer;
 	
-	static Config config;
-	static Log log;
-	static ArrayList<ContactThread> contactThreadList;
+	Config config;
+	Log log;
+	ArrayList<ContactThread> contactThreadList;
 
-	static Path prjDirPath, dataDirPath, configFilePath, logFilePath;		
+	Path prjDirPath, dataDirPath, configFilePath, logFilePath;		
 
 	
 	public Bot() {
@@ -74,6 +75,13 @@ public class Bot {
 	}
 
 	public void close() {
+
+		try {
+			timer.cancel();	
+		} catch (NullPointerException e) {
+			
+		}
+
 //		if(config.hasBeenModified(configFilePath, bot.getContactsList())){
 			config.writeFile(configFilePath, contactsList);
 //			System.out.println("config file written");
@@ -82,7 +90,7 @@ public class Bot {
 
 	public void start() {
 		contactThreadList = new ArrayList<ContactThread>();
-		Timer timer = new Timer();
+		timer = new Timer();
 		
 		for (int i = 0; i < contactsList.size(); i++) {
 			ContactThread cThread = new ContactThread(contactsList.get(i), timer);
@@ -91,6 +99,21 @@ public class Bot {
 		}
 	}
 
+	public void stop() {
+		timer.cancel();
+		for (int i = 0; i < contactThreadList.size(); i++) {
+			contactThreadList.get(i).setContactNumber(0);
+		}
+	}
+	
+	public void pause() {
+		/*TODO*/
+	}
+
+	public void resume() {
+		/*TODO*/
+	}
+	
 	public ArrayList<URLEntryProperty> getContactsListProperty() {
 		ArrayList<URLEntryProperty> returnValue = new ArrayList<URLEntryProperty>();
 		
@@ -101,10 +124,14 @@ public class Bot {
 		return returnValue;
 	}
 
-	public void addContact(URLEntry newUrlEntry) {
-		newUrlEntry.setID(contactsList.size()+1);
-		
+	public URLEntry addContact(URLEntry newUrlEntry) {
+		int lastContactId = 0;
+		if(!contactsList.isEmpty()){
+			lastContactId = contactsList.get(contactsList.size()-1).getID();
+		}
+		newUrlEntry.setID(lastContactId+1);
 		this.contactsList.add(newUrlEntry);
+		return newUrlEntry;
 	}
 
 	public void removeContact(Integer id) {
@@ -116,9 +143,12 @@ public class Bot {
 	}
 
 	public void editContact(URLEntry newUrlEntry) {
-		contactsList.set(newUrlEntry.getID()-1, newUrlEntry);
+		int i;
+		for (i = 0; i < contactsList.size(); i++) {
+			if(contactsList.get(i).getID()==newUrlEntry.getID()){
+				break;
+			}
+		}
+		contactsList.set(i, newUrlEntry);
 	}
-
-
-
 }

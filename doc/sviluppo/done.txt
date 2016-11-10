@@ -1,0 +1,4 @@
+correzione bug su edit del contatto
+aggiornata interfaccia: aggiunti tab e migliorata gestione del ridimensionamento della finestra
+risolto bug sul contactThread: il conteggio del numero dei contatti effettuati era collettivo quindi è stato reso individuale
+aggiunte azioni di controllo della bot tra cui start e stop
