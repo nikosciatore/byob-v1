@@ -6,11 +6,14 @@ import java.util.Date;
 import java.util.Timer;
 import java.util.TimerTask;
 
+import model.LogEntry;
 import model.URLEntry;
 
 public class ContactThread extends TimerTask{
 
 	URLEntry urlEntry;
+	LogEntry logEntry;
+	Log log;
 	Timer timer;
 	Integer contactNumber;
 	
@@ -27,12 +30,14 @@ public class ContactThread extends TimerTask{
 		this.urlEntry = urlEntry;
 		this.timer = timer;
 		this.contactNumber = 0;
+		this.log = new Log();
 	}
 
 	public ContactThread(URLEntry urlEntry, Timer timer, Integer contactNumber) {
 		this.urlEntry = urlEntry;
 		this.timer = timer;
 		this.contactNumber = contactNumber;
+		this.log = new Log();
 	}
 	
 	@Override
@@ -56,12 +61,14 @@ public class ContactThread extends TimerTask{
 
 	private void httpGET() {
         /*TODO log httpget*/
-		
 		DateFormat dateFormat = new SimpleDateFormat("HH:mm:ss");
 		Date date = new Date();
 		
+		logEntry = new LogEntry(urlEntry, date);
+		log.writeLogFile(logEntry);
 		
 		System.out.println(urlEntry.getID() + " " + dateFormat.format(date) + " " + urlEntry.getURL());
+
 
 	}
 

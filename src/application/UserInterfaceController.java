@@ -2,6 +2,7 @@ package application;
 
 import java.net.URL;
 import java.util.ResourceBundle;
+import control.Log;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.beans.value.ChangeListener;
@@ -15,20 +16,29 @@ import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
 import model.AppMode;
+import model.LogEntryProperty;
+import model.SystemInfoEntryProperty;
 import model.URLEntry;
 import model.URLEntryProperty;
 
 public class UserInterfaceController implements Initializable{
 
 	@FXML private Button newContactButton, editContactButton, deleteContactButton, cancelButton, saveContactButton,
-						 startBotButton, stopBotButton, pauseResumeBotButton;
-	@FXML private TableView<URLEntryProperty> contactsTableView;
-	
-	@FXML private TableColumn<URLEntryProperty, String> idTableCol, urlTableCol, periodTableCol,
-														sleepModeTableCol, userAgentTableCol, proxyTableCol;
+						 startBotButton, stopBotButton, startBotButton1, stopBotButton1, pauseResumeBotButton;
+	@FXML private TableView<URLEntryProperty> contactsTableView;	
+	@FXML private TableColumn<URLEntryProperty, String> contactIdTableCol, contactUrlTableCol, contactPeriodTableCol,
+														contactSleepModeTableCol, contactUserAgentTableCol, 
+														contactProxyTableCol;
+	@FXML private TableColumn<URLEntryProperty, Integer> contactMaxContactTableCol;
 
-	@FXML private TableColumn<URLEntryProperty, Integer> maxContactTableCol;
+	@FXML private TableView<LogEntryProperty> logsTableView;
+	@FXML private TableColumn<LogEntryProperty, String> logIdTableCol, logTimestampTableCol, logUrlTableCol, logPeriodTableCol,
+														logSleepModeTableCol, logUserAgentTableCol, 
+														logProxyTableCol;
+	@FXML private TableColumn<LogEntryProperty, Integer> logMaxContactTableCol;
 
+	@FXML private TableView<SystemInfoEntryProperty> systemInfoTableView;
+	@FXML private TableColumn<SystemInfoEntryProperty, String> propertyTableCol, valueTableCol;
 	
 	@FXML private TextField urlTextField, periodTextField, maxContactTextField, 
 							sleepModeTextField, userAgentTextField, proxyTextField;
@@ -41,20 +51,22 @@ public class UserInterfaceController implements Initializable{
 	public void initialize(URL location, ResourceBundle resources) {		
 		
 		appMode = AppMode.INIT;
-		tableViewInit();
+		contactsTableViewInit();
+		logTableViewInit();
+		systemInfoTableViewInit();
 		appMode = AppMode.IDLE;
 
 	}
 
-	private void tableViewInit() {
+	private void contactsTableViewInit() {
 
-		idTableCol.setCellValueFactory(new PropertyValueFactory<URLEntryProperty, String>("ID"));
-		urlTableCol.setCellValueFactory(new PropertyValueFactory<URLEntryProperty, String>("URL"));
-		periodTableCol.setCellValueFactory(new PropertyValueFactory<URLEntryProperty, String>("periodicRangeSec"));
-		maxContactTableCol.setCellValueFactory(new PropertyValueFactory<URLEntryProperty, Integer>("maxContactNumber"));
-		sleepModeTableCol.setCellValueFactory(new PropertyValueFactory<URLEntryProperty, String>("sleepMode"));
-		userAgentTableCol.setCellValueFactory(new PropertyValueFactory<URLEntryProperty, String>("userAgent"));
-		proxyTableCol.setCellValueFactory(new PropertyValueFactory<URLEntryProperty, String>("proxy"));
+		contactIdTableCol.setCellValueFactory(new PropertyValueFactory<URLEntryProperty, String>("ID"));
+		contactUrlTableCol.setCellValueFactory(new PropertyValueFactory<URLEntryProperty, String>("URL"));
+		contactPeriodTableCol.setCellValueFactory(new PropertyValueFactory<URLEntryProperty, String>("period"));
+		contactMaxContactTableCol.setCellValueFactory(new PropertyValueFactory<URLEntryProperty, Integer>("maxContactNumber"));
+		contactSleepModeTableCol.setCellValueFactory(new PropertyValueFactory<URLEntryProperty, String>("sleepMode"));
+		contactUserAgentTableCol.setCellValueFactory(new PropertyValueFactory<URLEntryProperty, String>("userAgent"));
+		contactProxyTableCol.setCellValueFactory(new PropertyValueFactory<URLEntryProperty, String>("proxy"));
 		
 		contactsObservableList = FXCollections.observableArrayList();
 		contactsObservableList.addAll(Main.bot.getContactsListProperty());
@@ -68,10 +80,43 @@ public class UserInterfaceController implements Initializable{
 			}
 		});
 		
-
 		contactsTableView.requestFocus();
 		contactsTableView.getSelectionModel().select(0);
 	}
+	
+	
+	
+	
+	private void logTableViewInit() {
+
+		logIdTableCol.setCellValueFactory(new PropertyValueFactory<LogEntryProperty, String>("ID"));
+		logTimestampTableCol.setCellValueFactory(new PropertyValueFactory<LogEntryProperty, String>("timestamp"));
+		logUrlTableCol.setCellValueFactory(new PropertyValueFactory<LogEntryProperty, String>("URL"));
+		logPeriodTableCol.setCellValueFactory(new PropertyValueFactory<LogEntryProperty, String>("period"));
+		logMaxContactTableCol.setCellValueFactory(new PropertyValueFactory<LogEntryProperty, Integer>("maxContactNumber"));
+		logSleepModeTableCol.setCellValueFactory(new PropertyValueFactory<LogEntryProperty, String>("sleepMode"));
+		logUserAgentTableCol.setCellValueFactory(new PropertyValueFactory<LogEntryProperty, String>("userAgent"));
+		logProxyTableCol.setCellValueFactory(new PropertyValueFactory<LogEntryProperty, String>("proxy"));
+				
+		logsTableView.setItems(Log.getLogEntryObservableList());
+
+	}
+
+	private void systemInfoTableViewInit() {
+
+		propertyTableCol.setCellValueFactory(new PropertyValueFactory<SystemInfoEntryProperty, String>("property"));
+		valueTableCol.setCellValueFactory(new PropertyValueFactory<SystemInfoEntryProperty, String>("value"));
+				
+//		logsTableView.setItems(SystemInfo.getSystemInfoObservableList());
+
+	}
+
+	
+	
+	
+	
+	
+	
 
 	@FXML protected void newContact(ActionEvent event){
 		setUserInterface("newContact");
@@ -212,11 +257,15 @@ public class UserInterfaceController implements Initializable{
 		case "startBot":
 			startBotButton.setDisable(true);
 			stopBotButton.setDisable(false);
+			startBotButton1.setDisable(true);
+			stopBotButton1.setDisable(false);
 			pauseResumeBotButton.setDisable(false);
 			break;
 		case "stopBot":
 			startBotButton.setDisable(false);
 			stopBotButton.setDisable(true);
+			startBotButton1.setDisable(false);
+			stopBotButton1.setDisable(true);
 			pauseResumeBotButton.setDisable(true);
 			break;
 		case "pauseBot":
@@ -243,7 +292,7 @@ public class UserInterfaceController implements Initializable{
 	private void fillTextFields(URLEntryProperty urlEntryProperty) {
 		if(!(urlEntryProperty==null)){
 			urlTextField.setText(urlEntryProperty.getURL().toString());
-			periodTextField.setText(urlEntryProperty.getPeriodicRangeSec().toString());
+			periodTextField.setText(urlEntryProperty.getPeriod().toString());
 			maxContactTextField.setText(urlEntryProperty.getMaxContactNumber().toString());
 			sleepModeTextField.setText(urlEntryProperty.getSleepMode().toString());
 			userAgentTextField.setText(urlEntryProperty.getUserAgent().toString());

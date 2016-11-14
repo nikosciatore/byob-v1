@@ -5,26 +5,26 @@ import javafx.beans.property.SimpleStringProperty;
 public class URLEntryProperty {
 	private final SimpleStringProperty ID;
 	private final SimpleStringProperty URL;
-	private final SimpleStringProperty periodicRangeSec;
+	private final SimpleStringProperty period;
 	private final SimpleIntegerProperty maxContactNumber;
 	private final SimpleStringProperty sleepMode;
 	private final SimpleStringProperty userAgent;
 	private final SimpleStringProperty proxy;
 	
-	public URLEntryProperty() {
-		this.ID = new SimpleStringProperty("");
-		this.URL = new SimpleStringProperty("");
-		this.periodicRangeSec = new SimpleStringProperty("");
-		this.maxContactNumber = new SimpleIntegerProperty();
-		this.sleepMode = new SimpleStringProperty("");
-		this.userAgent = new SimpleStringProperty("");
-		this.proxy = new SimpleStringProperty("");
-	}
+//	public URLEntryProperty() {
+//		this.ID = new SimpleStringProperty("");
+//		this.URL = new SimpleStringProperty("");
+//		this.periodicRangeSec = new SimpleStringProperty("");
+//		this.maxContactNumber = new SimpleIntegerProperty();
+//		this.sleepMode = new SimpleStringProperty("");
+//		this.userAgent = new SimpleStringProperty("");
+//		this.proxy = new SimpleStringProperty("");
+//	}
 	
 	public URLEntryProperty(URLEntry urlEntry) {
 		this.ID = new SimpleStringProperty(urlEntry.getID().toString());
 		this.URL = new SimpleStringProperty(urlEntry.getURL().toString());
-		this.periodicRangeSec = new SimpleStringProperty(urlEntry.getPeriodicRangeSec().toString());
+		this.period = new SimpleStringProperty(urlEntry.getPeriodicRangeSec().toString());
 		this.maxContactNumber = new SimpleIntegerProperty(urlEntry.getMaxContactNumber());
 		this.sleepMode = new SimpleStringProperty(urlEntry.getSleepMode().toString());
 		this.userAgent = new SimpleStringProperty(urlEntry.getUserAgent());
@@ -43,11 +43,11 @@ public class URLEntryProperty {
 	public void setURL(String uRL) {
 		URL.set(uRL);
 	}
-	public String getPeriodicRangeSec() {
-		return periodicRangeSec.get();
+	public String getPeriod() {
+		return period.get();
 	}
-	public void setPeriodicRangeSec(String periodicRangeSec) {
-		this.periodicRangeSec.set(periodicRangeSec);
+	public void setPeriod(String periodicRangeSec) {
+		this.period.set(periodicRangeSec);
 	}
 	public Integer getMaxContactNumber() {
 		return maxContactNumber.get();

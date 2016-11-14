@@ -4,6 +4,14 @@ import java.util.Date;
 
 public class LogEntry extends URLEntry {
 
+	public Date getTimestamp() {
+		return timestamp;
+	}
+
+	public void setTimestamp(Date timestamp) {
+		this.timestamp = timestamp;
+	}
+
 	Date timestamp;
 	
 	public LogEntry(URLEntry urlEntry, Date timestamp) {

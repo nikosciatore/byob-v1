@@ -13,6 +13,7 @@ public class Bot {
 	BotStatus status;
 	ArrayList<URLEntry> contactsList;
 	Timer timer;
+	SystemInfo systemInfo;
 	
 	Config config;
 	Log log;
@@ -60,18 +61,16 @@ public class Bot {
 		logFilePath = dataDirPath.resolve("log.txt");
 
 		config = new Config();
-		log = new Log();
+		log = new Log(logFilePath);
 		
 		contactsList = config.readFile(configFilePath);
 		
-		log.openOrCreateLogFile(logFilePath);	}
+		log.openOrCreateLogFile();	}
 
 
 
 	private void gatherInfo() {
-		//TODO gather info
-//		System.out.println(System.getProperty("os.name\n"));
-		/*the method implements the third extension*/		
+		System.out.println(System.getProperty("os.name"));
 	}
 
 	public void close() {

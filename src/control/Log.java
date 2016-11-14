@@ -8,11 +8,29 @@ import java.nio.charset.Charset;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.StandardOpenOption;
-
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import model.LogEntry;
+import model.LogEntryProperty;
 
 public class Log {
 	
+	static Path filePath;
+	static ObservableList<LogEntryProperty> logEntryObservableList;
+	
+	public Log(Path filePath) {
+		Log.filePath = filePath;
+		logEntryObservableList = FXCollections.observableArrayList();
+	}
+
+	public Log() {
+		
+	}
+
+	public static ObservableList<LogEntryProperty> getLogEntryObservableList() {
+		return logEntryObservableList;
+	}
+
 	String header = "# legend:\n"
 			+ "# timestamp\n"
 			+ "# url\n"
@@ -20,7 +38,7 @@ public class Log {
 			+ "# user_agent proxy\n"
 			+ "\n";
 	
-	public void openOrCreateLogFile(Path filePath){
+	public void openOrCreateLogFile(){
 		File logFile = new File(filePath.toString());
 		try {
 			if(logFile.createNewFile()){
@@ -38,10 +56,14 @@ public class Log {
 		}
 	}
 	
-	public void writeLogFile(Path file, LogEntry logEntry){
+	public void writeLogFile(LogEntry logEntry){
+		
+		logEntryObservableList.add(new LogEntryProperty(logEntry));
+		
 		Charset charset = Charset.forName("ISO-8859-1");
-		try (BufferedWriter writer = Files.newBufferedWriter(file, charset, StandardOpenOption.APPEND)) {
+		try (BufferedWriter writer = Files.newBufferedWriter(filePath, charset, StandardOpenOption.APPEND)) {
 				writer.write(logEntry.toString());
+				writer.newLine();
 				writer.newLine();
 			writer.close();
 		} catch (IOException x) {

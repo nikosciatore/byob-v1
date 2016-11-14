@@ -56,14 +56,29 @@
                <children>
                   <VBox minHeight="-Infinity" minWidth="-Infinity" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                      <children>
-                        <ImageView fitHeight="99.0" fitWidth="200.0" preserveRatio="true" VBox.vgrow="NEVER">
-                           <image>
-                              <Image url="@../../../../text3336.png" />
-                           </image>
-                           <VBox.margin>
-                              <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
-                           </VBox.margin>
-                        </ImageView>
+                        <HBox>
+                           <children>
+                              <ImageView fitHeight="99.0" fitWidth="200.0" preserveRatio="true" VBox.vgrow="NEVER">
+                                 <image>
+                                    <Image url="@../../../../text3336.png" />
+                                 </image>
+                                 <VBox.margin>
+                                    <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                                 </VBox.margin>
+                              </ImageView>
+                              <Pane prefHeight="-1.0" prefWidth="-1.0" HBox.hgrow="ALWAYS" />
+                              <Button fx:id="startBotButton1" mnemonicParsing="false" onAction="#startBot" text="START">
+                                 <HBox.margin>
+                                    <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                                 </HBox.margin>
+                              </Button>
+                              <Button fx:id="stopBotButton1" disable="true" mnemonicParsing="false" onAction="#stopBot" text="STOP">
+                                 <HBox.margin>
+                                    <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                                 </HBox.margin>
+                              </Button>
+                           </children>
+                        </HBox>
                         <TabPane tabClosingPolicy="UNAVAILABLE" VBox.vgrow="ALWAYS">
                            <tabs>
                               <Tab closable="false" text="Configuration">
@@ -87,13 +102,13 @@
                                                    <children>
                                                       <TableView fx:id="contactsTableView" editable="true" layoutX="-40.0" layoutY="-52.0" prefHeight="150.0" prefWidth="650.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                                                         <columns>
-                                                          <TableColumn fx:id="idTableCol" prefWidth="40.0" text="ID" />
-                                                          <TableColumn fx:id="urlTableCol" prefWidth="144.0" text="URL" />
-                                                            <TableColumn fx:id="periodTableCol" prefWidth="60.0" text="Period" />
-                                                            <TableColumn fx:id="maxContactTableCol" prefWidth="112.0" text="Max Contact" />
-                                                            <TableColumn fx:id="sleepModeTableCol" prefWidth="113.0" text="Sleep Mode" />
-                                                            <TableColumn fx:id="userAgentTableCol" prefWidth="107.0" text="User Agent" />
-                                                            <TableColumn fx:id="proxyTableCol" prefWidth="73.0" text="Proxy" />
+                                                          <TableColumn fx:id="contactIdTableCol" prefWidth="40.0" text="ID" />
+                                                          <TableColumn fx:id="contactUrlTableCol" prefWidth="144.0" text="URL" />
+                                                            <TableColumn fx:id="contactPeriodTableCol" prefWidth="60.0" text="Period" />
+                                                            <TableColumn fx:id="contactMaxContactTableCol" prefWidth="112.0" text="Max Contact" />
+                                                            <TableColumn fx:id="contactSleepModeTableCol" prefWidth="113.0" text="Sleep Mode" />
+                                                            <TableColumn fx:id="contactUserAgentTableCol" prefWidth="107.0" text="User Agent" />
+                                                            <TableColumn fx:id="contactProxyTableCol" prefWidth="73.0" text="Proxy" />
                                                         </columns>
                                                       </TableView>
                                                    </children>
@@ -196,22 +211,34 @@
                                  <content>
                                     <AnchorPane prefHeight="200.0" prefWidth="200.0">
                                        <children>
-                                          <TableView fx:id="contactsTableView1" editable="true" prefHeight="468.0" prefWidth="798.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                                          <TableView fx:id="logsTableView" editable="true" prefHeight="468.0" prefWidth="798.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                                              <columns>
-                                                <TableColumn fx:id="idTableCol1" prefWidth="40.0" text="ID" />
-                                                <TableColumn fx:id="idTableCol11" prefWidth="125.0" text="Timestamp" />
-                                                <TableColumn fx:id="urlTableCol1" minWidth="4.0" prefWidth="94.0" text="URL" />
-                                                <TableColumn fx:id="periodTableCol1" prefWidth="74.0" text="Period" />
-                                                <TableColumn fx:id="maxContactTableCol1" prefWidth="108.0" text="Max Contact" />
-                                                <TableColumn fx:id="sleepModeTableCol1" prefWidth="117.0" text="Sleep Mode" />
-                                                <TableColumn fx:id="userAgentTableCol1" prefWidth="129.0" text="User Agent" />
-                                                <TableColumn fx:id="proxyTableCol1" prefWidth="110.0" text="Proxy" />
+                                                <TableColumn fx:id="logIdTableCol" prefWidth="40.0" text="ID" />
+                                                <TableColumn fx:id="logTimestampTableCol" prefWidth="125.0" text="Timestamp" />
+                                                <TableColumn fx:id="logUrlTableCol" minWidth="4.0" prefWidth="94.0" text="URL" />
+                                                <TableColumn fx:id="logPeriodTableCol" prefWidth="74.0" text="Period" />
+                                                <TableColumn fx:id="logMaxContactTableCol" prefWidth="108.0" text="Max Contact" />
+                                                <TableColumn fx:id="logSleepModeTableCol" prefWidth="117.0" text="Sleep Mode" />
+                                                <TableColumn fx:id="logUserAgentTableCol" prefWidth="129.0" text="User Agent" />
+                                                <TableColumn fx:id="logProxyTableCol" prefWidth="110.0" text="Proxy" />
                                              </columns>
                                           </TableView>
                                        </children>
                                     </AnchorPane>
                                  </content></Tab>
-                              <Tab closable="false" text="System Info" />
+                              <Tab closable="false" text="System Info">
+                                 <content>
+                                    <AnchorPane>
+                                       <children>
+                                          <TableView fx:id="systemInfoTableView" prefHeight="478.0" prefWidth="798.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                                            <columns>
+                                              <TableColumn fx:id="propertyTableCol" prefWidth="234.0" text="Property" />
+                                              <TableColumn fx:id="valueTableCol" minWidth="8.0" prefWidth="563.0" text="Value" />
+                                            </columns>
+                                          </TableView>
+                                       </children>
+                                    </AnchorPane>
+                                 </content></Tab>
                            </tabs>
                            <VBox.margin>
                               <Insets />
