@@ -1,7 +1,5 @@
 package control;
 
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Timer;
 import java.util.TimerTask;
@@ -60,15 +58,13 @@ public class ContactThread extends TimerTask{
 	}
 
 	private void httpGET() {
-        /*TODO log httpget*/
-		DateFormat dateFormat = new SimpleDateFormat("HH:mm:ss");
+//		DateFormat dateFormat = new SimpleDateFormat("HH:mm:ss");
 		Date date = new Date();
 		
 		logEntry = new LogEntry(urlEntry, date);
 		log.writeLogFile(logEntry);
 		
-		System.out.println(urlEntry.getID() + " " + dateFormat.format(date) + " " + urlEntry.getURL());
-
+		
 
 	}
 

@@ -17,6 +17,8 @@ import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
 import model.AppMode;
 import model.LogEntryProperty;
+import model.ProgramLogEntryProperty;
+import model.SystemInfo;
 import model.SystemInfoEntryProperty;
 import model.URLEntry;
 import model.URLEntryProperty;
@@ -38,7 +40,11 @@ public class UserInterfaceController implements Initializable{
 	@FXML private TableColumn<LogEntryProperty, Integer> logMaxContactTableCol;
 
 	@FXML private TableView<SystemInfoEntryProperty> systemInfoTableView;
-	@FXML private TableColumn<SystemInfoEntryProperty, String> propertyTableCol, valueTableCol;
+	@FXML private TableColumn<SystemInfoEntryProperty, String> systemInfoPropertyTableCol, systemInfoValueTableCol;
+	
+	@FXML private TableView<ProgramLogEntryProperty> programLogTableView;
+	@FXML private TableColumn<ProgramLogEntryProperty, String> programLogTypeTableCol, programLogTimestampTableCol, programLogMessageTableCol;
+
 	
 	@FXML private TextField urlTextField, periodTextField, maxContactTextField, 
 							sleepModeTextField, userAgentTextField, proxyTextField;
@@ -53,6 +59,7 @@ public class UserInterfaceController implements Initializable{
 		appMode = AppMode.INIT;
 		contactsTableViewInit();
 		logTableViewInit();
+		programLogTableViewInit();
 		systemInfoTableViewInit();
 		appMode = AppMode.IDLE;
 
@@ -104,13 +111,22 @@ public class UserInterfaceController implements Initializable{
 
 	private void systemInfoTableViewInit() {
 
-		propertyTableCol.setCellValueFactory(new PropertyValueFactory<SystemInfoEntryProperty, String>("property"));
-		valueTableCol.setCellValueFactory(new PropertyValueFactory<SystemInfoEntryProperty, String>("value"));
+		systemInfoPropertyTableCol.setCellValueFactory(new PropertyValueFactory<SystemInfoEntryProperty, String>("property"));
+		systemInfoValueTableCol.setCellValueFactory(new PropertyValueFactory<SystemInfoEntryProperty, String>("value"));
 				
-//		logsTableView.setItems(SystemInfo.getSystemInfoObservableList());
+		systemInfoTableView.setItems(SystemInfo.getSystemInfoEntryObservableList());
 
 	}
 
+	private void programLogTableViewInit() {
+
+		programLogTypeTableCol.setCellValueFactory(new PropertyValueFactory<ProgramLogEntryProperty, String>("type"));
+		programLogTimestampTableCol.setCellValueFactory(new PropertyValueFactory<ProgramLogEntryProperty, String>("timestamp"));
+		programLogMessageTableCol.setCellValueFactory(new PropertyValueFactory<ProgramLogEntryProperty, String>("message"));
+				
+		programLogTableView.setItems(ProgramLog.getProgramLogEntryObservableList());
+
+	}
 	
 	
 	

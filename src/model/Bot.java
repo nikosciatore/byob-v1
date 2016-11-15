@@ -4,6 +4,8 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Timer;
+
+import application.ProgramLog;
 import control.Config;
 import control.ContactThread;
 import control.Log;
@@ -13,10 +15,12 @@ public class Bot {
 	BotStatus status;
 	ArrayList<URLEntry> contactsList;
 	Timer timer;
-	SystemInfo systemInfo;
 	
 	Config config;
 	Log log;
+	ProgramLog programLog;
+	SystemInfo systemInfo;
+
 	ArrayList<ContactThread> contactThreadList;
 
 	Path prjDirPath, dataDirPath, configFilePath, logFilePath;		
@@ -53,7 +57,6 @@ public class Bot {
 	}
 
 	public void init() {
-		gatherInfo();
 		
 		prjDirPath = Paths.get(System.getProperty("user.dir"));
 		dataDirPath = prjDirPath.resolve("data");
@@ -62,15 +65,18 @@ public class Bot {
 
 		config = new Config();
 		log = new Log(logFilePath);
+		programLog = new ProgramLog();
+		systemInfo = new SystemInfo();
 		
 		contactsList = config.readFile(configFilePath);
 		
-		log.openOrCreateLogFile();	}
-
-
-
-	private void gatherInfo() {
-		System.out.println(System.getProperty("os.name"));
+		log.openOrCreateLogFile();
+		programLog.addInfo("Prova Info");
+		programLog.addWarning("Prova Warning");
+		programLog.addError("Prova Error");
+		
+		systemInfo.gatherInfo();
+		
 	}
 
 	public void close() {
