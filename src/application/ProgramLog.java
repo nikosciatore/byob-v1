@@ -8,9 +8,18 @@ import model.ProgramLogEntryProperty;
 
 public class ProgramLog {
 	
+    private static ProgramLog instance = null;
 	static ObservableList<ProgramLogEntryProperty> programLogEntryObservableList;
 
-	public ProgramLog() {
+    public static synchronized ProgramLog getProgramLog() {
+        if (instance == null) {
+            instance = new ProgramLog();
+        }
+        return instance;
+    }
+	
+
+	private ProgramLog() {
 		programLogEntryObservableList = FXCollections.observableArrayList();
 	}
 
@@ -29,10 +38,12 @@ public class ProgramLog {
 
 	public void addWarning(String message) {
 		add("WARNING", message);
+//		UserInterfaceController.setTab("control");
 	}
 	
 	public void addError(String message) {
 		add("ERROR", message);
+//		UserInterfaceController.setTab("control");
 	}
 
 }

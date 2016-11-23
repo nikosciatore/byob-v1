@@ -6,6 +6,8 @@ import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
+import application.ProgramLog;
+
 public class URLEntry {
 	protected Integer ID;
 	protected URL URL;
@@ -13,10 +15,11 @@ public class URLEntry {
 	protected Integer maxContactNumber;
 	protected SleepMode sleepMode;
 	protected String userAgent;
-	protected URL proxy;
+	protected String proxy;
+	protected ProgramLog programLog;
 
 	public URLEntry(Integer ID, URL URL, Range periodicRangeSec, Integer maxContactNumber, 
-					SleepMode sleepMode, String userAgent, URL proxy) {
+					SleepMode sleepMode, String userAgent, String proxy) {
 		this.ID = ID;
 		this.URL = URL;
 		this.period = periodicRangeSec;
@@ -24,6 +27,7 @@ public class URLEntry {
 		this.sleepMode = sleepMode;
 		this.userAgent = userAgent;
 		this.proxy = proxy;
+		programLog = ProgramLog.getProgramLog();
 	}
 	
 	public URLEntry() {
@@ -31,8 +35,9 @@ public class URLEntry {
 		period = null;
 		maxContactNumber = null;
 		sleepMode = null;
-		userAgent = null;
-		proxy = null;		
+		userAgent = "";
+		proxy = "";
+		programLog = ProgramLog.getProgramLog();
 	}
 	
 	public Integer getID() {
@@ -83,11 +88,11 @@ public class URLEntry {
 		this.userAgent = userAgent;
 	}
 
-	public URL getProxy() {
+	public String getProxy() {
 		return proxy;
 	}
 
-	public void setProxy(URL proxy) {
+	public void setProxy(String proxy) {
 		this.proxy = proxy;
 	}
 	
@@ -95,6 +100,7 @@ public class URLEntry {
 	public String toString() {
 
 		String url, period, maxcontact, sleepmode, useragent, proxy;
+		String urlPair, periodPair, maxcontactPair, sleepmodePair, useragentPair, proxyPair;
 
 		url = this.URL.toString();
 		period = this.period.toString();
@@ -103,12 +109,14 @@ public class URLEntry {
 		useragent = this.userAgent;
 		proxy = this.proxy.toString();
 
-	  return "--url " + url + 
-			 " --period " + period + 
-			 " --maxcontact " + maxcontact + 
-			 " --sleepmode " + sleepmode + 
-			 " --useragent " + useragent + 
-			 " --proxy " + proxy;
+		urlPair = (this.URL.toString().equals("")) ? "" : "--url " + url;
+		periodPair = (this.period.toString().equals("")) ? "" : " --period " + period;
+		maxcontactPair = (this.maxContactNumber.toString().equals("")) ? "" : " --maxcontact " + maxcontact;
+		sleepmodePair = (this.sleepMode.toString().equals("")) ? "" : " --sleepmode " + sleepmode;
+		useragentPair = (this.userAgent.toString().equals("")) ? "" : " --useragent " + useragent;
+		proxyPair = (this.proxy.toString().equals("")) ? "" : " --proxy " + proxy;
+		
+		return urlPair + periodPair + maxcontactPair + sleepmodePair + useragentPair + proxyPair;
 	}
 	
 	public String toStringForLog() {
@@ -186,17 +194,6 @@ public class URLEntry {
 		this.period = new Range(min, max);
 	}
 
-	public void setProxy(String proxyString) {
-		try {
-			this.proxy = new URL(proxyString);
-		} catch (MalformedURLException e) {
-			try {
-				this.proxy = new URL("http://www.example.com");
-			} catch (MalformedURLException e1) {
-				e1.printStackTrace();
-			}
-		}
-	}
 
 	public void setMaxContactNumber(String maxContactNumberString) {
 		try {

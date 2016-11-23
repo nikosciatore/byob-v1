@@ -57,7 +57,7 @@ public class Bot {
 	}
 
 	public void init() {
-		
+
 		prjDirPath = Paths.get(System.getProperty("user.dir"));
 		dataDirPath = prjDirPath.resolve("data");
 		configFilePath = dataDirPath.resolve("config.txt");
@@ -65,15 +65,13 @@ public class Bot {
 
 		config = new Config();
 		log = new Log(logFilePath);
-		programLog = new ProgramLog();
+		programLog = ProgramLog.getProgramLog();
 		systemInfo = new SystemInfo();
 		
 		contactsList = config.readFile(configFilePath);
 		
 		log.openOrCreateLogFile();
-		programLog.addInfo("Prova Info");
-		programLog.addWarning("Prova Warning");
-		programLog.addError("Prova Error");
+		programLog.addInfo("Program Started");
 		
 		systemInfo.gatherInfo();
 		

@@ -11,6 +11,9 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.scene.control.Button;
+import javafx.scene.control.Label;
+import javafx.scene.control.Tab;
+import javafx.scene.control.TabPane;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
@@ -25,6 +28,12 @@ import model.URLEntryProperty;
 
 public class UserInterfaceController implements Initializable{
 
+	@FXML private TabPane tabPane; /*TODO switch tab*/
+	
+	@FXML private Tab configurationTab, controlTab, logTab, systemInfoTab;
+	
+	@FXML private Label leftStatusLabel, rightStatusLabel; /*TODO update status label*/
+	
 	@FXML private Button newContactButton, editContactButton, deleteContactButton, cancelButton, saveContactButton,
 						 startBotButton, stopBotButton, startBotButton1, stopBotButton1, pauseResumeBotButton;
 	@FXML private TableView<URLEntryProperty> contactsTableView;	
@@ -297,8 +306,7 @@ public class UserInterfaceController implements Initializable{
 	
 	private boolean isTextFieldsEmpty() {
 		if(urlTextField.getText().equals("") || periodTextField.getText().equals("") || 
-		   maxContactTextField.getText().equals("") || sleepModeTextField.getText().equals("")
-		   || userAgentTextField.getText().equals("") || proxyTextField.getText().equals("")){
+		   maxContactTextField.getText().equals("") || sleepModeTextField.getText().equals("")){
 			return true;
 		}else{
 			return false;
@@ -346,6 +354,26 @@ public class UserInterfaceController implements Initializable{
 		userAgentTextField.setEditable(mode);
 		proxyTextField.setEditable(mode);
 		
+	}
+
+	public void setTab(String tabName) {
+		switch (tabName) {
+		case "configuration":
+			tabPane.getSelectionModel().select(configurationTab);			
+			break;
+		case "control":
+			tabPane.getSelectionModel().select(controlTab);			
+			break;
+		case "log":
+			tabPane.getSelectionModel().select(logTab);			
+			break;
+		case "systemInfo":
+			tabPane.getSelectionModel().select(systemInfoTab);			
+			break;
+
+		default:
+			break;
+		}
 	}
 
 	

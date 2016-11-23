@@ -1,12 +1,12 @@
 package model;
 
-import javafx.beans.property.SimpleIntegerProperty;
 import javafx.beans.property.SimpleStringProperty;
+
 public class URLEntryProperty {
 	private final SimpleStringProperty ID;
 	private final SimpleStringProperty URL;
 	private final SimpleStringProperty period;
-	private final SimpleIntegerProperty maxContactNumber;
+	private final SimpleStringProperty maxContactNumber;
 	private final SimpleStringProperty sleepMode;
 	private final SimpleStringProperty userAgent;
 	private final SimpleStringProperty proxy;
@@ -25,7 +25,7 @@ public class URLEntryProperty {
 		this.ID = new SimpleStringProperty(urlEntry.getID().toString());
 		this.URL = new SimpleStringProperty(urlEntry.getURL().toString());
 		this.period = new SimpleStringProperty(urlEntry.getPeriodicRangeSec().toString());
-		this.maxContactNumber = new SimpleIntegerProperty(urlEntry.getMaxContactNumber());
+		this.maxContactNumber = new SimpleStringProperty(urlEntry.getMaxContactNumber().toString());
 		this.sleepMode = new SimpleStringProperty(urlEntry.getSleepMode().toString());
 		this.userAgent = new SimpleStringProperty(urlEntry.getUserAgent());
 		this.proxy = new SimpleStringProperty(urlEntry.getProxy().toString());
@@ -49,10 +49,10 @@ public class URLEntryProperty {
 	public void setPeriod(String periodicRangeSec) {
 		this.period.set(periodicRangeSec);
 	}
-	public Integer getMaxContactNumber() {
+	public String getMaxContactNumber() {
 		return maxContactNumber.get();
 	}
-	public void setMaxContactNumber(Integer maxContactNumber) {
+	public void setMaxContactNumber(String maxContactNumber) {
 		this.maxContactNumber.set(maxContactNumber);
 	}
 	public String getSleepMode() {

@@ -40,6 +40,7 @@ public class Config {
 		returnValue.setID(readedEntry + 1);
 		
 		for (int i = 0; i < entries.size(); i=i+2) {			
+
 			switch (entries.get(i)) {
 			case "--url":
 				returnValue.setURL(entries.get(i+1));

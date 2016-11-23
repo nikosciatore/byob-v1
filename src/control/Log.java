@@ -56,9 +56,9 @@ public class Log {
 		}
 	}
 	
-	public void writeLogFile(LogEntry logEntry){
+	public void writeLogFile(LogEntry logEntry, Integer contactNumber){
 		
-		logEntryObservableList.add(new LogEntryProperty(logEntry));
+		logEntryObservableList.add(new LogEntryProperty(logEntry, contactNumber));
 		
 		Charset charset = Charset.forName("ISO-8859-1");
 		try (BufferedWriter writer = Files.newBufferedWriter(filePath, charset, StandardOpenOption.APPEND)) {
