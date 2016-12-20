@@ -1,17 +1,22 @@
 package model;
 
+import java.net.NetworkInterface;
+import java.net.SocketException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.Enumeration;
 import java.util.Timer;
-
+import application.Main;
 import application.ProgramLog;
 import control.Config;
 import control.ContactThread;
 import control.Log;
 
 public class Bot {
-	Integer id;
+	String id;
 	BotStatus status;
 	ArrayList<URLEntry> contactsList;
 	Timer timer;
@@ -23,24 +28,51 @@ public class Bot {
 
 	ArrayList<ContactThread> contactThreadList;
 
-	Path prjDirPath, dataDirPath, configFilePath, logFilePath;		
+	Path prjDirPath, dataDirPath, configFilePath, logFilePath, sysInfoFilePath;		
 
-	
 	public Bot() {
 		id = generateID();
 		status = BotStatus.IDLE;
 		contactsList = new ArrayList<URLEntry>();
 	}
 	
-	private Integer generateID() {
-		Double returnValue = Math.random()*1000000000;
-		return  returnValue.intValue();
+	private String generateID() {
+		String macAdd = getMacAddress();
+        macAdd = macAdd.replace("-", "");
+        char[] macAddChars = macAdd.toCharArray();
+        Arrays.sort(macAddChars);        
+        String macAddSorted = new String(macAddChars);
+		return  macAddSorted;
 	}
 
-	public Integer getId() {
+	private String getMacAddress() {
+		String returnValue = null;
+		try {
+			Enumeration<NetworkInterface> networkInterfaces = NetworkInterface.getNetworkInterfaces();
+
+			for (NetworkInterface networkInterface : Collections.list(networkInterfaces)){
+		
+				byte[] mac = networkInterface.getHardwareAddress();
+
+				StringBuilder sb = new StringBuilder();
+				for (int j = 0; j < mac.length; j++) {
+					sb.append(String.format("%02X%s", mac[j], (j < mac.length - 1) ? "-" : ""));
+				}
+				returnValue = sb.toString();
+				
+				break;
+			}
+				
+		} catch (SocketException e) {
+			e.printStackTrace();
+		}
+				return returnValue;
+	}
+
+	public String getId() {
 		return id;
 	}
-	public void setId(Integer id) {
+	public void setId(String id) {
 		this.id = id;
 	}
 	public BotStatus getStatus() {
@@ -62,18 +94,21 @@ public class Bot {
 		dataDirPath = prjDirPath.resolve("data");
 		configFilePath = dataDirPath.resolve("config.txt");
 		logFilePath = dataDirPath.resolve("log.txt");
+		sysInfoFilePath = dataDirPath.resolve("sysinfo.txt");
 
 		config = new Config();
 		log = new Log(logFilePath);
 		programLog = ProgramLog.getProgramLog();
-		systemInfo = new SystemInfo();
+		systemInfo = new SystemInfo(sysInfoFilePath);
 		
 		contactsList = config.readFile(configFilePath);
 		
 		log.openOrCreateLogFile();
 		programLog.addInfo("Program Started");
 		
-		systemInfo.gatherInfo();
+
+		systemInfo.openOrCreateSystemInfoFile();;
+		systemInfo.writeSystemInfoFile(id);
 		
 	}
 
@@ -92,6 +127,9 @@ public class Bot {
 	}
 
 	public void start() {
+		
+		Main.uiController.setTab("log");
+		
 		contactThreadList = new ArrayList<ContactThread>();
 		timer = new Timer();
 		

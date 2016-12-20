@@ -1,20 +1,6 @@
-ProgramLog: la classe è stata resa un singleton, in questo modo il log di programma è accessibile 
-da ogni parte del programma semplicemente instanziando un oggetto di tipo ProgramLog
-
-UserInterfaceVController: - nella funzione isTextFieldsEmpty è stata tolta la verifica dai campi user agent e proxy 
-che quindi possono essere lasciati vuoti
-						  - creato metodo "setTab" per cambiare il tab programmaticamente	
-
-URLEntry: cambiato proxy da URL a String
-
-ContactThread: implementato metodo httpGet che effettua una richiesta http all'URL indicato, 
-utilizzando, se indicato nel file di configurazione, il proxy. Se si verifica un errore 
-durante la richiesta viene mostrato un messaggio nel log di programma e l'invio di ulteriori 
-richieste viene interrotto
-
-Config: modificato metodo di scrittura, i campi non impostati non vengono scritti
-
-Log: aggiunta indicazione del numero della richiesta
-
+Main: aggiunta possibilità di chiamare metodi della classe UserInterfaceController per interagire con l'interfaccia grafica
+ProgramLog: i messaggi di log vengono mostrati nella barra di stato inferiore
+Bot: generazione id della bot tramite indirizzo MAC
+SystemInfo: informazionin sui browser per linux e windows
 proxy list
 - 12.41.141.10

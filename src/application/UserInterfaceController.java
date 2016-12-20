@@ -18,6 +18,7 @@ import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.paint.Color;
 import model.AppMode;
 import model.LogEntryProperty;
 import model.ProgramLogEntryProperty;
@@ -376,5 +377,13 @@ public class UserInterfaceController implements Initializable{
 		}
 	}
 
+	public void setLeftStatusLabelText(String text) {
+		leftStatusLabel.setText(text);
+	}
+
+	public void setRightStatusLabelText(String text, Color textColor) {
+		rightStatusLabel.setText(text);
+		rightStatusLabel.setTextFill(textColor);
+	}
 	
 }

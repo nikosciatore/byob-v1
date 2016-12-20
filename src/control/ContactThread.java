@@ -9,8 +9,8 @@ import java.net.UnknownHostException;
 import java.util.Date;
 import java.util.Timer;
 import java.util.TimerTask;
-
 import application.ProgramLog;
+import javafx.application.Platform;
 import model.LogEntry;
 import model.URLEntry;
 
@@ -63,6 +63,8 @@ public class ContactThread extends TimerTask{
                 maxContactNumber = urlEntry.getMaxContactNumber();
                 if(contactNumber <= maxContactNumber){
                     timer.schedule(new ContactThread(urlEntry, timer, contactNumber), periodTime * 1000);
+                }else{
+                	this.cancel();
                 }
         	}
             
@@ -70,6 +72,7 @@ public class ContactThread extends TimerTask{
 
         
 	}
+
 
 	/**
 	 * The method send the HTTP request 
@@ -113,7 +116,14 @@ public class ContactThread extends TimerTask{
 			log.writeLogFile(logEntry, contactNumber);
 
 		} catch (UnknownHostException e) {
-			programlog.addWarning("Unknow Host: " + e.getMessage() + " for ID=" + urlEntry.getID());
+			
+			Platform.runLater(new Runnable() {
+				@Override
+				public void run() {
+					programlog.addWarning("Unknow Host: " + e.getMessage() + " for ID=" + urlEntry.getID());
+				}
+			});
+			
 			returnValue = false;
 		} catch (Exception e) {
 			e.printStackTrace();
