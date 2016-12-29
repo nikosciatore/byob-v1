@@ -1,6 +1,8 @@
-package model;
+package model.gui;
 
 import javafx.beans.property.SimpleStringProperty;
+import model.LogEntry;
+import model.URLEntry;
 
 public class LogEntryProperty extends URLEntryProperty{
 	
@@ -10,13 +12,13 @@ public class LogEntryProperty extends URLEntryProperty{
 
 
 	public LogEntryProperty(LogEntry logEntry, Integer contactNumber) {
-		super(new URLEntry(logEntry.ID, 
-						   logEntry.URL, 
-						   logEntry.period, 
-						   logEntry.maxContactNumber, 
-						   logEntry.sleepMode, 
-						   logEntry.userAgent, 
-						   logEntry.proxy));
+		super(new URLEntry(logEntry.getID(), 
+						   logEntry.getURL(), 
+						   logEntry.getPeriod(), 
+						   logEntry.getMaxContactNumber(), 
+						   logEntry.getSleepMode(), 
+						   logEntry.getUserAgent(), 
+						   logEntry.getProxy()));
 		
 		this.contactNumber = new SimpleStringProperty(contactNumber.toString());
 		this.timestamp = new SimpleStringProperty(logEntry.getTimestamp().toString());

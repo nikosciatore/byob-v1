@@ -1,11 +1,11 @@
-package application;
+package control.server;
 
 import java.util.Date;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.scene.paint.Color;
 import model.ProgramLogEntry;
-import model.ProgramLogEntryProperty;
+import model.gui.ProgramLogEntryProperty;
 
 public class ProgramLog {
 	
@@ -48,7 +48,7 @@ public class ProgramLog {
 		programLogEntryObservableList.add(new ProgramLogEntryProperty(new ProgramLogEntry(date.toString(),type,message)));
 		
 		try {
-			Main.uiController.setRightStatusLabelText(type + ": " + message, color);
+//			Main.uiController.setRightStatusLabelText(type + ": " + message, color);
 		} catch (NullPointerException e) {
 		}
 	}

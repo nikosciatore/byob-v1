@@ -1,4 +1,4 @@
-package control;
+package control.client;
 
 
 import java.io.BufferedWriter;
@@ -11,7 +11,7 @@ import java.nio.file.StandardOpenOption;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import model.LogEntry;
-import model.LogEntryProperty;
+import model.gui.LogEntryProperty;
 
 public class Log {
 	

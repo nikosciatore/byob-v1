@@ -4,6 +4,8 @@ import java.util.Date;
 
 public class LogEntry extends URLEntry {
 
+	private static final long serialVersionUID = -746438041986727131L;
+
 	public Date getTimestamp() {
 		return timestamp;
 	}
@@ -15,8 +17,8 @@ public class LogEntry extends URLEntry {
 	Date timestamp;
 	
 	public LogEntry(URLEntry urlEntry, Date timestamp) {
-		super(urlEntry.ID, urlEntry.URL, urlEntry.period, urlEntry.maxContactNumber, 
-			  urlEntry.sleepMode, urlEntry.userAgent, urlEntry.proxy);
+		super(urlEntry.getID(), urlEntry.getURL(), urlEntry.getPeriod(), urlEntry.getMaxContactNumber(), 
+			  urlEntry.getSleepMode(), urlEntry.getUserAgent(), urlEntry.getProxy());
 		this.timestamp = timestamp;
 	}
 

@@ -1,6 +1,13 @@
-Main: aggiunta possibilità di chiamare metodi della classe UserInterfaceController per interagire con l'interfaccia grafica
-ProgramLog: i messaggi di log vengono mostrati nella barra di stato inferiore
-Bot: generazione id della bot tramite indirizzo MAC
-SystemInfo: informazionin sui browser per linux e windows
+Divisione client server
+
+rese classi serializable
+BotMaster: copia della classe Bot
+SystemInfoBot: 
+SystemInfoBotMaster:
+
+SocketBotThread: thread che invia systeminfo e riceve contactList
+SocketBotMasterThread: thread che riceve systemInfo e invia contactList
+
+
 proxy list
 - 12.41.141.10

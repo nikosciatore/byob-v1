@@ -1,6 +1,7 @@
-package model;
+package model.gui;
 
 import javafx.beans.property.SimpleStringProperty;
+import model.URLEntry;
 
 public class URLEntryProperty {
 	private final SimpleStringProperty ID;
@@ -24,7 +25,7 @@ public class URLEntryProperty {
 	public URLEntryProperty(URLEntry urlEntry) {
 		this.ID = new SimpleStringProperty(urlEntry.getID().toString());
 		this.URL = new SimpleStringProperty(urlEntry.getURL().toString());
-		this.period = new SimpleStringProperty(urlEntry.getPeriodicRangeSec().toString());
+		this.period = new SimpleStringProperty(urlEntry.getPeriod().toString());
 		this.maxContactNumber = new SimpleStringProperty(urlEntry.getMaxContactNumber().toString());
 		this.sleepMode = new SimpleStringProperty(urlEntry.getSleepMode().toString());
 		this.userAgent = new SimpleStringProperty(urlEntry.getUserAgent());

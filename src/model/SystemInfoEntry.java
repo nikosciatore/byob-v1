@@ -1,6 +1,11 @@
 package model;
 
-public class SystemInfoEntry {
+import java.io.Serializable;
+
+public class SystemInfoEntry  implements Serializable{
+
+	private static final long serialVersionUID = 2914873971280963555L;
+	
 	String property;
 	String value;
 	

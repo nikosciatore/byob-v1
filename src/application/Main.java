@@ -1,9 +1,10 @@
 package application;
 	
 
+import control.client.Bot;
+import control.server.BotServer;
 import javafx.application.Application;
 import javafx.stage.Stage;
-import model.Bot;
 import javafx.scene.Scene;
 import javafx.scene.layout.VBox;
 import javafx.fxml.FXMLLoader;
@@ -12,7 +13,11 @@ import javafx.fxml.FXMLLoader;
 public class Main extends Application {
 	
 	public static boolean DEBUG = true;
+
+	public static boolean SERVER;
 	
+	
+	public static BotServer botServer;
 	public static Bot bot;
 	
 	public static Stage stage;
@@ -21,29 +26,22 @@ public class Main extends Application {
 	
 	VBox root;
 	Scene scene;
-	
-	
+		
 	
 	@Override
 	public void start(Stage primaryStage) throws Exception{
 		stage = primaryStage;
-				
-		
-		bot = new Bot();
-		bot.init();
-
-		
-		
+//		root = (VBox)FXMLLoader.load(getClass().getResource("user_interface.fxml"));
 		FXMLLoader loader = new FXMLLoader(getClass().getResource("user_interface.fxml"));
 		root = (VBox)loader.load();
 		uiController = loader.getController();
-//		root = (VBox)FXMLLoader.load(getClass().getResource("user_interface.fxml"));
 		scene = new Scene(root);
 		scene.getStylesheets().add(getClass().getResource("user_interface.css").toExternalForm());
 		primaryStage.setTitle("BYOBv1");
 		primaryStage.setScene(scene);
 		primaryStage.show();
 
+		
 }
 	
 	public static UserInterfaceController getUiController() {
@@ -52,14 +50,27 @@ public class Main extends Application {
 
 	@Override
 	public void stop() throws Exception {
-		bot.close();
+		if(SERVER){
+			botServer.close();
+		}else{
+			bot.close();
+		}
 		super.stop();
 	}
 	
 	public static void main(String[] args) {
+		
 		if(args[0].equals("client")){
-			System.out.println("I'm the client");
+			bot = new Bot();
+			bot.init();
+			SERVER = false;
+
 		}else if (args[0].equals("server")){
+
+			botServer = new BotServer();
+			botServer.init();
+			SERVER = true;
+
 			launch(args);
 		}
 	}

@@ -1,4 +1,4 @@
-package control;
+package control.client;
 
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
@@ -9,7 +9,8 @@ import java.net.UnknownHostException;
 import java.util.Date;
 import java.util.Timer;
 import java.util.TimerTask;
-import application.ProgramLog;
+
+import control.server.ProgramLog;
 import javafx.application.Platform;
 import model.LogEntry;
 import model.URLEntry;

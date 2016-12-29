@@ -2,7 +2,10 @@ package application;
 
 import java.net.URL;
 import java.util.ResourceBundle;
-import control.Log;
+
+import control.client.Log;
+import control.server.ProgramLog;
+import control.server.SystemInfoBotServer;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.beans.value.ChangeListener;
@@ -20,12 +23,12 @@ import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.paint.Color;
 import model.AppMode;
-import model.LogEntryProperty;
-import model.ProgramLogEntryProperty;
-import model.SystemInfo;
-import model.SystemInfoEntryProperty;
 import model.URLEntry;
-import model.URLEntryProperty;
+import model.gui.BotIdEntryProperty;
+import model.gui.LogEntryProperty;
+import model.gui.ProgramLogEntryProperty;
+import model.gui.SystemInfoEntryProperty;
+import model.gui.URLEntryProperty;
 
 public class UserInterfaceController implements Initializable{
 
@@ -52,14 +55,20 @@ public class UserInterfaceController implements Initializable{
 	@FXML private TableView<SystemInfoEntryProperty> systemInfoTableView;
 	@FXML private TableColumn<SystemInfoEntryProperty, String> systemInfoPropertyTableCol, systemInfoValueTableCol;
 	
+	@FXML private TableView<BotIdEntryProperty> botIdTableView;
+	@FXML private TableColumn<BotIdEntryProperty, String> botIdTableCol;
+	
+	
 	@FXML private TableView<ProgramLogEntryProperty> programLogTableView;
 	@FXML private TableColumn<ProgramLogEntryProperty, String> programLogTypeTableCol, programLogTimestampTableCol, programLogMessageTableCol;
 
+	
 	
 	@FXML private TextField urlTextField, periodTextField, maxContactTextField, 
 							sleepModeTextField, userAgentTextField, proxyTextField;
 
 	ObservableList<URLEntryProperty> contactsObservableList;
+	ObservableList<SystemInfoEntryProperty> systemInfoObservableList;
 	
 	AppMode appMode;
 	
@@ -71,9 +80,12 @@ public class UserInterfaceController implements Initializable{
 		logTableViewInit();
 		programLogTableViewInit();
 		systemInfoTableViewInit();
+		botIdTableViewInit();
+		
 		appMode = AppMode.IDLE;
 
 	}
+
 
 	private void contactsTableViewInit() {
 
@@ -86,7 +98,7 @@ public class UserInterfaceController implements Initializable{
 		contactProxyTableCol.setCellValueFactory(new PropertyValueFactory<URLEntryProperty, String>("proxy"));
 		
 		contactsObservableList = FXCollections.observableArrayList();
-		contactsObservableList.addAll(Main.bot.getContactsListProperty());
+		contactsObservableList.addAll(Main.botServer.getContactsListProperty());
 		
 		contactsTableView.setItems(contactsObservableList);
 		
@@ -123,10 +135,22 @@ public class UserInterfaceController implements Initializable{
 
 		systemInfoPropertyTableCol.setCellValueFactory(new PropertyValueFactory<SystemInfoEntryProperty, String>("property"));
 		systemInfoValueTableCol.setCellValueFactory(new PropertyValueFactory<SystemInfoEntryProperty, String>("value"));
-				
-		systemInfoTableView.setItems(SystemInfo.getSystemInfoEntryObservableList());
 
+		systemInfoObservableList = FXCollections.observableArrayList();		
 	}
+
+	private void botIdTableViewInit() {
+		botIdTableCol.setCellValueFactory(new PropertyValueFactory<BotIdEntryProperty, String>("botId"));
+				
+		botIdTableView.setItems(SystemInfoBotServer.getBotIdEntryObservableList());		
+
+		botIdTableView.getSelectionModel().selectedItemProperty().addListener(new ChangeListener<BotIdEntryProperty>() {
+			@Override
+			public void changed(ObservableValue<? extends BotIdEntryProperty> observable, BotIdEntryProperty oldValue, BotIdEntryProperty newValue) {
+				fillSystemInfoTableView(botIdTableView.getSelectionModel().getSelectedIndex());
+			}
+		});
+}
 
 	private void programLogTableViewInit() {
 
@@ -158,7 +182,7 @@ public class UserInterfaceController implements Initializable{
 		try {
 			String idString = contactsTableView.getSelectionModel().getSelectedItem().getID();
 			Integer id = Integer.parseInt(idString);
-			Main.bot.removeContact(id);
+			Main.botServer.removeContact(id);
 			contactsTableView.getItems().remove(contactsTableView.getSelectionModel().getSelectedItem());
 			setUserInterface("deleteContact");
 		} catch (NullPointerException e) {
@@ -183,13 +207,13 @@ public class UserInterfaceController implements Initializable{
 			newUrlEntry.setProxy(proxyTextField.getText());
 			
 			if(appMode == AppMode.NEW){
-				newUrlEntry = Main.bot.addContact(newUrlEntry);
+				newUrlEntry = Main.botServer.addContact(newUrlEntry);
 				contactsTableView.getItems().add(new URLEntryProperty(newUrlEntry));
 			}else if(appMode == AppMode.EDIT){
 				String idString = contactsTableView.getSelectionModel().getSelectedItem().getID();
 				Integer id = Integer.parseInt(idString);
 				newUrlEntry.setID(id);
-				Main.bot.editContact(newUrlEntry);
+				Main.botServer.editContact(newUrlEntry);
 
 				int i;
 				for (i = 0; i < contactsTableView.getItems().size(); i++) {
@@ -206,21 +230,21 @@ public class UserInterfaceController implements Initializable{
 	}
 	
 	@FXML protected void startBot(ActionEvent event){
-		Main.bot.start();
+		Main.botServer.start();
 		setUserInterface("startBot");
 	}
 
 	@FXML protected void stopBot(ActionEvent event){
-		Main.bot.stop();	
+		Main.botServer.stop();	
 		setUserInterface("stopBot");
 	}
 
 	@FXML protected void pauseResumeBot(ActionEvent event){
 		if(pauseResumeBotButton.getText().equals("PAUSE")){
-			Main.bot.pause();
+			Main.botServer.pause();
 			setUserInterface("pauseBot");
 		}else if(pauseResumeBotButton.getText().equals("RESUME")){
-			Main.bot.resume();
+			Main.botServer.resume();
 			setUserInterface("resumeBot");
 		}
 	}
@@ -314,6 +338,13 @@ public class UserInterfaceController implements Initializable{
 		}
 	}
 
+	private void fillSystemInfoTableView(int selectedIndex) {
+		systemInfoObservableList.clear();
+		systemInfoObservableList.addAll(Main.botServer.getSystemInfoProperty(selectedIndex));
+		systemInfoTableView.setItems(systemInfoObservableList);
+
+	}
+	
 	private void fillTextFields(URLEntryProperty urlEntryProperty) {
 		if(!(urlEntryProperty==null)){
 			urlTextField.setText(urlEntryProperty.getURL().toString());

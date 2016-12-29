@@ -1,6 +1,7 @@
-package model;
+package model.gui;
 
 import javafx.beans.property.SimpleStringProperty;
+import model.ProgramLogEntry;
 
 public class ProgramLogEntryProperty {
 	private final SimpleStringProperty type;

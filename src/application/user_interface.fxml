@@ -252,7 +252,7 @@
                                              <children>
                                                 <TableView fx:id="botIdTableView" prefHeight="200.0" prefWidth="250.0" HBox.hgrow="NEVER">
                                                   <columns>
-                                                    <TableColumn minWidth="-1.0" prefWidth="130.0" text="C1" />
+                                                    <TableColumn fx:id="botIdTableCol" minWidth="-1.0" prefWidth="130.0" text="Bot ID" />
                                                   </columns>
                                                 </TableView>
                                                 <TableView fx:id="systemInfoTableView" prefHeight="478.0" prefWidth="798.0" HBox.hgrow="ALWAYS">

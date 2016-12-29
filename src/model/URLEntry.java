@@ -1,22 +1,25 @@
 package model;
 
+import java.io.Serializable;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
-import application.ProgramLog;
+public class URLEntry  implements Serializable{
 
-public class URLEntry {
-	protected Integer ID;
-	protected URL URL;
-	protected Range period;
-	protected Integer maxContactNumber;
-	protected SleepMode sleepMode;
-	protected String userAgent;
-	protected String proxy;
-	protected ProgramLog programLog;
+	private static final long serialVersionUID = -7758601941231295030L;
+
+	private Integer ID;
+	private URL URL;
+	private Range period;
+	private Integer maxContactNumber;
+	private SleepMode sleepMode;
+	private String userAgent;
+	private String proxy;
+
+
 
 	public URLEntry(Integer ID, URL URL, Range periodicRangeSec, Integer maxContactNumber, 
 					SleepMode sleepMode, String userAgent, String proxy) {
@@ -27,7 +30,6 @@ public class URLEntry {
 		this.sleepMode = sleepMode;
 		this.userAgent = userAgent;
 		this.proxy = proxy;
-		programLog = ProgramLog.getProgramLog();
 	}
 	
 	public URLEntry() {
@@ -37,7 +39,6 @@ public class URLEntry {
 		sleepMode = null;
 		userAgent = "";
 		proxy = "";
-		programLog = ProgramLog.getProgramLog();
 	}
 	
 	public Integer getID() {
@@ -56,10 +57,10 @@ public class URLEntry {
 		this.URL = URL;
 	}
 
-	public Range getPeriodicRangeSec() {
+	public Range getPeriod() {
 		return period;
 	}
-
+	
 	public void setPeriod(Range periodicRangeSec) {
 		this.period = periodicRangeSec;
 	}

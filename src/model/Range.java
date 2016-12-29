@@ -1,6 +1,11 @@
 package model;
 
-public class Range {
+import java.io.Serializable;
+
+public class Range implements Serializable{
+
+	private static final long serialVersionUID = -3316167233071658484L;
+
 	private Integer min;
 	public Integer getMin() {
 		return min;

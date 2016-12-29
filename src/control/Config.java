@@ -5,6 +5,7 @@ import java.io.BufferedWriter;
 import java.io.IOException;
 import java.nio.charset.Charset;
 import java.nio.file.Files;
+import java.nio.file.NoSuchFileException;
 import java.nio.file.Path;
 import java.util.ArrayList;
 import model.URLEntry;
@@ -26,9 +27,11 @@ public class Config {
 		    	returnValue.add(tempEntry);
 		    }
 		    reader.close();
+		} catch (NoSuchFileException e) {
+			return null;
 		} catch (IOException x) {
 		    System.err.format("IOException: %s%n", x);
-		}
+		} 
 		
 		return returnValue;
 	}

@@ -3,6 +3,7 @@ package control;
 import java.util.ArrayList;
 
 public class Utility {
+
 	public static ArrayList<String> splitInArrayList(String string) {
 		ArrayList<String> returnValue = new ArrayList<String>();
 		String [] strings;
@@ -12,6 +13,17 @@ public class Utility {
 		}
 		return returnValue;
 	}
+
+	public static ArrayList<String> splitInArrayList(String string, String separator) {
+		ArrayList<String> returnValue = new ArrayList<String>();
+		String [] strings;
+		strings = string.split(separator);
+		for (int i = 0; i < strings.length; i++) {
+			returnValue.add(strings[i]);
+		}
+		return returnValue;
+	}
+
 	
 	public static void printArrayListOfString(ArrayList<String> list, String name){
 		int i;

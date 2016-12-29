@@ -1,6 +1,11 @@
 package model;
 
-public class SleepMode {
+import java.io.Serializable;
+
+public class SleepMode implements Serializable{
+
+	private static final long serialVersionUID = -3825436293961506586L;
+	
 	String month;
 	String day;
 	String hour;

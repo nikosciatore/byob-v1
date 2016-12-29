@@ -1,4 +1,4 @@
-package model;
+package control.server;
 
 import java.net.NetworkInterface;
 import java.net.SocketException;
@@ -8,30 +8,35 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.Enumeration;
-import java.util.Timer;
-import application.Main;
-import application.ProgramLog;
 import control.Config;
-import control.ContactThread;
-import control.Log;
+import control.client.ContactThread;
+import control.client.Log;
+import model.BotStatus;
+import model.SystemInfo;
+import model.SystemInfoEntry;
+import model.URLEntry;
+import model.gui.SystemInfoEntryProperty;
+import model.gui.URLEntryProperty;
 
-public class Bot {
-	String id;
+
+
+public class BotServer {
+	String botServerId;
 	BotStatus status;
 	ArrayList<URLEntry> contactsList;
-	Timer timer;
-	
+	SocketBotServerThread socketBotServerThread;
 	Config config;
 	Log log;
 	ProgramLog programLog;
-	SystemInfo systemInfo;
+	
+	SystemInfoBotServer systemInfoBotServer;
 
 	ArrayList<ContactThread> contactThreadList;
 
-	Path prjDirPath, dataDirPath, configFilePath, logFilePath, sysInfoFilePath;		
+	Path prjDirPath, dataDirPath, configFilePath, logFilePath, sysInfoFilePath, botServerDirPath;		
 
-	public Bot() {
-		id = generateID();
+	public BotServer() {
+		botServerId = generateID();
 		status = BotStatus.IDLE;
 		contactsList = new ArrayList<URLEntry>();
 	}
@@ -69,11 +74,11 @@ public class Bot {
 				return returnValue;
 	}
 
-	public String getId() {
-		return id;
+	public String getBotServerId() {
+		return botServerId;
 	}
-	public void setId(String id) {
-		this.id = id;
+	public void setBotServerId(String id) {
+		this.botServerId = id;
 	}
 	public BotStatus getStatus() {
 		return status;
@@ -92,14 +97,15 @@ public class Bot {
 
 		prjDirPath = Paths.get(System.getProperty("user.dir"));
 		dataDirPath = prjDirPath.resolve("data");
-		configFilePath = dataDirPath.resolve("config.txt");
-		logFilePath = dataDirPath.resolve("log.txt");
-		sysInfoFilePath = dataDirPath.resolve("sysinfo.txt");
+		botServerDirPath = dataDirPath.resolve("botmaster");
+		configFilePath = botServerDirPath.resolve("config.txt");
+		logFilePath = botServerDirPath.resolve("log.txt");
+		sysInfoFilePath = botServerDirPath.resolve("sysinfo.txt");
 
 		config = new Config();
 		log = new Log(logFilePath);
 		programLog = ProgramLog.getProgramLog();
-		systemInfo = new SystemInfo(sysInfoFilePath);
+		systemInfoBotServer = new SystemInfoBotServer(sysInfoFilePath);
 		
 		contactsList = config.readFile(configFilePath);
 		
@@ -107,44 +113,35 @@ public class Bot {
 		programLog.addInfo("Program Started");
 		
 
-		systemInfo.openOrCreateSystemInfoFile();;
-		systemInfo.writeSystemInfoFile(id);
+		systemInfoBotServer.openOrCreateSystemInfoFile();
+		systemInfoBotServer.readFile();
+		
+		
+		socketBotServerThread = new SocketBotServerThread();
+		Thread t = new Thread(socketBotServerThread);
+		t.start();
+		
+
+		
 		
 	}
 
 	public void close() {
 
-		try {
-			timer.cancel();	
-		} catch (NullPointerException e) {
-			
-		}
+		
+		systemInfoBotServer.writeFile();
 
-//		if(config.hasBeenModified(configFilePath, bot.getContactsList())){
-			config.writeFile(configFilePath, contactsList);
-//			System.out.println("config file written");
-//		}		
+		socketBotServerThread.interrupt();
+
+		config.writeFile(configFilePath, contactsList);
 	}
 
 	public void start() {
-		
-		Main.uiController.setTab("log");
-		
-		contactThreadList = new ArrayList<ContactThread>();
-		timer = new Timer();
-		
-		for (int i = 0; i < contactsList.size(); i++) {
-			ContactThread cThread = new ContactThread(contactsList.get(i), timer);
-			contactThreadList.add(cThread);
-			timer.schedule(cThread, 0);
-		}
+		/*TODO*/
 	}
 
 	public void stop() {
-		timer.cancel();
-		for (int i = 0; i < contactThreadList.size(); i++) {
-			contactThreadList.get(i).setContactNumber(0);
-		}
+		/*TODO 		/*il server invia il comando di start ai bot*/
 	}
 	
 	public void pause() {
@@ -154,6 +151,10 @@ public class Bot {
 	public void resume() {
 		/*TODO*/
 	}
+	
+	public ArrayList<URLEntry> getContactList(){
+		return this.contactsList;
+	};
 	
 	public ArrayList<URLEntryProperty> getContactsListProperty() {
 		ArrayList<URLEntryProperty> returnValue = new ArrayList<URLEntryProperty>();
@@ -191,5 +192,15 @@ public class Bot {
 			}
 		}
 		contactsList.set(i, newUrlEntry);
+	}
+
+	public void addSystemInfo(ArrayList<SystemInfoEntry> inSystemInfo) {
+		systemInfoBotServer.addSystemInfo(new SystemInfo(inSystemInfo));
+		
+	}
+
+	
+	public ArrayList<SystemInfoEntryProperty> getSystemInfoProperty(int selectedIndex) {
+		return systemInfoBotServer.getSystemInfoProperty(selectedIndex);
 	}
 }
