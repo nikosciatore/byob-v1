@@ -250,16 +250,22 @@
                                        <children>
                                           <HBox AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                                              <children>
-                                                <TableView fx:id="botIdTableView" prefHeight="200.0" prefWidth="250.0" HBox.hgrow="NEVER">
+                                                <TableView fx:id="botIdTableView" maxWidth="150.0" minWidth="150.0" prefHeight="200.0" prefWidth="150.0" HBox.hgrow="NEVER">
                                                   <columns>
-                                                    <TableColumn fx:id="botIdTableCol" minWidth="-1.0" prefWidth="130.0" text="Bot ID" />
+                                                    <TableColumn fx:id="botIdTableCol" maxWidth="150.0" minWidth="150.0" prefWidth="150.0" resizable="false" text="Bot ID" />
                                                   </columns>
+                                                   <HBox.margin>
+                                                      <Insets bottom="10.0" left="10.0" top="10.0" />
+                                                   </HBox.margin>
                                                 </TableView>
                                                 <TableView fx:id="systemInfoTableView" prefHeight="478.0" prefWidth="798.0" HBox.hgrow="ALWAYS">
                                                   <columns>
-                                                    <TableColumn fx:id="systemInfoPropertyTableCol" prefWidth="234.0" text="Property" />
-                                                    <TableColumn fx:id="systemInfoValueTableCol" minWidth="8.0" prefWidth="563.0" text="Value" />
+                                                    <TableColumn fx:id="systemInfoPropertyTableCol" maxWidth="300.0" prefWidth="200.0" text="Property" />
+                                                    <TableColumn fx:id="systemInfoValueTableCol" maxWidth="400.0" prefWidth="300.0" text="Value" />
                                                   </columns>
+                                                   <HBox.margin>
+                                                      <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+                                                   </HBox.margin>
                                                 </TableView>
                                              </children>
                                           </HBox>

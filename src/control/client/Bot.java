@@ -58,6 +58,10 @@ public class Bot {
 		
 				byte[] mac = networkInterface.getHardwareAddress();
 
+				if(mac==null){
+					continue;
+				}
+				
 				StringBuilder sb = new StringBuilder();
 				for (int j = 0; j < mac.length; j++) {
 					sb.append(String.format("%02X%s", mac[j], (j < mac.length - 1) ? "-" : ""));
@@ -111,11 +115,12 @@ public class Bot {
 		logFilePath = botDirPath.resolve("log.txt");
 		sysInfoFilePath = botDirPath.resolve("sysinfo.txt");
 
-		config = new Config();
+		config = new Config(configFilePath);
 		log = new Log(logFilePath);
 		programLog = ProgramLog.getProgramLog();
 		systemInfoBot = new SystemInfoBot(sysInfoFilePath);
 		
+		config.openOrCreateConfigFile();
 		contactsList = config.readFile(configFilePath);
 		
 		log.openOrCreateLogFile();
@@ -124,7 +129,7 @@ public class Bot {
 		systemInfoBot.overwriteSystemInfoFile();
 		systemInfoBot.writeSystemInfoFile(botId);
 
-		if(contactsList==null){
+		if(contactsList.size()==0){
 			socketBotThread = new SocketBotThread();
 			socketBotThread.start();
 			synchronized (socketBotThread) {

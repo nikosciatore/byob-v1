@@ -2,6 +2,7 @@ package control;
 
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
+import java.io.File;
 import java.io.IOException;
 import java.nio.charset.Charset;
 import java.nio.file.Files;
@@ -11,6 +12,11 @@ import java.util.ArrayList;
 import model.URLEntry;
 
 public class Config {
+	static Path filePath;
+
+	public Config(Path filePath) {
+		Config.filePath = filePath;
+	}
 	
 	public ArrayList<URLEntry> readFile(Path file){
 		ArrayList<URLEntry> returnValue = new ArrayList<>();
@@ -35,6 +41,24 @@ public class Config {
 		
 		return returnValue;
 	}
+	
+	public void openOrCreateConfigFile(){
+		File logFile = new File(filePath.toString());
+		try {
+			if(logFile.createNewFile()){
+				Charset charset = Charset.forName("ISO-8859-1");
+				try (BufferedWriter writer = Files.newBufferedWriter(filePath, charset)) {
+					writer.close();
+				} catch (IOException x) {
+				    System.err.format("IOException: %s%n", x);
+				}
+
+			}
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
+
 	
 	private URLEntry parseEntry(String line, int readedEntry) {
 		URLEntry returnValue = new URLEntry();

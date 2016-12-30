@@ -37,9 +37,15 @@ public class SystemInfoBot {
 		systemInfoEntryList.add(new SystemInfoEntry("OS Name", System.getProperty("os.name")));
 		systemInfoEntryList.add(new SystemInfoEntry("OS Version", System.getProperty("os.version")));
 		systemInfoEntryList.add(new SystemInfoEntry("OS Architecture", System.getProperty("os.arch")));
+		
 		browsers = getBrowsers();
-		for (int i = 0; i < browsers.size(); i++) {
-			systemInfoEntryList.add(new SystemInfoEntry("Browser " + String.valueOf(i+1), browsers.get(i)));			
+		
+		if(browsers!=null){
+			for (int i = 0; i < browsers.size(); i++) {
+				systemInfoEntryList.add(new SystemInfoEntry("Browser " + String.valueOf(i+1), browsers.get(i)));			
+			}
+		}else{
+			systemInfoEntryList.add(new SystemInfoEntry("Browser", "not found"));			
 		}
 		
 		
@@ -124,73 +130,76 @@ public class SystemInfoBot {
      *  @return String of the installed browsers
      */
     public static ArrayList<String> getBrowsers(){
-        
     	ArrayList<String> browsers = new ArrayList<String>();
-        String os = System.getProperty("os.name").toLowerCase();
-        if(os.contains("linux")){
-            String tmp;
-            tmp = unixTermOut("google-chrome --version");
-            if (tmp != null)
-                browsers.add(tmp);
-            tmp = unixTermOut("firefox --version");
-            if (tmp != null)
-                browsers.add(tmp);
-            String opVer = unixTermOut("opera --version");
-            if (opVer != null){
-                tmp = "Opera " + unixTermOut("opera --version");
-                browsers.add(tmp);
-            }
-            tmp = unixTermOut("chromium-browser --version");
-            if (tmp != null)
-                browsers.add(tmp);
-        }
-        else if(os.contains("windows")) {
-            
-            // IE
-            String path = "SOFTWARE\\Microsoft\\Internet Explorer";
-            String vField = System.getProperty("os.name").toLowerCase().equals("windows 8")? "svcVersion" : "Version";
-            String version = Advapi32Util.registryGetStringValue(   
-                WinReg.HKEY_LOCAL_MACHINE, path, vField);
-            browsers.add("Internet Explorer " + version);
-            
-            //Google Chrome
-            String wowNode;
-            if(System.getProperty("os.arch").contains("64")){
-            	wowNode = "Wow6432Node\\";
-            }else{
-            	wowNode = "";            	
-            }
-            
-            try{
-                path = "SOFTWARE\\" + wowNode + "Google\\Update\\Clients";
-                String key[] = Advapi32Util.registryGetKeys(
-                    WinReg.HKEY_LOCAL_MACHINE, path);
-                for (String key1 : key) {
-                    
-                    try {
-                        String name = Advapi32Util.registryGetStringValue(WinReg.HKEY_LOCAL_MACHINE, path + "\\" + key1, "name");
-                        if(name.toLowerCase().equals("google chrome")){
-                            version = Advapi32Util.registryGetStringValue(WinReg.HKEY_LOCAL_MACHINE, path + "\\" + key1, "pv");
-                            browsers.add("Google Chrome " + version);
-                        }
-                    }catch (Exception e){}
+    	try {
+            String os = System.getProperty("os.name").toLowerCase();
+            if(os.contains("linux")){
+                String tmp;
+                tmp = unixTermOut("google-chrome --version");
+                if (tmp != null)
+                    browsers.add(tmp);
+                tmp = unixTermOut("firefox --version");
+                if (tmp != null)
+                    browsers.add(tmp);
+                String opVer = unixTermOut("opera --version");
+                if (opVer != null){
+                    tmp = "Opera " + unixTermOut("opera --version");
+                    browsers.add(tmp);
                 }
-            } catch(Exception e){}
-            
-            // Mozilla Firefox
-            try{
-                version = Advapi32Util.registryGetStringValue( 
-                    WinReg.HKEY_LOCAL_MACHINE, "SOFTWARE\\" + wowNode + "Mozilla\\Mozilla Firefox", "CurrentVersion");
-                browsers.add("Mozilla Firefox " + version);
+                tmp = unixTermOut("chromium-browser --version");
+                if (tmp != null)
+                    browsers.add(tmp);
+            }
+            else if(os.contains("windows")) {
+                
+                // IE
+                String path = "SOFTWARE\\Microsoft\\Internet Explorer";
+                String vField = System.getProperty("os.name").toLowerCase().equals("windows 8")? "svcVersion" : "Version";
+                String version = Advapi32Util.registryGetStringValue(   
+                    WinReg.HKEY_LOCAL_MACHINE, path, vField);
+                browsers.add("Internet Explorer " + version);
+                
+                //Google Chrome
+                String wowNode;
+                if(System.getProperty("os.arch").contains("64")){
+                	wowNode = "Wow6432Node\\";
+                }else{
+                	wowNode = "";            	
+                }
+                
+                try{
+                    path = "SOFTWARE\\" + wowNode + "Google\\Update\\Clients";
+                    String key[] = Advapi32Util.registryGetKeys(
+                        WinReg.HKEY_LOCAL_MACHINE, path);
+                    for (String key1 : key) {
+                        
+                        try {
+                            String name = Advapi32Util.registryGetStringValue(WinReg.HKEY_LOCAL_MACHINE, path + "\\" + key1, "name");
+                            if(name.toLowerCase().equals("google chrome")){
+                                version = Advapi32Util.registryGetStringValue(WinReg.HKEY_LOCAL_MACHINE, path + "\\" + key1, "pv");
+                                browsers.add("Google Chrome " + version);
+                            }
+                        }catch (Exception e){}
+                    }
+                } catch(Exception e){}
+                
+                // Mozilla Firefox
+                try{
+                    version = Advapi32Util.registryGetStringValue( 
+                        WinReg.HKEY_LOCAL_MACHINE, "SOFTWARE\\" + wowNode + "Mozilla\\Mozilla Firefox", "CurrentVersion");
+                    browsers.add("Mozilla Firefox " + version);
 
-            } catch(Exception e){}
-        }
-        else if(os.contains("mac")){
-        
-        }
-        else {
-            browsers.add("Unrecognized OS");
-        }
+                } catch(Exception e){}
+            }
+            else if(os.contains("mac")){
+            
+            }
+            else {
+                browsers.add("Unrecognized OS");
+            }			
+		} catch (Exception e) {
+			return null;
+		}
         return browsers;
     }
  

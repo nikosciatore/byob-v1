@@ -59,6 +59,10 @@ public class BotServer {
 		
 				byte[] mac = networkInterface.getHardwareAddress();
 
+				if(mac==null){
+					continue;
+				}
+
 				StringBuilder sb = new StringBuilder();
 				for (int j = 0; j < mac.length; j++) {
 					sb.append(String.format("%02X%s", mac[j], (j < mac.length - 1) ? "-" : ""));
@@ -102,7 +106,7 @@ public class BotServer {
 		logFilePath = botServerDirPath.resolve("log.txt");
 		sysInfoFilePath = botServerDirPath.resolve("sysinfo.txt");
 
-		config = new Config();
+		config = new Config(configFilePath);
 		log = new Log(logFilePath);
 		programLog = ProgramLog.getProgramLog();
 		systemInfoBotServer = new SystemInfoBotServer(sysInfoFilePath);
@@ -137,11 +141,11 @@ public class BotServer {
 	}
 
 	public void start() {
-		/*TODO*/
+		/*TODO 		/*il server invia il comando di start ai bot*/
 	}
 
 	public void stop() {
-		/*TODO 		/*il server invia il comando di start ai bot*/
+		/*TODO 		/*il server invia il comando di stop ai bot*/
 	}
 	
 	public void pause() {
