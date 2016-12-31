@@ -11,35 +11,50 @@ import java.nio.file.Path;
 import java.util.ArrayList;
 import model.URLEntry;
 
-public class Config {
+public class Config{
+
 	static Path filePath;
+	
+	ConfigHeader configHeader;
+	ArrayList<URLEntry> contactsList;
+
+
+	public ArrayList<URLEntry> getContactsList() {
+		return contactsList;
+	}
+
+	public void setContactsList(ArrayList<URLEntry> contactsList) {
+		this.contactsList = contactsList;
+	}
 
 	public Config(Path filePath) {
 		Config.filePath = filePath;
+		configHeader = new ConfigHeader();
+		contactsList = new ArrayList<URLEntry>();
+
 	}
 	
-	public ArrayList<URLEntry> readFile(Path file){
-		ArrayList<URLEntry> returnValue = new ArrayList<>();
+	public void readFile(){
 		URLEntry tempEntry;
 		
 		Charset charset = Charset.forName("ISO-8859-1");
-		try (BufferedReader reader = Files.newBufferedReader(file, charset)) {
+		try (BufferedReader reader = Files.newBufferedReader(filePath, charset)) {
 			String line = null;
 		    while ((line = reader.readLine()) != null) {
 		    	if(line.length()==0 || line.charAt(0)=='#'){
 		    		continue;
 		    	}
-		    	tempEntry = parseEntry(line, returnValue.size());
-		    	returnValue.add(tempEntry);
+		    	tempEntry = parseEntry(line, contactsList.size());
+		    	if(tempEntry!=null){
+		    		contactsList.add(tempEntry);
+		    	}
 		    }
 		    reader.close();
 		} catch (NoSuchFileException e) {
-			return null;
+			contactsList = null;
 		} catch (IOException x) {
 		    System.err.format("IOException: %s%n", x);
-		} 
-		
-		return returnValue;
+		}
 	}
 	
 	public void openOrCreateConfigFile(){
@@ -87,6 +102,10 @@ public class Config {
 			case "--proxy":
 				returnValue.setProxy(entries.get(i+1));
 				break;
+			case "--ttl":
+				configHeader.setTtl(entries.get(i+1));
+				returnValue = null;
+				break;
 			default:
 				//log: unknow field in configuration file
 				break;
@@ -95,27 +114,26 @@ public class Config {
 		return returnValue;
 	}
 
-	public void writeFile(Path file, ArrayList<URLEntry> configuration){
+	public ConfigHeader getConfigHeader() {
+		return configHeader;
+	}
+
+	public void setConfigHeader(ConfigHeader configHeader) {
+		this.configHeader = configHeader;
+	}
+
+	public void writeFile(){
 		Charset charset = Charset.forName("ISO-8859-1");
-		try (BufferedWriter writer = Files.newBufferedWriter(file, charset)) {
-			for (int i = 0; i < configuration.size(); i++) {
-				writer.write(configuration.get(i).toString());
+		try (BufferedWriter writer = Files.newBufferedWriter(filePath, charset)) {
+			writer.write(configHeader.toString());
+			writer.newLine();
+			for (int i = 0; i < contactsList.size(); i++) {
+				writer.write(contactsList.get(i).toString());
 				writer.newLine();
 			}
 			writer.close();
 		} catch (IOException x) {
 		    System.err.format("IOException: %s%n", x);
-		}
-	}
-
-	public boolean hasBeenModified(Path configFilePath, ArrayList<URLEntry> contactList) {
-		
-		ArrayList<URLEntry> configFile	= readFile(configFilePath);
-		
-		if(configFile.equals(contactList)){
-			return false;
-		}else{
-			return true;
 		}
 	}	
 }

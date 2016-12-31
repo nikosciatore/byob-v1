@@ -1,3 +1,4 @@
---url https://www.google.it --period 10-20 --maxcontact 100 --sleepmode 100000000000-1111110000000000000000000000000-111000000000000000000000 --useragent BYOBv1 --proxy https://www.google.it
---url https://www.google.it --period 10-20 --maxcontact 100 --sleepmode 100000000000-1111110000000000000000000000000-111000000000000000000000 --useragent BYOBv1 --proxy https://www.google.it
---url https://www.google.it --period 10-30 --maxcontact 100 --sleepmode 100000000000-1111110000000000000000000000000-111000000000000000000000 --useragent BYOBv1 --proxy https://www.google.it
+--ttl -1
+--url https://www.google.it --period 10-20 --maxcontact 3 --sleepmode 100000000000-1111110000000000000000000000000-111000000000000000000000 --useragent BYOBv1 --proxy https://www.google.it
+--url https://www.google.it --period 10-20 --maxcontact 3 --sleepmode 100000000000-1111110000000000000000000000000-111000000000000000000000 --useragent BYOBv1 --proxy https://www.google.it
+--url https://www.google.it --period 10-30 --maxcontact 3 --sleepmode 100000000000-1111110000000000000000000000000-111000000000000000000000 --useragent BYOBv1 --proxy https://www.google.it

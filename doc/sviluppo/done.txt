@@ -1,12 +1,12 @@
 TODO:
+systemInfo tab operation
 client in ascolto
---ttl nel file di configurazione
 
 DONE:
-getMacAddress: scorrere le interfacce fino al primo mac non null
-getBrowser: gestire il fallimento
-aggiungere libreria platform nel repository
-mancanza file config.txt
+reso getMacAddress un metodo della classe Utility
+--ttl nel file di configurazione
+portato contactList all'interno della classe Config
+SocketBotThread, SocketBotServerThread inviano config piuttosto che contactList
 
 proxy list
 - 12.41.141.10

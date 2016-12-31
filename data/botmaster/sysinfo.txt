@@ -1,11 +1,39 @@
-Id Bot: 044567ABCEEF1
+Id Bot: 044567ABCEEF
 OS Name: Linux
 OS Version: 4.4.0-53-generic
 OS Architecture: amd64
 Browser 1: Google Chrome 53.0.2785.143 
 Browser 2: Mozilla Firefox 50.0.2
 
-Id Bot: 044567ABCEEF2
+Id Bot: 044567ABCEEF
+OS Name: Linux
+OS Version: 4.4.0-53-generic
+OS Architecture: amd64
+Browser 1: Google Chrome 53.0.2785.143 
+Browser 2: Mozilla Firefox 50.0.2
+
+Id Bot: 044567ABCEEF
+OS Name: Linux
+OS Version: 4.4.0-53-generic
+OS Architecture: amd64
+Browser 1: Google Chrome 53.0.2785.143 
+Browser 2: Mozilla Firefox 50.0.2
+
+Id Bot: 044567ABCEEF
+OS Name: Linux
+OS Version: 4.4.0-53-generic
+OS Architecture: amd64
+Browser 1: Google Chrome 53.0.2785.143 
+Browser 2: Mozilla Firefox 50.0.2
+
+Id Bot: 044567ABCEEF
+OS Name: Linux
+OS Version: 4.4.0-53-generic
+OS Architecture: amd64
+Browser 1: Google Chrome 53.0.2785.143 
+Browser 2: Mozilla Firefox 50.0.2
+
+Id Bot: 044567ABCEEF
 OS Name: Linux
 OS Version: 4.4.0-53-generic
 OS Architecture: amd64

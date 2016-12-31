@@ -100,17 +100,34 @@
                                             <items>
                                               <AnchorPane>
                                                    <children>
-                                                      <TableView fx:id="contactsTableView" editable="true" layoutX="-40.0" layoutY="-52.0" prefHeight="150.0" prefWidth="650.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
-                                                        <columns>
-                                                          <TableColumn fx:id="contactIdTableCol" prefWidth="40.0" text="ID" />
-                                                          <TableColumn fx:id="contactUrlTableCol" prefWidth="144.0" text="URL" />
-                                                            <TableColumn fx:id="contactPeriodTableCol" prefWidth="60.0" text="Period" />
-                                                            <TableColumn fx:id="contactMaxContactTableCol" prefWidth="112.0" text="Max Contact" />
-                                                            <TableColumn fx:id="contactSleepModeTableCol" prefWidth="113.0" text="Sleep Mode" />
-                                                            <TableColumn fx:id="contactUserAgentTableCol" prefWidth="107.0" text="User Agent" />
-                                                            <TableColumn fx:id="contactProxyTableCol" prefWidth="73.0" text="Proxy" />
-                                                        </columns>
-                                                      </TableView>
+                                                      <VBox AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                                                         <children>
+                                                            <HBox spacing="10.0">
+                                                               <children>
+                                                                  <Label minWidth="-Infinity" text="Time To Live *" textAlignment="CENTER">
+                                                                     <padding>
+                                                                        <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                                                                     </padding>
+                                                                  </Label>
+                                                                  <TextField fx:id="ttlTextField" editable="false" layoutX="110.0" layoutY="13.0" onAction="#saveContact" prefHeight="25.0" prefWidth="518.0" promptText="# of times the configuration is valid (-1:forever)" HBox.hgrow="ALWAYS" />
+                                                               </children>
+                                                               <padding>
+                                                                  <Insets bottom="5.0" left="5.0" right="10.0" top="5.0" />
+                                                               </padding>
+                                                            </HBox>
+                                                            <TableView fx:id="contactsTableView" editable="true" layoutX="-40.0" layoutY="-52.0" prefHeight="150.0" prefWidth="650.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" VBox.vgrow="ALWAYS">
+                                                              <columns>
+                                                                <TableColumn fx:id="contactIdTableCol" prefWidth="40.0" text="ID" />
+                                                                <TableColumn fx:id="contactUrlTableCol" prefWidth="144.0" text="URL" />
+                                                                  <TableColumn fx:id="contactPeriodTableCol" prefWidth="60.0" text="Period" />
+                                                                  <TableColumn fx:id="contactMaxContactTableCol" prefWidth="112.0" text="Max Contact" />
+                                                                  <TableColumn fx:id="contactSleepModeTableCol" prefWidth="113.0" text="Sleep Mode" />
+                                                                  <TableColumn fx:id="contactUserAgentTableCol" prefWidth="107.0" text="User Agent" />
+                                                                  <TableColumn fx:id="contactProxyTableCol" prefWidth="73.0" text="Proxy" />
+                                                              </columns>
+                                                            </TableView>
+                                                         </children>
+                                                      </VBox>
                                                    </children>
                                                 </AnchorPane>
                                                 <AnchorPane>

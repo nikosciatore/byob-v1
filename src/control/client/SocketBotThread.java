@@ -6,6 +6,7 @@ import java.io.ObjectOutputStream;
 import java.net.Socket;
 import java.util.ArrayList;
 import application.Main;
+import control.ConfigHeader;
 import model.SystemInfoEntry;
 import model.URLEntry;
 
@@ -13,6 +14,7 @@ public class SocketBotThread extends Thread{
 
 	Socket clientSocket;
 	
+	ConfigHeader inConfigHeader;
 	ArrayList<URLEntry> inContactList;
 	ArrayList<SystemInfoEntry> outSystemInfo;
 	
@@ -39,10 +41,11 @@ public class SocketBotThread extends Thread{
 	            outSystemInfo = Main.bot.getSystemInfoEntryList();
 	            outToServer.writeObject(outSystemInfo);
 	
-	            inContactList = (ArrayList<URLEntry>) inFromServer.readObject();
+	            inConfigHeader = (ConfigHeader)inFromServer.readObject();
+	            inContactList = (ArrayList<URLEntry>)inFromServer.readObject();
 	            
-	            Main.bot.setContactsList(inContactList);
-	            
+	            Main.bot.getConfig().setConfigHeader(inConfigHeader);
+	            Main.bot.getConfig().setContactsList(inContactList);
 	            
 			} catch (IOException | ClassNotFoundException e) {
 				e.printStackTrace();

@@ -3,7 +3,7 @@ package control.server;
 import java.util.Date;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-import javafx.scene.paint.Color;
+//import javafx.scene.paint.Color;
 import model.ProgramLogEntry;
 import model.gui.ProgramLogEntryProperty;
 
@@ -29,20 +29,20 @@ public class ProgramLog {
 	}
 
 	public void add(String type, String message) {
-		Color color = Color.GRAY;
-		switch (type) {
-		case "INFO":
-			color = Color.LIGHTBLUE;
-			break;
-		case "WARNING":
-			color = Color.ORANGE;
-			break;
-		case "ERROR":
-			color = Color.RED;
-			break;
-		default:
-			break;
-		}
+//		Color color = Color.GRAY;
+//		switch (type) {
+//		case "INFO":
+//			color = Color.LIGHTBLUE;
+//			break;
+//		case "WARNING":
+//			color = Color.ORANGE;
+//			break;
+//		case "ERROR":
+//			color = Color.RED;
+//			break;
+//		default:
+//			break;
+//		}
 
 		Date date = new Date();
 		programLogEntryObservableList.add(new ProgramLogEntryProperty(new ProgramLogEntry(date.toString(),type,message)));

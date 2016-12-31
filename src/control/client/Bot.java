@@ -1,15 +1,12 @@
 package control.client;
 
-import java.net.NetworkInterface;
-import java.net.SocketException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collections;
-import java.util.Enumeration;
 import java.util.Timer;
 import control.Config;
+import control.Utility;
 import control.server.ProgramLog;
 import model.BotStatus;
 import model.SystemInfoEntry;
@@ -19,7 +16,6 @@ import model.gui.URLEntryProperty;
 public class Bot {
 	String botId;
 	BotStatus status;
-	ArrayList<URLEntry> contactsList;
 	Timer timer;
 	
 	Config config;
@@ -37,46 +33,19 @@ public class Bot {
 	public Bot() {
 		botId = generateID();
 		status = BotStatus.IDLE;
-		contactsList = new ArrayList<URLEntry>();
 	}
 	
 	private String generateID() {
-		String macAdd = getMacAddress();
+		String macAdd = Utility.getMacAddress();
         macAdd = macAdd.replace("-", "");
         char[] macAddChars = macAdd.toCharArray();
         Arrays.sort(macAddChars);        
         String macAddSorted = new String(macAddChars);
 		return  macAddSorted;
 	}
-
-	private String getMacAddress() {
-		String returnValue = null;
-		try {
-			Enumeration<NetworkInterface> networkInterfaces = NetworkInterface.getNetworkInterfaces();
-
-			for (NetworkInterface networkInterface : Collections.list(networkInterfaces)){
-		
-				byte[] mac = networkInterface.getHardwareAddress();
-
-				if(mac==null){
-					continue;
-				}
-				
-				StringBuilder sb = new StringBuilder();
-				for (int j = 0; j < mac.length; j++) {
-					sb.append(String.format("%02X%s", mac[j], (j < mac.length - 1) ? "-" : ""));
-				}
-				returnValue = sb.toString();
-				
-				break;
-			}
-				
-		} catch (SocketException e) {
-			e.printStackTrace();
-		}
-				return returnValue;
+	public Config getConfig() {
+		return config;
 	}
-
 	public String getId() {
 		return botId;
 	}
@@ -90,15 +59,15 @@ public class Bot {
 		this.status = status;
 	}
 	public ArrayList<URLEntry> getContactsList() {
-		return contactsList;
+		return config.getContactsList();
 	}
 	
 	/**
 	 * Set contact list and save configuration file
 	 * */
 	public void setContactsList(ArrayList<URLEntry> contactsList) {
-		this.contactsList = contactsList;
-		config.writeFile(configFilePath, contactsList);
+		config.setContactsList(contactsList);
+		config.writeFile();
 
 	}
 
@@ -121,15 +90,16 @@ public class Bot {
 		systemInfoBot = new SystemInfoBot(sysInfoFilePath);
 		
 		config.openOrCreateConfigFile();
-		contactsList = config.readFile(configFilePath);
+		config.readFile();
 		
+			
 		log.openOrCreateLogFile();
 		programLog.addInfo("Program Started");
 
 		systemInfoBot.overwriteSystemInfoFile();
 		systemInfoBot.writeSystemInfoFile(botId);
 
-		if(contactsList.size()==0){
+		if(config.getContactsList().size()==0 || config.getConfigHeader().getTtl().intValue() <= 0){
 			socketBotThread = new SocketBotThread();
 			socketBotThread.start();
 			synchronized (socketBotThread) {
@@ -141,6 +111,11 @@ public class Bot {
 			}
 		}
 		
+		if(config.getConfigHeader().decreaseTtl()){
+			config.writeFile();
+		}
+
+		
 		start();
 		
 		
@@ -148,7 +123,7 @@ public class Bot {
 	}
 /*TODO trovare il modo di chiamare questo metodo nel client*/
 	public void close() {
-		config.writeFile(configFilePath, contactsList);
+		config.writeFile();
 
 		try {
 			timer.cancel();	
@@ -162,8 +137,8 @@ public class Bot {
 		contactThreadList = new ArrayList<ContactThread>();
 		timer = new Timer();
 		
-		for (int i = 0; i < contactsList.size(); i++) {
-			ContactThread cThread = new ContactThread(contactsList.get(i), timer);
+		for (int i = 0; i < config.getContactsList().size(); i++) {
+			ContactThread cThread = new ContactThread(config.getContactsList().get(i), timer);
 			contactThreadList.add(cThread);
 			timer.schedule(cThread, 0);
 		}
@@ -187,8 +162,8 @@ public class Bot {
 	public ArrayList<URLEntryProperty> getContactsListProperty() {
 		ArrayList<URLEntryProperty> returnValue = new ArrayList<URLEntryProperty>();
 		
-		for (int i = 0; i < contactsList.size(); i++) {
-			returnValue.add(new URLEntryProperty(contactsList.get(i)));
+		for (int i = 0; i < config.getContactsList().size(); i++) {
+			returnValue.add(new URLEntryProperty(config.getContactsList().get(i)));
 		}
 
 		return returnValue;
@@ -196,29 +171,29 @@ public class Bot {
 
 	public URLEntry addContact(URLEntry newUrlEntry) {
 		int lastContactId = 0;
-		if(!contactsList.isEmpty()){
-			lastContactId = contactsList.get(contactsList.size()-1).getID();
+		if(!config.getContactsList().isEmpty()){
+			lastContactId = config.getContactsList().get(config.getContactsList().size()-1).getID();
 		}
 		newUrlEntry.setID(lastContactId+1);
-		this.contactsList.add(newUrlEntry);
+		config.getContactsList().add(newUrlEntry);
 		return newUrlEntry;
 	}
 
 	public void removeContact(Integer id) {
-		for (int i = 0; i < contactsList.size(); i++) {
-			if(contactsList.get(i).getID().equals(id)){
-				contactsList.remove(i);
+		for (int i = 0; i < config.getContactsList().size(); i++) {
+			if(config.getContactsList().get(i).getID().equals(id)){
+				config.getContactsList().remove(i);
 			}
 		}
 	}
 
 	public void editContact(URLEntry newUrlEntry) {
 		int i;
-		for (i = 0; i < contactsList.size(); i++) {
-			if(contactsList.get(i).getID()==newUrlEntry.getID()){
+		for (i = 0; i < config.getContactsList().size(); i++) {
+			if(config.getContactsList().get(i).getID()==newUrlEntry.getID()){
 				break;
 			}
 		}
-		contactsList.set(i, newUrlEntry);
+		config.getContactsList().set(i, newUrlEntry);
 	}
 }

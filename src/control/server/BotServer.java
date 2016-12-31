@@ -1,14 +1,11 @@
 package control.server;
 
-import java.net.NetworkInterface;
-import java.net.SocketException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collections;
-import java.util.Enumeration;
 import control.Config;
+import control.Utility;
 import control.client.ContactThread;
 import control.client.Log;
 import model.BotStatus;
@@ -23,7 +20,6 @@ import model.gui.URLEntryProperty;
 public class BotServer {
 	String botServerId;
 	BotStatus status;
-	ArrayList<URLEntry> contactsList;
 	SocketBotServerThread socketBotServerThread;
 	Config config;
 	Log log;
@@ -38,11 +34,10 @@ public class BotServer {
 	public BotServer() {
 		botServerId = generateID();
 		status = BotStatus.IDLE;
-		contactsList = new ArrayList<URLEntry>();
 	}
 	
 	private String generateID() {
-		String macAdd = getMacAddress();
+		String macAdd = Utility.getMacAddress();
         macAdd = macAdd.replace("-", "");
         char[] macAddChars = macAdd.toCharArray();
         Arrays.sort(macAddChars);        
@@ -50,33 +45,7 @@ public class BotServer {
 		return  macAddSorted;
 	}
 
-	private String getMacAddress() {
-		String returnValue = null;
-		try {
-			Enumeration<NetworkInterface> networkInterfaces = NetworkInterface.getNetworkInterfaces();
-
-			for (NetworkInterface networkInterface : Collections.list(networkInterfaces)){
-		
-				byte[] mac = networkInterface.getHardwareAddress();
-
-				if(mac==null){
-					continue;
-				}
-
-				StringBuilder sb = new StringBuilder();
-				for (int j = 0; j < mac.length; j++) {
-					sb.append(String.format("%02X%s", mac[j], (j < mac.length - 1) ? "-" : ""));
-				}
-				returnValue = sb.toString();
-				
-				break;
-			}
-				
-		} catch (SocketException e) {
-			e.printStackTrace();
-		}
-				return returnValue;
-	}
+	
 
 	public String getBotServerId() {
 		return botServerId;
@@ -91,10 +60,10 @@ public class BotServer {
 		this.status = status;
 	}
 	public ArrayList<URLEntry> getContactsList() {
-		return contactsList;
+		return config.getContactsList();
 	}
 	public void setContactsList(ArrayList<URLEntry> contactsList) {
-		this.contactsList = contactsList;
+		config.setContactsList(contactsList);
 	}
 
 	public void init() {
@@ -111,7 +80,7 @@ public class BotServer {
 		programLog = ProgramLog.getProgramLog();
 		systemInfoBotServer = new SystemInfoBotServer(sysInfoFilePath);
 		
-		contactsList = config.readFile(configFilePath);
+		config.readFile();
 		
 		log.openOrCreateLogFile();
 		programLog.addInfo("Program Started");
@@ -137,7 +106,11 @@ public class BotServer {
 
 		socketBotServerThread.interrupt();
 
-		config.writeFile(configFilePath, contactsList);
+		config.writeFile();
+	}
+
+	public Config getConfig() {
+		return config;
 	}
 
 	public void start() {
@@ -157,14 +130,14 @@ public class BotServer {
 	}
 	
 	public ArrayList<URLEntry> getContactList(){
-		return this.contactsList;
+		return config.getContactsList();
 	};
 	
 	public ArrayList<URLEntryProperty> getContactsListProperty() {
 		ArrayList<URLEntryProperty> returnValue = new ArrayList<URLEntryProperty>();
 		
-		for (int i = 0; i < contactsList.size(); i++) {
-			returnValue.add(new URLEntryProperty(contactsList.get(i)));
+		for (int i = 0; i < config.getContactsList().size(); i++) {
+			returnValue.add(new URLEntryProperty(config.getContactsList().get(i)));
 		}
 
 		return returnValue;
@@ -172,30 +145,30 @@ public class BotServer {
 
 	public URLEntry addContact(URLEntry newUrlEntry) {
 		int lastContactId = 0;
-		if(!contactsList.isEmpty()){
-			lastContactId = contactsList.get(contactsList.size()-1).getID();
+		if(!config.getContactsList().isEmpty()){
+			lastContactId = config.getContactsList().get(config.getContactsList().size()-1).getID();
 		}
 		newUrlEntry.setID(lastContactId+1);
-		this.contactsList.add(newUrlEntry);
+		config.getContactsList().add(newUrlEntry);
 		return newUrlEntry;
 	}
 
 	public void removeContact(Integer id) {
-		for (int i = 0; i < contactsList.size(); i++) {
-			if(contactsList.get(i).getID().equals(id)){
-				contactsList.remove(i);
+		for (int i = 0; i < config.getContactsList().size(); i++) {
+			if(config.getContactsList().get(i).getID().equals(id)){
+				config.getContactsList().remove(i);
 			}
 		}
 	}
 
 	public void editContact(URLEntry newUrlEntry) {
 		int i;
-		for (i = 0; i < contactsList.size(); i++) {
-			if(contactsList.get(i).getID()==newUrlEntry.getID()){
+		for (i = 0; i < config.getContactsList().size(); i++) {
+			if(config.getContactsList().get(i).getID()==newUrlEntry.getID()){
 				break;
 			}
 		}
-		contactsList.set(i, newUrlEntry);
+		config.getContactsList().set(i, newUrlEntry);
 	}
 
 	public void addSystemInfo(ArrayList<SystemInfoEntry> inSystemInfo) {

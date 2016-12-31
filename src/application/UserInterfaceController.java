@@ -64,7 +64,7 @@ public class UserInterfaceController implements Initializable{
 
 	
 	
-	@FXML private TextField urlTextField, periodTextField, maxContactTextField, 
+	@FXML private TextField ttlTextField, urlTextField, periodTextField, maxContactTextField, 
 							sleepModeTextField, userAgentTextField, proxyTextField;
 
 	ObservableList<URLEntryProperty> contactsObservableList;
@@ -76,6 +76,7 @@ public class UserInterfaceController implements Initializable{
 	public void initialize(URL location, ResourceBundle resources) {		
 		
 		appMode = AppMode.INIT;
+		ttlTextField.setText(Main.botServer.getConfig().getConfigHeader().getTtl().toString());
 		contactsTableViewInit();
 		logTableViewInit();
 		programLogTableViewInit();
@@ -199,6 +200,7 @@ public class UserInterfaceController implements Initializable{
 	@FXML protected void saveContact(ActionEvent event){
 		if(!isTextFieldsEmpty()){
 			URLEntry newUrlEntry = new URLEntry();
+			Main.botServer.getConfig().getConfigHeader().setTtl(ttlTextField.getText());			
 			newUrlEntry.setURL(urlTextField.getText());
 			newUrlEntry.setPeriod(periodTextField.getText());
 			newUrlEntry.setMaxContactNumber(maxContactTextField.getText());
@@ -330,7 +332,7 @@ public class UserInterfaceController implements Initializable{
 	}
 	
 	private boolean isTextFieldsEmpty() {
-		if(urlTextField.getText().equals("") || periodTextField.getText().equals("") || 
+		if(ttlTextField.getText().equals("") || urlTextField.getText().equals("") || periodTextField.getText().equals("") || 
 		   maxContactTextField.getText().equals("") || sleepModeTextField.getText().equals("")){
 			return true;
 		}else{
@@ -379,6 +381,7 @@ public class UserInterfaceController implements Initializable{
 	}
 	
 	private void setTextFieldsEditable(boolean mode) {
+		ttlTextField.setEditable(mode);
 		urlTextField.setEditable(mode);
 		periodTextField.setEditable(mode);
 		maxContactTextField.setEditable(mode);

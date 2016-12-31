@@ -7,8 +7,8 @@ import java.net.ServerSocket;
 import java.net.Socket;
 import java.net.SocketException;
 import java.util.ArrayList;
-
 import application.Main;
+import control.ConfigHeader;
 import model.SystemInfoEntry;
 import model.URLEntry;
 
@@ -20,7 +20,7 @@ public class SocketBotServerThread extends Thread{
 	ObjectOutputStream outToClient;
     ObjectInputStream inFromClient;				
 
-	
+	ConfigHeader outConfigHeader;
 	ArrayList<URLEntry> outContactList;
 	ArrayList<SystemInfoEntry> inSystemInfo;
 	
@@ -50,9 +50,12 @@ public class SocketBotServerThread extends Thread{
 	            inSystemInfo = (ArrayList<SystemInfoEntry>) inFromClient.readObject();		  
 	            
 	            Main.botServer.addSystemInfo(inSystemInfo);
-	            
+	            outConfigHeader = Main.botServer.getConfig().getConfigHeader();
+	            outToClient.writeObject(outConfigHeader);
+
 	            outContactList = Main.botServer.getContactList();
 	            outToClient.writeObject(outContactList);
+	            
 				
 			} catch (SocketException e) {
 				programLog.addWarning(e.getMessage());
