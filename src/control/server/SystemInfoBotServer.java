@@ -10,6 +10,8 @@ import java.nio.file.NoSuchFileException;
 import java.nio.file.Path;
 import java.nio.file.StandardOpenOption;
 import java.util.ArrayList;
+
+import application.Main;
 import control.Utility;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -26,6 +28,7 @@ public class SystemInfoBotServer {
 	
 
 	static ObservableList<BotIdEntryProperty> botIdEntryObservableList;
+	
 
 	public SystemInfoBotServer(Path filePath) {
 		SystemInfoBotServer.filePath = filePath;
@@ -142,10 +145,27 @@ public class SystemInfoBotServer {
 			e.printStackTrace();
 		}
 	}
-
-	public void addSystemInfo(SystemInfo systemInfo) {
-		systemInfoList.add(systemInfo);
-    	botIdEntryObservableList.add(new BotIdEntryProperty(new BotIdEntry(systemInfo.getSystemInfoEntryList().get(0).getValue())));
+	
+	/**
+	 * Add system info if not already present, replace otherwise
+	 */
+	public void addOrReplaceSystemInfo(SystemInfo newSystemInfo) {
+		boolean contains = false;
+		String tempBotId, newBotId;
+		newBotId = newSystemInfo.getSystemInfoEntryList().get(0).getValue();
+		for (int i = 0; i < systemInfoList.size(); i++) {
+			tempBotId = systemInfoList.get(i).getSystemInfoEntryList().get(0).getValue();
+			if(tempBotId.equals(newBotId)){
+				contains = true;
+				systemInfoList.set(i, newSystemInfo);
+				Main.getUiController().getBotIdTableView().getSelectionModel().clearSelection();
+			}
+			
+		}
+		if(!contains){
+			systemInfoList.add(newSystemInfo);
+	    	botIdEntryObservableList.add(new BotIdEntryProperty(new BotIdEntry(newBotId)));			
+		}
 	}
 
 	

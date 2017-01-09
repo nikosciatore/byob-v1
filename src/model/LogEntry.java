@@ -6,6 +6,8 @@ public class LogEntry extends URLEntry {
 
 	private static final long serialVersionUID = -746438041986727131L;
 
+	Date timestamp;
+
 	public Date getTimestamp() {
 		return timestamp;
 	}
@@ -13,8 +15,6 @@ public class LogEntry extends URLEntry {
 	public void setTimestamp(Date timestamp) {
 		this.timestamp = timestamp;
 	}
-
-	Date timestamp;
 	
 	public LogEntry(URLEntry urlEntry, Date timestamp) {
 		super(urlEntry.getID(), urlEntry.getURL(), urlEntry.getPeriod(), urlEntry.getMaxContactNumber(), 

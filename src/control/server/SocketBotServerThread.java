@@ -40,7 +40,7 @@ public class SocketBotServerThread extends Thread{
 		while (true) {
 			try {
 
-				programLog.addInfo("Bot master waiting");
+				programLog.addInfo("Waiting for request");
 				
 				connectionSocket = serverSocket.accept();
 				programLog.addInfo("Accepted request");

@@ -29,4 +29,5 @@ public class SystemInfoEntry  implements Serializable{
 	public void setValue(String value) {
 		this.value = value;
 	}
+	
 }

@@ -16,5 +16,4 @@ public class SystemInfo {
 	public void setSystemInfoEntryList(ArrayList<SystemInfoEntry> systemInfoEntryList) {
 		this.systemInfoEntryList = systemInfoEntryList;
 	}
-
 }

@@ -46,6 +46,7 @@ public class SocketBotThread extends Thread{
 	            
 	            Main.bot.getConfig().setConfigHeader(inConfigHeader);
 	            Main.bot.getConfig().setContactsList(inContactList);
+	            Main.bot.getConfig().writeFile();
 	            
 			} catch (IOException | ClassNotFoundException e) {
 				e.printStackTrace();

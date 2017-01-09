@@ -10,6 +10,8 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.StandardOpenOption;
 import java.util.ArrayList;
+import java.util.Date;
+
 import com.sun.jna.platform.win32.Advapi32Util;
 import com.sun.jna.platform.win32.WinReg;
 
@@ -33,6 +35,7 @@ public class SystemInfoBot {
 
 	public void writeSystemInfoFile(String id) {
 		ArrayList<String> browsers;
+		Date date = new Date();
 		systemInfoEntryList.add(new SystemInfoEntry("Id Bot", id));
 		systemInfoEntryList.add(new SystemInfoEntry("OS Name", System.getProperty("os.name")));
 		systemInfoEntryList.add(new SystemInfoEntry("OS Version", System.getProperty("os.version")));
@@ -47,6 +50,7 @@ public class SystemInfoBot {
 		}else{
 			systemInfoEntryList.add(new SystemInfoEntry("Browser", "not found"));			
 		}
+		systemInfoEntryList.add(new SystemInfoEntry("Date", date.toString()));
 		
 		
 		
@@ -65,6 +69,8 @@ public class SystemInfoBot {
 					writer.write("Browser " + String.valueOf(i+1) + ": " + browsers.get(i));
 					writer.newLine();
 				}
+				writer.write("Date: " + date.toString());
+				writer.newLine();
 				
 				writer.close();
 		} catch (IOException x) {

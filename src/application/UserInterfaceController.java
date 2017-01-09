@@ -56,6 +56,10 @@ public class UserInterfaceController implements Initializable{
 	@FXML private TableColumn<SystemInfoEntryProperty, String> systemInfoPropertyTableCol, systemInfoValueTableCol;
 	
 	@FXML private TableView<BotIdEntryProperty> botIdTableView;
+	public TableView<BotIdEntryProperty> getBotIdTableView() {
+		return botIdTableView;
+	}
+
 	@FXML private TableColumn<BotIdEntryProperty, String> botIdTableCol;
 	
 	
@@ -148,10 +152,17 @@ public class UserInterfaceController implements Initializable{
 		botIdTableView.getSelectionModel().selectedItemProperty().addListener(new ChangeListener<BotIdEntryProperty>() {
 			@Override
 			public void changed(ObservableValue<? extends BotIdEntryProperty> observable, BotIdEntryProperty oldValue, BotIdEntryProperty newValue) {
-				fillSystemInfoTableView(botIdTableView.getSelectionModel().getSelectedIndex());
+				
+				int selectedIndex = botIdTableView.getSelectionModel().getSelectedIndex();
+				
+				if(selectedIndex >= 0){
+					fillSystemInfoTableView(selectedIndex);
+				}
 			}
+			
 		});
-}
+		
+	}
 
 	private void programLogTableViewInit() {
 

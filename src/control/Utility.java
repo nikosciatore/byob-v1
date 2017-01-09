@@ -3,8 +3,11 @@ package control;
 import java.net.NetworkInterface;
 import java.net.SocketException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.Enumeration;
+
+import model.SortMode;
 
 public class Utility {
 
@@ -48,6 +51,7 @@ public class Utility {
 		return returnValue;
 	}
 	
+	
 	public static String getMacAddress() {
 		String returnValue = null;
 		try {
@@ -74,5 +78,38 @@ public class Utility {
 			e.printStackTrace();
 		}
 				return returnValue;
+	}
+	
+	/**
+	 * Generate bot id
+	 * @param mode <br>
+	 * none: return mac address <br>
+	 * sort: return sorted mac address <br>
+	 * shuffle: return shuffled mac address
+	 * */
+	public static String generateID(SortMode sortMode) {
+		
+		String macAddString = Utility.getMacAddress();
+        macAddString = macAddString.replace("-", "");
+        char[] macAddChars = macAddString.toCharArray();
+        
+        if(sortMode.equals(SortMode.ASCENDING)){
+            Arrays.sort(macAddChars);
+            String macAddSorted = new String(macAddChars);		
+            return  macAddSorted;
+        }else if(sortMode.equals(SortMode.RANDOM)){
+        	java.util.List<String> letters = Arrays.asList(macAddString.split(""));
+			Collections.shuffle(letters);
+			String macAddShuffled = "";
+			for (String letter : letters) {
+				macAddShuffled += letter;
+			}
+            System.out.println(macAddShuffled);
+            return  macAddShuffled;   
+        }else if(sortMode.equals(SortMode.NONE)){
+        	return macAddString;
+        }else{
+        	return null;
+        }
 	}
 }

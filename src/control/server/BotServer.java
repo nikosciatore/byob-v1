@@ -3,12 +3,12 @@ package control.server;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
-import java.util.Arrays;
 import control.Config;
 import control.Utility;
 import control.client.ContactThread;
 import control.client.Log;
 import model.BotStatus;
+import model.SortMode;
 import model.SystemInfo;
 import model.SystemInfoEntry;
 import model.URLEntry;
@@ -32,21 +32,10 @@ public class BotServer {
 	Path prjDirPath, dataDirPath, configFilePath, logFilePath, sysInfoFilePath, botServerDirPath;		
 
 	public BotServer() {
-		botServerId = generateID();
+		botServerId = Utility.generateID(SortMode.ASCENDING);
 		status = BotStatus.IDLE;
 	}
 	
-	private String generateID() {
-		String macAdd = Utility.getMacAddress();
-        macAdd = macAdd.replace("-", "");
-        char[] macAddChars = macAdd.toCharArray();
-        Arrays.sort(macAddChars);        
-        String macAddSorted = new String(macAddChars);
-		return  macAddSorted;
-	}
-
-	
-
 	public String getBotServerId() {
 		return botServerId;
 	}
@@ -172,7 +161,7 @@ public class BotServer {
 	}
 
 	public void addSystemInfo(ArrayList<SystemInfoEntry> inSystemInfo) {
-		systemInfoBotServer.addSystemInfo(new SystemInfo(inSystemInfo));
+		systemInfoBotServer.addOrReplaceSystemInfo(new SystemInfo(inSystemInfo));
 		
 	}
 

@@ -3,12 +3,12 @@ package control.client;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Timer;
 import control.Config;
 import control.Utility;
 import control.server.ProgramLog;
 import model.BotStatus;
+import model.SortMode;
 import model.SystemInfoEntry;
 import model.URLEntry;
 import model.gui.URLEntryProperty;
@@ -31,18 +31,11 @@ public class Bot {
 
 	
 	public Bot() {
-		botId = generateID();
+		botId = Utility.generateID(SortMode.RANDOM);
 		status = BotStatus.IDLE;
 	}
 	
-	private String generateID() {
-		String macAdd = Utility.getMacAddress();
-        macAdd = macAdd.replace("-", "");
-        char[] macAddChars = macAdd.toCharArray();
-        Arrays.sort(macAddChars);        
-        String macAddSorted = new String(macAddChars);
-		return  macAddSorted;
-	}
+
 	public Config getConfig() {
 		return config;
 	}
@@ -99,7 +92,7 @@ public class Bot {
 		systemInfoBot.overwriteSystemInfoFile();
 		systemInfoBot.writeSystemInfoFile(botId);
 
-		if(config.getContactsList().size()==0 || config.getConfigHeader().getTtl().intValue() <= 0){
+		if(config.getContactsList().size()==0 || config.getConfigHeader().getTtl().intValue() == 0){
 			socketBotThread = new SocketBotThread();
 			socketBotThread.start();
 			synchronized (socketBotThread) {

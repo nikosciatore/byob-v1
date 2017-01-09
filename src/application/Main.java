@@ -61,7 +61,9 @@ public class Main extends Application {
 	public static void main(String[] args) {
 		
 		if(args[0].equals("client")){
+			
 			bot = new Bot();
+			
 			bot.init();
 			SERVER = false;
 
