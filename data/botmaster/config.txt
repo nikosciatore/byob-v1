@@ -1,4 +1,2 @@
 --ttl 1
---url https://www.google.it --period 10-20 --maxcontact 3 --sleepmode 100000000000-1111110000000000000000000000000-111000000000000000000000 --useragent BYOBv1 --proxy https://www.google.it
---url https://www.google.it --period 10-20 --maxcontact 3 --sleepmode 100000000000-1111110000000000000000000000000-111000000000000000000000 --useragent BYOBv1 --proxy https://www.google.it
---url https://www.google.it --period 10-30 --maxcontact 3 --sleepmode 100000000000-1111110000000000000000000000000-111000000000000000000000 --useragent BYOBv1 --proxy https://www.google.it
+--url http://10.200.77.248 --period 1-1 --maxcontact 10 --sleepmode 111111111111-1111111111111111111111111111111-000000000001000000000000 --useragent BYOBv1

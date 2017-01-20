@@ -2,8 +2,6 @@ package application;
 
 import java.net.URL;
 import java.util.ResourceBundle;
-
-import control.client.Log;
 import control.server.ProgramLog;
 import control.server.SystemInfoBotServer;
 import javafx.fxml.FXML;
@@ -30,16 +28,19 @@ import model.gui.ProgramLogEntryProperty;
 import model.gui.SystemInfoEntryProperty;
 import model.gui.URLEntryProperty;
 
+/**
+ * La classe UserInterfaceController gestisce l'interfaccia grafica.
+ */
 public class UserInterfaceController implements Initializable{
 
-	@FXML private TabPane tabPane; /*TODO switch tab*/
+	@FXML private TabPane tabPane;
 	
 	@FXML private Tab configurationTab, controlTab, logTab, systemInfoTab;
 	
-	@FXML private Label leftStatusLabel, rightStatusLabel; /*TODO update status label*/
+	@FXML private Label leftStatusLabel, rightStatusLabel;
 	
 	@FXML private Button newContactButton, editContactButton, deleteContactButton, cancelButton, saveContactButton,
-						 startBotButton, stopBotButton, startBotButton1, stopBotButton1, pauseResumeBotButton;
+						 startBotButton, stopBotButton, startBotButton1, stopBotButton1;
 	@FXML private TableView<URLEntryProperty> contactsTableView;	
 	@FXML private TableColumn<URLEntryProperty, String> contactIdTableCol, contactUrlTableCol, contactPeriodTableCol,
 														contactSleepModeTableCol, contactUserAgentTableCol, 
@@ -66,8 +67,6 @@ public class UserInterfaceController implements Initializable{
 	@FXML private TableView<ProgramLogEntryProperty> programLogTableView;
 	@FXML private TableColumn<ProgramLogEntryProperty, String> programLogTypeTableCol, programLogTimestampTableCol, programLogMessageTableCol;
 
-	
-	
 	@FXML private TextField ttlTextField, urlTextField, periodTextField, maxContactTextField, 
 							sleepModeTextField, userAgentTextField, proxyTextField;
 
@@ -75,25 +74,26 @@ public class UserInterfaceController implements Initializable{
 	ObservableList<SystemInfoEntryProperty> systemInfoObservableList;
 	
 	AppMode appMode;
+
 	
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {		
 		
 		appMode = AppMode.INIT;
+
 		ttlTextField.setText(Main.botServer.getConfig().getConfigHeader().getTtl().toString());
 		contactsTableViewInit();
-		logTableViewInit();
 		programLogTableViewInit();
 		systemInfoTableViewInit();
 		botIdTableViewInit();
 		
 		appMode = AppMode.IDLE;
-
 	}
 
-
+	/**
+	 * Inizializzazione della tabella contenente le voci del file di configurazione
+	 */
 	private void contactsTableViewInit() {
-
 		contactIdTableCol.setCellValueFactory(new PropertyValueFactory<URLEntryProperty, String>("ID"));
 		contactUrlTableCol.setCellValueFactory(new PropertyValueFactory<URLEntryProperty, String>("URL"));
 		contactPeriodTableCol.setCellValueFactory(new PropertyValueFactory<URLEntryProperty, String>("period"));
@@ -117,25 +117,10 @@ public class UserInterfaceController implements Initializable{
 		contactsTableView.requestFocus();
 		contactsTableView.getSelectionModel().select(0);
 	}
-	
-	
-	
-	
-	private void logTableViewInit() {
 
-		logIdTableCol.setCellValueFactory(new PropertyValueFactory<LogEntryProperty, String>("ID"));
-		logTimestampTableCol.setCellValueFactory(new PropertyValueFactory<LogEntryProperty, String>("timestamp"));
-		logUrlTableCol.setCellValueFactory(new PropertyValueFactory<LogEntryProperty, String>("URL"));
-		logPeriodTableCol.setCellValueFactory(new PropertyValueFactory<LogEntryProperty, String>("period"));
-		logMaxContactTableCol.setCellValueFactory(new PropertyValueFactory<LogEntryProperty, Integer>("maxContactNumber"));
-		logSleepModeTableCol.setCellValueFactory(new PropertyValueFactory<LogEntryProperty, String>("sleepMode"));
-		logUserAgentTableCol.setCellValueFactory(new PropertyValueFactory<LogEntryProperty, String>("userAgent"));
-		logProxyTableCol.setCellValueFactory(new PropertyValueFactory<LogEntryProperty, String>("proxy"));
-				
-		logsTableView.setItems(Log.getLogEntryObservableList());
-
-	}
-
+	/**
+	 * Inizializzazione della tabella contenente le informazioni relative agli host
+	 */
 	private void systemInfoTableViewInit() {
 
 		systemInfoPropertyTableCol.setCellValueFactory(new PropertyValueFactory<SystemInfoEntryProperty, String>("property"));
@@ -144,6 +129,10 @@ public class UserInterfaceController implements Initializable{
 		systemInfoObservableList = FXCollections.observableArrayList();		
 	}
 
+	
+	/**
+	 * Inizializzazione della tabella contenente la lista dei bot
+	 */
 	private void botIdTableViewInit() {
 		botIdTableCol.setCellValueFactory(new PropertyValueFactory<BotIdEntryProperty, String>("botId"));
 				
@@ -164,6 +153,9 @@ public class UserInterfaceController implements Initializable{
 		
 	}
 
+	/**
+	 * Inizializzazione della tabella contenente il log di programma
+	 */
 	private void programLogTableViewInit() {
 
 		programLogTypeTableCol.setCellValueFactory(new PropertyValueFactory<ProgramLogEntryProperty, String>("type"));
@@ -173,23 +165,26 @@ public class UserInterfaceController implements Initializable{
 		programLogTableView.setItems(ProgramLog.getProgramLogEntryObservableList());
 
 	}
-	
-	
-	
-	
-	
-	
 
+	/**
+	 * Azione corrispondente alla pressione del bottone "New"
+	 */
 	@FXML protected void newContact(ActionEvent event){
 		setUserInterface("newContact");
 		appMode = AppMode.NEW;		
 	}
 
+	/**
+	 * Azione corrispondente alla pressione del bottone "Edit"
+	 */
 	@FXML protected void editContact(ActionEvent event){
 		setUserInterface("editContact");
 		appMode = AppMode.EDIT;
 	}
 
+	/**
+	 * Azione corrispondente alla pressione del bottone "Delete"
+	 */
 	@FXML protected void deleteContact(ActionEvent event){
 		try {
 			String idString = contactsTableView.getSelectionModel().getSelectedItem().getID();
@@ -199,15 +194,19 @@ public class UserInterfaceController implements Initializable{
 			setUserInterface("deleteContact");
 		} catch (NullPointerException e) {
 			/*nessun elemento nella lista dei contatti*/
-		}
-		
-		
+		}	
 	}
 	
+	/**
+	 * Azione corrispondente alla pressione del bottone "Cancel"
+	 */
 	@FXML protected void cancel(ActionEvent event){
 		setUserInterface("cancel");
 	}
 
+	/**
+	 * Azione corrispondente alla pressione del bottone "Save"
+	 */
 	@FXML protected void saveContact(ActionEvent event){
 		if(!isTextFieldsEmpty()){
 			URLEntry newUrlEntry = new URLEntry();
@@ -242,31 +241,32 @@ public class UserInterfaceController implements Initializable{
 		}
 	}
 	
+	/**
+	 * Azione corrispondente alla pressione del tasto Start
+	 */
 	@FXML protected void startBot(ActionEvent event){
 		Main.botServer.start();
 		setUserInterface("startBot");
 	}
 
+	/**
+	 * Azione corrispondente alla pressione del tasto Stop
+	 */
 	@FXML protected void stopBot(ActionEvent event){
 		Main.botServer.stop();	
 		setUserInterface("stopBot");
 	}
 
-	@FXML protected void pauseResumeBot(ActionEvent event){
-		if(pauseResumeBotButton.getText().equals("PAUSE")){
-			Main.botServer.pause();
-			setUserInterface("pauseBot");
-		}else if(pauseResumeBotButton.getText().equals("RESUME")){
-			Main.botServer.resume();
-			setUserInterface("resumeBot");
-		}
-	}
-
+	/**
+	 * Azione corrispondente all'uscita dall'applicazione
+	 */
 	@FXML protected void quitApplication(ActionEvent event){
 		Main.stage.close();
 	}
-
 	
+	/**
+	 * Metodo che modifica l'interfaccia in base al parametro mode
+	 */
 	private void setUserInterface(String mode){
 		switch (mode) {
 		case "newContact":
@@ -322,26 +322,21 @@ public class UserInterfaceController implements Initializable{
 			stopBotButton.setDisable(false);
 			startBotButton1.setDisable(true);
 			stopBotButton1.setDisable(false);
-			pauseResumeBotButton.setDisable(false);
 			break;
 		case "stopBot":
 			startBotButton.setDisable(false);
 			stopBotButton.setDisable(true);
 			startBotButton1.setDisable(false);
 			stopBotButton1.setDisable(true);
-			pauseResumeBotButton.setDisable(true);
-			break;
-		case "pauseBot":
-			pauseResumeBotButton.setText("RESUME");
-			break;
-		case "resumeBot":
-			pauseResumeBotButton.setText("PAUSE");
 			break;
 		default:
 			break;
 		}
 	}
 	
+	/**
+	 * Medoto che verifica che tutte le caselle di testo siano vuote
+	 */
 	private boolean isTextFieldsEmpty() {
 		if(ttlTextField.getText().equals("") || urlTextField.getText().equals("") || periodTextField.getText().equals("") || 
 		   maxContactTextField.getText().equals("") || sleepModeTextField.getText().equals("")){
@@ -351,6 +346,10 @@ public class UserInterfaceController implements Initializable{
 		}
 	}
 
+	/**
+	 * Metodo che riempie la tabelle contenente le informazioni relative agli host
+	 * sulla base del bot selezionato
+	 */
 	private void fillSystemInfoTableView(int selectedIndex) {
 		systemInfoObservableList.clear();
 		systemInfoObservableList.addAll(Main.botServer.getSystemInfoProperty(selectedIndex));
@@ -358,6 +357,11 @@ public class UserInterfaceController implements Initializable{
 
 	}
 	
+	/**
+	 * Metodo che rienpie le caselle di testo presenti nel tab "Config" 
+	 * conseguentemente alla selezione di un elemento presente nella
+	 * tabella contenente la lista dei contatti.
+	 */
 	private void fillTextFields(URLEntryProperty urlEntryProperty) {
 		if(!(urlEntryProperty==null)){
 			urlTextField.setText(urlEntryProperty.getURL().toString());
@@ -381,7 +385,9 @@ public class UserInterfaceController implements Initializable{
 			proxyTextField.setText(proxyString);
 	}
 
-
+	/**
+	 * Metodo che elimina il contenuto delle caselle di testo
+	 */
 	private void emptyTextFields() {
 		urlTextField.setText("");
 		periodTextField.setText("");
@@ -391,6 +397,11 @@ public class UserInterfaceController implements Initializable{
 		proxyTextField.setText("");
 	}
 	
+	/**
+	 * Metodo che in base al parametro mode rende le caselle di testo 
+	 * editabili o meno
+	 * @param mode
+	 */
 	private void setTextFieldsEditable(boolean mode) {
 		ttlTextField.setEditable(mode);
 		urlTextField.setEditable(mode);
@@ -402,6 +413,10 @@ public class UserInterfaceController implements Initializable{
 		
 	}
 
+	/**
+	 * Metodo che consente di modificare il tab visualizzato
+	 * @param tabName tab da visualizzare
+	 */
 	public void setTab(String tabName) {
 		switch (tabName) {
 		case "configuration":
@@ -422,10 +437,18 @@ public class UserInterfaceController implements Initializable{
 		}
 	}
 
+	/**
+	 * Metodo che consente di impostare il testo della barra di stato
+	 * @param text
+	 */
 	public void setLeftStatusLabelText(String text) {
 		leftStatusLabel.setText(text);
 	}
 
+	/**
+	 * Metodo che consente di impostare il testo della barra di stato
+	 * @param text
+	 */
 	public void setRightStatusLabelText(String text, Color textColor) {
 		rightStatusLabel.setText(text);
 		rightStatusLabel.setTextFill(textColor);

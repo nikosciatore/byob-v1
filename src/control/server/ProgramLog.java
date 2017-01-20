@@ -7,6 +7,9 @@ import javafx.collections.ObservableList;
 import model.ProgramLogEntry;
 import model.gui.ProgramLogEntryProperty;
 
+/**
+ * Classe per la generazion del log di programma
+ */
 public class ProgramLog {
 	
     private static ProgramLog instance = null;

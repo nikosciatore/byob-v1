@@ -2,6 +2,11 @@ package model;
 
 import java.io.Serializable;
 
+/**
+ * Classe che rappresenta il campo sleepmode presente nel file di configurazione
+ * essendo il campo sleepmode composto da una tripla di bit (e.g. 100..00-100..0-10..0).
+ * Indica le condizioni sotto le quali il bot non invia richieste all'URL.
+ */
 public class SleepMode implements Serializable{
 
 	private static final long serialVersionUID = -3825436293961506586L;
@@ -64,7 +69,7 @@ public class SleepMode implements Serializable{
 		StringBuilder hourString = new StringBuilder("000000000000000000000000");
 		monthString.setCharAt(month - 1, '1');
 		dayString.setCharAt(day - 1, '1');
-		hourString.setCharAt(hour - 1, '1');
+		hourString.setCharAt(hour, '1');
 		
 		returnValue.month = monthString.toString();
 		returnValue.day = dayString.toString();

@@ -4,12 +4,14 @@ import javafx.beans.property.SimpleStringProperty;
 import model.LogEntry;
 import model.URLEntry;
 
+/**
+ * Classe necessaria per riempire le righe della TabelView 
+ * presente nell'interfaccia grafica
+ */
 public class LogEntryProperty extends URLEntryProperty{
 	
 	private final SimpleStringProperty timestamp;
 	private final SimpleStringProperty contactNumber;;
-
-
 
 	public LogEntryProperty(LogEntry logEntry, Integer contactNumber) {
 		super(new URLEntry(logEntry.getID(), 

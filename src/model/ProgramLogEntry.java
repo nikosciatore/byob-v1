@@ -1,5 +1,8 @@
 package model;
 
+/**
+ * Classe che rappresenta una riga del log di programma 
+ */
 public class ProgramLogEntry {
 	String timestamp;
 	String type;

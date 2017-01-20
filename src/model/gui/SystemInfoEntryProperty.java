@@ -3,12 +3,15 @@ package model.gui;
 import javafx.beans.property.SimpleStringProperty;
 import model.SystemInfoEntry;
 
+/**
+ * Classe necessaria per riempire le righe della TabelView 
+ * presente nell'interfaccia grafica
+ */
 public class SystemInfoEntryProperty {
 
 	private final SimpleStringProperty property;
 	private final SimpleStringProperty value;
 	
-
 	public SystemInfoEntryProperty(SystemInfoEntry systemInfoEntry) {
 		this.property = new SimpleStringProperty(systemInfoEntry.getProperty());
 		this.value = new SimpleStringProperty(systemInfoEntry.getValue());

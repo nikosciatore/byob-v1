@@ -11,21 +11,14 @@ import java.nio.file.Path;
 import java.util.ArrayList;
 import model.URLEntry;
 
+/**
+ * Classe per la gestione del file di configurazione contenente la lista delle URL da contattare
+ */
 public class Config{
 
 	static Path filePath;
-	
 	ConfigHeader configHeader;
 	ArrayList<URLEntry> contactsList;
-
-
-	public ArrayList<URLEntry> getContactsList() {
-		return contactsList;
-	}
-
-	public void setContactsList(ArrayList<URLEntry> contactsList) {
-		this.contactsList = contactsList;
-	}
 
 	public Config(Path filePath) {
 		Config.filePath = filePath;
@@ -34,6 +27,25 @@ public class Config{
 
 	}
 	
+	public ConfigHeader getConfigHeader() {
+		return configHeader;
+	}
+
+	public void setConfigHeader(ConfigHeader configHeader) {
+		this.configHeader = configHeader;
+	}
+
+	public ArrayList<URLEntry> getContactsList() {
+		return contactsList;
+	}
+
+	public void setContactsList(ArrayList<URLEntry> contactsList) {
+		this.contactsList = contactsList;
+	}
+	
+	/**
+	 * Lettura del file di configurazione contenente la lista delle URL da contattare
+	 */
 	public void readFile(){
 		URLEntry tempEntry;
 		
@@ -57,6 +69,10 @@ public class Config{
 		}
 	}
 	
+	/**
+	 * Apre, se esiste, oppure crea il file di configurazione 
+	 * contenente la lista delle URL da contattare
+	 */
 	public void openOrCreateConfigFile(){
 		File logFile = new File(filePath.toString());
 		try {
@@ -74,10 +90,15 @@ public class Config{
 		}
 	}
 
-	
+	/**
+	 * Effettua il parsing di una riga del file di configurazione
+	 * @param line stringa contenente una singola riga del file di configurazione
+	 * @param readedEntry numero delle righe lette
+	 * @return Oggetto di tipo URLEntry
+	 */
 	private URLEntry parseEntry(String line, int readedEntry) {
 		URLEntry returnValue = new URLEntry();
-		ArrayList<String> entries = Utility.splitInArrayList(line);
+		ArrayList<String> entries = Utility.splitInArrayList(line," ");
 		
 		returnValue.setID(readedEntry + 1);
 		
@@ -114,14 +135,10 @@ public class Config{
 		return returnValue;
 	}
 
-	public ConfigHeader getConfigHeader() {
-		return configHeader;
-	}
-
-	public void setConfigHeader(ConfigHeader configHeader) {
-		this.configHeader = configHeader;
-	}
-
+	/**
+	 * Metodo che consente di scrivere il file di configurazione 
+	 * contenente la lista delle URL da contattare
+	 */
 	public void writeFile(){
 		Charset charset = Charset.forName("ISO-8859-1");
 		try (BufferedWriter writer = Files.newBufferedWriter(filePath, charset)) {

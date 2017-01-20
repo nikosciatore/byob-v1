@@ -3,12 +3,16 @@ package model.gui;
 import javafx.beans.property.SimpleStringProperty;
 import model.ProgramLogEntry;
 
+/**
+ * Classe necessaria per riempire le righe della TabelView 
+ * presente nell'interfaccia grafica
+ */
 public class ProgramLogEntryProperty {
+	
 	private final SimpleStringProperty type;
 	private final SimpleStringProperty timestamp;
 	private final SimpleStringProperty message;
 	
-
 	public ProgramLogEntryProperty(ProgramLogEntry programLogEntry) {
 		this.type = new SimpleStringProperty(programLogEntry.getType());
 		this.timestamp = new SimpleStringProperty(programLogEntry.getTimestamp());

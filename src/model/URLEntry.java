@@ -7,6 +7,9 @@ import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
+/**
+ * Classe che rappresenta una riga del file di configurazione.
+ */
 public class URLEntry  implements Serializable{
 
 	private static final long serialVersionUID = -7758601941231295030L;
@@ -52,33 +55,59 @@ public class URLEntry  implements Serializable{
 	public URL getURL() {
 		return URL;
 	}
-
-	public void setURL(URL URL) {
-		this.URL = URL;
+	
+	public void setURL(String URLString) {
+		try {
+			this.URL = new URL(URLString);
+		} catch (MalformedURLException e) {
+			try {
+				this.URL = new URL("http://www.example.com");
+			} catch (MalformedURLException e1) {
+				e1.printStackTrace();
+			}
+		}
 	}
 
 	public Range getPeriod() {
 		return period;
 	}
 	
-	public void setPeriod(Range periodicRangeSec) {
-		this.period = periodicRangeSec;
+	public void setPeriod(String periodString) {
+		String [] strings;
+		Integer min,max;
+		strings = periodString.split("-");
+
+		try {
+			min = Integer.parseInt(strings[0]);
+			max = Integer.parseInt(strings[1]);			
+		} catch (Exception e) {
+			min = new Integer(1);
+			max = new Integer(1);
+		}
+		
+		this.period = new Range(min, max);
 	}
 
 	public Integer getMaxContactNumber() {
 		return maxContactNumber;
 	}
 
-	public void setMaxContactNumber(Integer maxContactNumber) {
-		this.maxContactNumber = maxContactNumber;
+	public void setMaxContactNumber(String maxContactNumberString) {
+		try {
+			this.maxContactNumber = Integer.parseInt(maxContactNumberString);
+		} catch (NumberFormatException e) {
+			this.maxContactNumber = new Integer(0);
+		}
 	}
 
 	public SleepMode getSleepMode() {
 		return sleepMode;
 	}
 
-	public void setSleepMode(SleepMode sleepMode) {
-		this.sleepMode = sleepMode;
+	public void setSleepMode(String sleepModeString) {
+		String [] strings;
+		strings = sleepModeString.split("-");
+		this.sleepMode = new SleepMode(strings[0], strings[1], strings[2]);
 	}
 
 	public String getUserAgent() {
@@ -97,6 +126,11 @@ public class URLEntry  implements Serializable{
 		this.proxy = proxy;
 	}
 	
+	/**
+	 * Override del metodo toString() per le scrittura di un oggetto 
+	 * di tipo URLEntry in base al formato definito per il file di
+	 * configurazione
+	 */
 	@Override
 	public String toString() {
 
@@ -120,6 +154,12 @@ public class URLEntry  implements Serializable{
 		return urlPair + periodPair + maxcontactPair + sleepmodePair + useragentPair + proxyPair;
 	}
 	
+	
+	/**
+	 * Metodo per la scrittura di un oggetto 
+	 * di tipo URLEntry in base al formato definito per il file di
+	 * di log
+	 */
 	public String toStringForLog() {
 
 		String url, period, maxcontact, sleepmode, useragent, proxy;
@@ -134,6 +174,13 @@ public class URLEntry  implements Serializable{
 	  return url + "\n" + period + " " + maxcontact + " " + sleepmode + "\n" + useragent + " " + proxy;
 	}
 
+	/**
+	 * Metodo per verificare se nell'istante attuale si debbano o meno
+	 * effettuare le richieste sulla base del campo sleepmode del
+	 * file di configurazione
+	 * @return true se le richieste devono essere effettuate
+	 * false altrimenti
+	 */
 	public boolean isNowActiveTime(){
 		DateFormat monthFormat = new SimpleDateFormat("MM");
 		DateFormat dayFormat = new SimpleDateFormat("dd");
@@ -151,6 +198,12 @@ public class URLEntry  implements Serializable{
 		return sleepMode.isIncluded(now);
 	}
 
+	/**
+	 * Genera in maniera casuale, un intero compreso nell'intervallo 
+	 * specificato nel campo period del file di configurazione 
+	 * @return es: se period è 5-10 il metodo genera un numero casuale 
+	 * compreso tra 5 e 10
+	 */
 	public Integer generatePeriod(){
 		Integer returnValue, range, randomValueInteger;
 		Double randomValueDouble;
@@ -166,49 +219,5 @@ public class URLEntry  implements Serializable{
 		
 		return returnValue;
 	}
-
-	public void setURL(String URLString) {
-		try {
-			this.URL = new URL(URLString);
-		} catch (MalformedURLException e) {
-			try {
-				this.URL = new URL("http://www.example.com");
-			} catch (MalformedURLException e1) {
-				e1.printStackTrace();
-			}
-		}
-	}
-
-	public void setPeriod(String periodString) {
-		String [] strings;
-		Integer min,max;
-		strings = periodString.split("-");
-
-		try {
-			min = Integer.parseInt(strings[0]);
-			max = Integer.parseInt(strings[1]);			
-		} catch (Exception e) {
-			min = new Integer(1);
-			max = new Integer(1);
-		}
-		
-		this.period = new Range(min, max);
-	}
-
-
-	public void setMaxContactNumber(String maxContactNumberString) {
-		try {
-			this.maxContactNumber = Integer.parseInt(maxContactNumberString);
-		} catch (NumberFormatException e) {
-			this.maxContactNumber = new Integer(0);
-		}
-	}
-
-	public void setSleepMode(String sleepModeString) {
-		String [] strings;
-		strings = sleepModeString.split("-");
-		this.sleepMode = new SleepMode(strings[0], strings[1], strings[2]);
-	}
-	
 }
 

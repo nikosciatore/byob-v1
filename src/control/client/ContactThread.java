@@ -15,6 +15,10 @@ import javafx.application.Platform;
 import model.LogEntry;
 import model.URLEntry;
 
+/**
+ * Thread periodico responsabile dell'invio delle richieste HTTP 
+ * relativamente ad un contatto presente nel file di configurazione
+ */
 public class ContactThread extends TimerTask{
 
 	URLEntry urlEntry;
@@ -26,21 +30,12 @@ public class ContactThread extends TimerTask{
 	
 	static boolean READ_RESPONSE = false;
 	
-	public int getContactNumber() {
-		return contactNumber;
-	}
-
-	public void setContactNumber(int contactNumber) {
-		this.contactNumber = contactNumber;
-	}
-
 	public ContactThread(URLEntry urlEntry, Timer timer) {
 		this.urlEntry = urlEntry;
 		this.timer = timer;
 		this.contactNumber = 1;
 		this.log = new Log();
 		this.programlog = ProgramLog.getProgramLog();
-		
 	}
 
 	public ContactThread(URLEntry urlEntry, Timer timer, Integer contactNumber) {
@@ -51,6 +46,19 @@ public class ContactThread extends TimerTask{
 		this.programlog = ProgramLog.getProgramLog();
 	}
 	
+	public int getContactNumber() {
+		return contactNumber;
+	}
+
+	public void setContactNumber(int contactNumber) {
+		this.contactNumber = contactNumber;
+	}
+
+	/**
+	 * Il metodo run() invia o meno una richiesta HTTP sulla base del campo sleepmode
+	 * e se non è stato raggiunto il numero massimo di richieste posticipa la esecuzione
+	 * avanti nel tempo sulla base del campo period.
+	 */
 	@Override
 	public void run() {
         Integer periodTime = urlEntry.generatePeriod();
@@ -68,17 +76,13 @@ public class ContactThread extends TimerTask{
                 	this.cancel();
                 }
         	}
-            
         }
-
-        
 	}
 
-
 	/**
-	 * The method send the HTTP request 
+	 * Metodo per l'invio di una richiesta HTTP
 	 *
-	 * @return	true o false based on the success of request
+	 * @return	true o false in base all'esito della richiesta
 	 */
 	private boolean HTTPGet() {
 		boolean returnValue = true;
@@ -86,31 +90,31 @@ public class ContactThread extends TimerTask{
 		Date date = new Date();
 
 		try {
-			StringBuilder result = new StringBuilder();
-			HttpURLConnection conn;
+			StringBuilder response = new StringBuilder();
+			HttpURLConnection connection;
 			if(!urlEntry.getProxy().equals("")){
 				Proxy proxy = new Proxy(Proxy.Type.HTTP, new InetSocketAddress(urlEntry.getProxy(), 8080));
-				conn = (HttpURLConnection) urlEntry.getURL().openConnection(proxy);
+				connection = (HttpURLConnection) urlEntry.getURL().openConnection(proxy);
 			}else{
-				conn = (HttpURLConnection) urlEntry.getURL().openConnection();
+				connection = (HttpURLConnection) urlEntry.getURL().openConnection();
 			}
 			
-			conn.setRequestMethod("GET");
+			connection.setRequestMethod("GET");
 			
 			if(!urlEntry.getUserAgent().equals("")){
-				conn.setRequestProperty("User-Agent", urlEntry.getUserAgent());
+				connection.setRequestProperty("User-Agent", urlEntry.getUserAgent());
 			}
   
 			/*in questo punto viene effettuata la richiesta http*/
-			BufferedReader rd = new BufferedReader(new InputStreamReader(conn.getInputStream()));
+			BufferedReader rd = new BufferedReader(new InputStreamReader(connection.getInputStream()));
 
 			if(READ_RESPONSE){
 				String line;
 				while ((line = rd.readLine()) != null) {
-				   result.append(line);
+					response.append(line);
 				}			  
 				rd.close();
-				System.out.println(result.toString());
+				System.out.println(response.toString());
 			}
 
 			logEntry = new LogEntry(urlEntry, date);
@@ -122,6 +126,7 @@ public class ContactThread extends TimerTask{
 				@Override
 				public void run() {
 					programlog.addWarning("Unknow Host: " + e.getMessage() + " for ID=" + urlEntry.getID());
+					System.out.println("Unknow Host: " + e.getMessage() + " for ID=" + urlEntry.getID());
 				}
 			});
 			

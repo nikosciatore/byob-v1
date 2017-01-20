@@ -2,6 +2,11 @@ package model;
 
 import java.util.Date;
 
+/**
+ * Classe che rappresenta una riga del file di log
+ * Estende la classe URLEntry in quanto contiene tutti i campi 
+ * contenuti in quest'ultima.
+ */
 public class LogEntry extends URLEntry {
 
 	private static final long serialVersionUID = -746438041986727131L;

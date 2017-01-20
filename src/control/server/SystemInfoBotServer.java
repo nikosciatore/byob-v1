@@ -21,15 +21,19 @@ import model.SystemInfoEntry;
 import model.gui.BotIdEntryProperty;
 import model.gui.SystemInfoEntryProperty;
 
+/**
+ * Classe che rappresenta le informazioni di sistema collezionate dal server C&C.
+ * Contiene le informazioni di sistema raccolte dai bot presenti nella botnet
+ */
 public class SystemInfoBotServer {
 	
 	static Path filePath;
 	ArrayList<SystemInfo> systemInfoList;
 	
-
+	/*Oggetto necessario per aggiornare la tabella presente nell'interfaccia 
+	 * grafiica, secondo quanto specificato nella documentazione di JavaFX*/
 	static ObservableList<BotIdEntryProperty> botIdEntryObservableList;
 	
-
 	public SystemInfoBotServer(Path filePath) {
 		SystemInfoBotServer.filePath = filePath;
 		botIdEntryObservableList = FXCollections.observableArrayList();
@@ -43,8 +47,9 @@ public class SystemInfoBotServer {
 		return systemInfoList;
 	}
 
-	
-	
+	/**
+	 * Metodo per la lettura del file contenente le informazion di sistema
+	 */
 	public void readFile(){
 		systemInfoList = new ArrayList<SystemInfo>();
 		SystemInfo tempSystemInfo;
@@ -68,6 +73,11 @@ public class SystemInfoBotServer {
 		} 		
 	}
 	
+	/**
+	 * Metodo per effettuare il parsing di un blocco di informazioni 
+	 * relative ad un singolo host
+	 * @return le informazioni di sistema relative ad un singolo host
+	 */
 	private SystemInfo parseSystemInfo(String line, BufferedReader reader) throws IOException {
 		SystemInfo returnValue;
 		ArrayList<SystemInfoEntry> systemInfoEntryList = new ArrayList<SystemInfoEntry>();
@@ -116,8 +126,9 @@ public class SystemInfoBotServer {
 		
 	}
 	
-	
-	
+	/**
+	 * Se non già presente, crea il file dove andranno le informazioni di sistema
+	 */
 	public void openOrCreateSystemInfoFile() {
 		File logFile = new File(filePath.toString());
 		try {
@@ -136,6 +147,9 @@ public class SystemInfoBotServer {
 
 	}
 	
+	/**
+	 * Elimina quindi crea un nuovo file contenente le informazioni di sistema
+	 */
 	public void overwriteSystemInfoFile() {
 		File sysInfoFile = new File(filePath.toString());
 		try {
@@ -147,7 +161,8 @@ public class SystemInfoBotServer {
 	}
 	
 	/**
-	 * Add system info if not already present, replace otherwise
+	 * Aggiunge le informazioni di sistema se non sono già presenti
+	 * altrimenti le sostituisce
 	 */
 	public void addOrReplaceSystemInfo(SystemInfo newSystemInfo) {
 		boolean contains = false;
@@ -168,7 +183,6 @@ public class SystemInfoBotServer {
 		}
 	}
 
-	
 	public ArrayList<SystemInfoEntryProperty> getSystemInfoProperty(int selectedindex) {
 		ArrayList<SystemInfoEntryProperty> returnValue = new ArrayList<SystemInfoEntryProperty>();
 		SystemInfoEntryProperty tempSystemInfoEntryProperty;

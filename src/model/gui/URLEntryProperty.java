@@ -3,7 +3,12 @@ package model.gui;
 import javafx.beans.property.SimpleStringProperty;
 import model.URLEntry;
 
+/**
+ * Classe necessaria per riempire le righe della TabelView 
+ * presente nell'interfaccia grafica
+ */
 public class URLEntryProperty {
+	
 	private final SimpleStringProperty ID;
 	private final SimpleStringProperty URL;
 	private final SimpleStringProperty period;
@@ -11,16 +16,6 @@ public class URLEntryProperty {
 	private final SimpleStringProperty sleepMode;
 	private final SimpleStringProperty userAgent;
 	private final SimpleStringProperty proxy;
-	
-//	public URLEntryProperty() {
-//		this.ID = new SimpleStringProperty("");
-//		this.URL = new SimpleStringProperty("");
-//		this.periodicRangeSec = new SimpleStringProperty("");
-//		this.maxContactNumber = new SimpleIntegerProperty();
-//		this.sleepMode = new SimpleStringProperty("");
-//		this.userAgent = new SimpleStringProperty("");
-//		this.proxy = new SimpleStringProperty("");
-//	}
 	
 	public URLEntryProperty(URLEntry urlEntry) {
 		this.ID = new SimpleStringProperty(urlEntry.getID().toString());
@@ -35,42 +30,55 @@ public class URLEntryProperty {
 	public String getID() {
 		return ID.get();
 	}
+	
 	public void setID(String iD) {
 		ID.set(iD);
 	}
+	
 	public String getURL() {
 		return URL.get();
 	}
+	
 	public void setURL(String uRL) {
 		URL.set(uRL);
 	}
+	
 	public String getPeriod() {
 		return period.get();
 	}
+	
 	public void setPeriod(String periodicRangeSec) {
 		this.period.set(periodicRangeSec);
 	}
+	
 	public String getMaxContactNumber() {
 		return maxContactNumber.get();
 	}
+	
 	public void setMaxContactNumber(String maxContactNumber) {
 		this.maxContactNumber.set(maxContactNumber);
 	}
+	
 	public String getSleepMode() {
 		return sleepMode.get();
 	}
+	
 	public void setSleepMode(String sleepMode) {
 		this.sleepMode.set(sleepMode);
 	}
+	
 	public String getUserAgent() {
 		return userAgent.get();
 	}
+	
 	public void setUserAgent(String userAgent) {
 		this.userAgent.set(userAgent);
 	}
+	
 	public String getProxy() {
 		return proxy.get();
 	}
+	
 	public void setProxy(String proxy) {
 		this.proxy.set(proxy);
 	}

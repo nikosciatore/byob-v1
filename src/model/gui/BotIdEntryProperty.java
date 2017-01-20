@@ -3,10 +3,13 @@ package model.gui;
 import javafx.beans.property.SimpleStringProperty;
 import model.BotIdEntry;
 
+/**
+ * Classe necessaria per riempire le righe della TabelView 
+ * presente nell'interfaccia grafica
+ */
 public class BotIdEntryProperty {
 
 	private final SimpleStringProperty botId;
-	
 
 	public BotIdEntryProperty(BotIdEntry botIdEntry) {
 		this.botId = new SimpleStringProperty(botIdEntry.getBotId());
@@ -19,5 +22,4 @@ public class BotIdEntryProperty {
 	public void setBotId(String botId) {
 		this.botId.set(botId);
 	}
-
 }

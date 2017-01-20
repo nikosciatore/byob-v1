@@ -2,6 +2,10 @@ package model;
 
 import java.io.Serializable;
 
+/**
+ * Classe che rappresenta il campo period del file di configurazione
+ * essendo il campo period formato da una coppia di interi (e.g. 1-2)
+ */
 public class Range implements Serializable{
 
 	private static final long serialVersionUID = -3316167233071658484L;

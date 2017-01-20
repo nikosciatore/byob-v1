@@ -17,8 +17,9 @@ import com.sun.jna.platform.win32.WinReg;
 
 import model.SystemInfoEntry;
 
-
-
+/**
+ * Classe contenente i metodi per raccogliere le informazioni relative al sistema
+ */
 public class SystemInfoBot {
 	
 	static Path filePath;	
@@ -33,6 +34,9 @@ public class SystemInfoBot {
 		return systemInfoEntryList;
 	}
 
+	/**
+	 * Scrittura sul file delle informazioni relative al sistema
+	 */
 	public void writeSystemInfoFile(String id) {
 		ArrayList<String> browsers;
 		Date date = new Date();
@@ -51,9 +55,6 @@ public class SystemInfoBot {
 			systemInfoEntryList.add(new SystemInfoEntry("Browser", "not found"));			
 		}
 		systemInfoEntryList.add(new SystemInfoEntry("Date", date.toString()));
-		
-		
-		
 		
 		Charset charset = Charset.forName("ISO-8859-1");
 		try (BufferedWriter writer = Files.newBufferedWriter(filePath, charset, StandardOpenOption.WRITE)) {
@@ -79,7 +80,6 @@ public class SystemInfoBot {
 		
 	}
 	
-	
 	public void overwriteSystemInfoFile() {
 		File sysInfoFile = new File(filePath.toString());
 		try {
@@ -90,75 +90,27 @@ public class SystemInfoBot {
 		}
 	}
 	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-    
     /**
-     *  Function gets machine's installed browsers.
-     *  (Supported browsers: Chrome, Firefox, Opera, Chromium, Internet Explorer)
-     *  @return String of the installed browsers
+     *  Metodo per ottenere la lista dei browser installati nell'host
      */
     public static ArrayList<String> getBrowsers(){
     	ArrayList<String> browsers = new ArrayList<String>();
     	try {
             String os = System.getProperty("os.name").toLowerCase();
             if(os.contains("linux")){
-                String tmp;
-                tmp = unixTermOut("google-chrome --version");
-                if (tmp != null)
-                    browsers.add(tmp);
-                tmp = unixTermOut("firefox --version");
-                if (tmp != null)
-                    browsers.add(tmp);
-                String opVer = unixTermOut("opera --version");
-                if (opVer != null){
-                    tmp = "Opera " + unixTermOut("opera --version");
-                    browsers.add(tmp);
-                }
-                tmp = unixTermOut("chromium-browser --version");
-                if (tmp != null)
-                    browsers.add(tmp);
+                String temp;
+                temp = unixTermOut("google-chrome --version");
+                if (temp != null)
+                    browsers.add(temp);
+                temp = unixTermOut("firefox --version");
+                if (temp != null)
+                    browsers.add(temp);
+                temp = unixTermOut("chromium-browser --version");
+                if (temp != null)
+                    browsers.add(temp);
             }
-            else if(os.contains("windows")) {
-                
-                // IE
+            else if(os.contains("windows")) {                
+                // Internet Explorer
                 String path = "SOFTWARE\\Microsoft\\Internet Explorer";
                 String vField = System.getProperty("os.name").toLowerCase().equals("windows 8")? "svcVersion" : "Version";
                 String version = Advapi32Util.registryGetStringValue(   
@@ -197,11 +149,8 @@ public class SystemInfoBot {
 
                 } catch(Exception e){}
             }
-            else if(os.contains("mac")){
-            
-            }
             else {
-                browsers.add("Unrecognized OS");
+                browsers.add("Unsupported OS");
             }			
 		} catch (Exception e) {
 			return null;
@@ -209,26 +158,19 @@ public class SystemInfoBot {
         return browsers;
     }
  
-    
     /**
-     *  Function creates a linux bash and returns its output.
-     *  @param cmd  Command to launch
-     *  @return     Command's result
+     *  Metodo per eseguire la shell di comandi nei sistemi basati su unix
      */
     private static String unixTermOut(String cmd){
+        String returnValue = "";
         String[] args = new String[] {"/bin/bash", "-c", cmd};
-            String out = "";
-            try {
-                Process proc = new ProcessBuilder(args).start();
-                BufferedReader br = new BufferedReader(new InputStreamReader(proc.getInputStream()));
-                out = br.readLine();
-            } catch (IOException ex) {
-            	ex.printStackTrace();
-            }
-            return out;
+        try {
+            Process process = new ProcessBuilder(args).start();
+            BufferedReader br = new BufferedReader(new InputStreamReader(process.getInputStream()));
+            returnValue = br.readLine();
+        } catch (IOException ex) {
+        	ex.printStackTrace();
+        }
+        return returnValue;
     }
-
-
-	
-	
 }

@@ -14,3 +14,27 @@ Browser 1: Google Chrome 53.0.2785.143
 Browser 2: Mozilla Firefox 50.0.2
 Date: Mon Jan 02 17:16:45 CET 2017
 
+Id Bot: F4E7EBC0A654
+OS Name: Linux
+OS Version: 4.4.0-53-generic
+OS Architecture: amd64
+Browser 1: Google Chrome 53.0.2785.143 
+Browser 2: Mozilla Firefox 50.0.2
+Date: Sat Jan 14 09:12:38 CET 2017
+
+Id Bot: E4B7EF64C05A
+OS Name: Linux
+OS Version: 4.4.0-53-generic
+OS Architecture: amd64
+Browser 1: Google Chrome 53.0.2785.143 
+Browser 2: Mozilla Firefox 50.0.2
+Date: Sat Jan 14 09:12:46 CET 2017
+
+Id Bot: 75E6BE4F0AC4
+OS Name: Linux
+OS Version: 4.4.0-53-generic
+OS Architecture: amd64
+Browser 1: Google Chrome 53.0.2785.143 
+Browser 2: Mozilla Firefox 50.0.2
+Date: Sat Jan 14 16:00:20 CET 2017
+

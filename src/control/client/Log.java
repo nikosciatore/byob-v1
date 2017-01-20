@@ -1,6 +1,5 @@
 package control.client;
 
-
 import java.io.BufferedWriter;
 import java.io.File;
 import java.io.IOException;
@@ -8,27 +7,21 @@ import java.nio.charset.Charset;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.StandardOpenOption;
-import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
 import model.LogEntry;
-import model.gui.LogEntryProperty;
 
+/**
+ * Classe per la gestione del log relativo ai contatti effettuati dal Bot
+ */
 public class Log {
 	
 	static Path filePath;
-	static ObservableList<LogEntryProperty> logEntryObservableList;
 	
 	public Log(Path filePath) {
 		Log.filePath = filePath;
-		logEntryObservableList = FXCollections.observableArrayList();
 	}
 
 	public Log() {
 		
-	}
-
-	public static ObservableList<LogEntryProperty> getLogEntryObservableList() {
-		return logEntryObservableList;
 	}
 
 	String header = "# legend:\n"
@@ -38,6 +31,9 @@ public class Log {
 			+ "# user_agent proxy\n"
 			+ "\n";
 	
+	/**
+	 * Apertura o creazione del file di log
+	 */
 	public void openOrCreateLogFile(){
 		File logFile = new File(filePath.toString());
 		try {
@@ -56,10 +52,10 @@ public class Log {
 		}
 	}
 	
+	/**
+	 * Scrittura di una riga del file di log
+	 */
 	public void writeLogFile(LogEntry logEntry, Integer contactNumber){
-		
-		logEntryObservableList.add(new LogEntryProperty(logEntry, contactNumber));
-		
 		Charset charset = Charset.forName("ISO-8859-1");
 		try (BufferedWriter writer = Files.newBufferedWriter(filePath, charset, StandardOpenOption.APPEND)) {
 				writer.write(logEntry.toString());
