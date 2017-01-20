@@ -9,7 +9,7 @@ import java.util.ArrayList;
  * 	   OS Arch: x64
  */
 public class SystemInfo {
-	ArrayList<SystemInfoEntry> systemInfoEntryList;
+	private ArrayList<SystemInfoEntry> systemInfoEntryList;
 
 	public SystemInfo(ArrayList<SystemInfoEntry> systemInfoEntryList) {
 		this.systemInfoEntryList = systemInfoEntryList;

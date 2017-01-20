@@ -11,7 +11,7 @@ public class LogEntry extends URLEntry {
 
 	private static final long serialVersionUID = -746438041986727131L;
 
-	Date timestamp;
+	private Date timestamp;
 
 	public Date getTimestamp() {
 		return timestamp;

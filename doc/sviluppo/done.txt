@@ -10,6 +10,5 @@ DONE:
 commentare codice
 indirizzo del server su file di configurazione
 
-
 proxy list
 - 12.41.141.10

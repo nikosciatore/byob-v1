@@ -11,10 +11,16 @@ public class SleepMode implements Serializable{
 
 	private static final long serialVersionUID = -3825436293961506586L;
 	
-	String month;
-	String day;
-	String hour;
+	private String month;
+	private String day;
+	private String hour;
 		
+	public SleepMode() {
+		month = null;
+		day = null;
+		hour = null;
+	}
+	
 	public SleepMode(String month,	String day,	String hour) {
 		
 		StringBuilder monthString = new StringBuilder("000000000000");
@@ -54,12 +60,6 @@ public class SleepMode implements Serializable{
 		return Math.min(returnValue, string.length() - 1);
 	}
 
-	public SleepMode() {
-		month = null;
-		day = null;
-		hour = null;
-	}
-	
 	static SleepMode integersToSleepMode(Integer month, Integer day, Integer hour){
 		
 		SleepMode returnValue = new SleepMode();

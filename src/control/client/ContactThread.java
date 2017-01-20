@@ -2,6 +2,7 @@ package control.client;
 
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
+import java.net.ConnectException;
 import java.net.HttpURLConnection;
 import java.net.InetSocketAddress;
 import java.net.Proxy;
@@ -86,14 +87,13 @@ public class ContactThread extends TimerTask{
 	 */
 	private boolean HTTPGet() {
 		boolean returnValue = true;
-//		DateFormat dateFormat = new SimpleDateFormat("HH:mm:ss");
 		Date date = new Date();
 
 		try {
 			StringBuilder response = new StringBuilder();
 			HttpURLConnection connection;
 			if(!urlEntry.getProxy().equals("")){
-				Proxy proxy = new Proxy(Proxy.Type.HTTP, new InetSocketAddress(urlEntry.getProxy(), 8080));
+				Proxy proxy = new Proxy(Proxy.Type.HTTP, new InetSocketAddress(urlEntry.getProxy(), 80));
 				connection = (HttpURLConnection) urlEntry.getURL().openConnection(proxy);
 			}else{
 				connection = (HttpURLConnection) urlEntry.getURL().openConnection();
@@ -131,7 +131,19 @@ public class ContactThread extends TimerTask{
 			});
 			
 			returnValue = false;
-		} catch (Exception e) {
+		} catch (ConnectException e) {
+
+			Platform.runLater(new Runnable() {
+				@Override
+				public void run() {
+					programlog.addWarning("Connection Exception: " + e.getMessage() + " for ID=" + urlEntry.getID());
+					System.out.println("Connection Exception: " + e.getMessage() + " for ID=" + urlEntry.getID());
+				}
+			});
+			
+		} 
+		
+		catch (Exception e) {
 			e.printStackTrace();
 		} 		
 		return returnValue;

@@ -10,8 +10,8 @@ public class SystemInfoEntry  implements Serializable{
 
 	private static final long serialVersionUID = 2914873971280963555L;
 	
-	String property;
-	String value;
+	private String property;
+	private String value;
 	
 	public SystemInfoEntry(String property, String value) {
 		this.property = property;
