@@ -12,7 +12,8 @@ import java.util.ArrayList;
 import model.URLEntry;
 
 /**
- * Classe per la gestione del file di configurazione contenente la lista delle URL da contattare
+ * Classe per la gestione del file di configurazione 
+ * contenente la lista delle URL da contattare
  */
 public class Config{
 
@@ -44,6 +45,27 @@ public class Config{
 	}
 	
 	/**
+	 * Apre, se esiste, oppure crea il file di configurazione 
+	 * contenente la lista delle URL da contattare
+	 */
+	public void openOrCreateConfigFile(){
+		File logFile = new File(filePath.toString());
+		try {
+			if(logFile.createNewFile()){
+				Charset charset = Charset.forName("ISO-8859-1");
+				try (BufferedWriter writer = Files.newBufferedWriter(filePath, charset)) {
+					writer.close();
+				} catch (IOException x) {
+				    System.err.format("IOException: %s%n", x);
+				}
+
+			}
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
+	
+	/**
 	 * Lettura del file di configurazione contenente la lista delle URL da contattare
 	 */
 	public void readFile(){
@@ -69,27 +91,6 @@ public class Config{
 		}
 	}
 	
-	/**
-	 * Apre, se esiste, oppure crea il file di configurazione 
-	 * contenente la lista delle URL da contattare
-	 */
-	public void openOrCreateConfigFile(){
-		File logFile = new File(filePath.toString());
-		try {
-			if(logFile.createNewFile()){
-				Charset charset = Charset.forName("ISO-8859-1");
-				try (BufferedWriter writer = Files.newBufferedWriter(filePath, charset)) {
-					writer.close();
-				} catch (IOException x) {
-				    System.err.format("IOException: %s%n", x);
-				}
-
-			}
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-	}
-
 	/**
 	 * Effettua il parsing di una riga del file di configurazione
 	 * @param line stringa contenente una singola riga del file di configurazione

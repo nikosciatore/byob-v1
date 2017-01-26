@@ -34,52 +34,6 @@ public class SystemInfoBot {
 		return systemInfoEntryList;
 	}
 
-	/**
-	 * Scrittura sul file delle informazioni relative al sistema
-	 */
-	public void writeSystemInfoFile(String id) {
-		ArrayList<String> browsers;
-		Date date = new Date();
-		systemInfoEntryList.add(new SystemInfoEntry("Id Bot", id));
-		systemInfoEntryList.add(new SystemInfoEntry("OS Name", System.getProperty("os.name")));
-		systemInfoEntryList.add(new SystemInfoEntry("OS Version", System.getProperty("os.version")));
-		systemInfoEntryList.add(new SystemInfoEntry("OS Architecture", System.getProperty("os.arch")));
-		
-		browsers = getBrowsers();
-		
-		if(browsers!=null){
-			for (int i = 0; i < browsers.size(); i++) {
-				systemInfoEntryList.add(new SystemInfoEntry("Browser " + String.valueOf(i+1), browsers.get(i)));			
-			}
-		}else{
-			systemInfoEntryList.add(new SystemInfoEntry("Browser", "not found"));			
-		}
-		systemInfoEntryList.add(new SystemInfoEntry("Date", date.toString()));
-		
-		Charset charset = Charset.forName("ISO-8859-1");
-		try (BufferedWriter writer = Files.newBufferedWriter(filePath, charset, StandardOpenOption.WRITE)) {
-				writer.write("Id Bot: " + id);
-				writer.newLine();
-				writer.write("OS Name: " + System.getProperty("os.name"));
-				writer.newLine();
-				writer.write("OS Version: " + System.getProperty("os.version"));
-				writer.newLine();
-				writer.write("OS Architecture: " + System.getProperty("os.arch"));
-				writer.newLine();
-				for (int i = 0; i < browsers.size(); i++) {
-					writer.write("Browser " + String.valueOf(i+1) + ": " + browsers.get(i));
-					writer.newLine();
-				}
-				writer.write("Date: " + date.toString());
-				writer.newLine();
-				
-				writer.close();
-		} catch (IOException x) {
-		    System.err.format("IOException: %s%n", x);
-		}
-		
-	}
-	
 	public void overwriteSystemInfoFile() {
 		File sysInfoFile = new File(filePath.toString());
 		try {
@@ -90,6 +44,49 @@ public class SystemInfoBot {
 		}
 	}
 	
+	/**
+	 * Scrittura sul file delle informazioni relative al sistema
+	 */
+	public void writeSystemInfoFile(String id) {
+		
+		systemInfoEntryList = getSystemInfo(id);
+
+		Charset charset = Charset.forName("ISO-8859-1");
+		try (BufferedWriter writer = Files.newBufferedWriter(filePath, charset, StandardOpenOption.WRITE)) {
+			for (int j = 0; j < systemInfoEntryList.size(); j++) {
+				writer.write(systemInfoEntryList.get(j).getProperty() + ": " + systemInfoEntryList.get(j).getValue());
+				writer.newLine();
+			}
+			writer.close();
+		} catch (IOException x) {
+		    System.err.format("IOException: %s%n", x);
+		}	
+	}
+	
+	private ArrayList<SystemInfoEntry> getSystemInfo(String id) {
+		ArrayList<SystemInfoEntry> returnValue = new ArrayList<SystemInfoEntry>();
+		
+		ArrayList<String> browsers;
+		Date date = new Date();
+		returnValue.add(new SystemInfoEntry("Id Bot", id));
+		returnValue.add(new SystemInfoEntry("OS Name", System.getProperty("os.name")));
+		returnValue.add(new SystemInfoEntry("OS Version", System.getProperty("os.version")));
+		returnValue.add(new SystemInfoEntry("OS Architecture", System.getProperty("os.arch")));
+		
+		browsers = getBrowsers();
+		
+		if(browsers!=null){
+			for (int i = 0; i < browsers.size(); i++) {
+				returnValue.add(new SystemInfoEntry("Browser " + String.valueOf(i+1), browsers.get(i)));			
+			}
+		}else{
+			returnValue.add(new SystemInfoEntry("Browser", "not found"));			
+		}
+		returnValue.add(new SystemInfoEntry("Date", date.toString()));
+		
+		return returnValue;
+	}
+
     /**
      *  Metodo per ottenere la lista dei browser installati nell'host
      */

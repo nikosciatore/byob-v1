@@ -1,6 +1,0 @@
-# legend:
-# timestamp
-# url
-# period_range(s)  max_contact_number  sleep_mode
-# user_agent proxy
-

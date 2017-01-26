@@ -1,7 +1,7 @@
 package model.gui;
 
 import javafx.beans.property.SimpleStringProperty;
-import model.BotIdEntry;
+import model.server.BotIdEntry;
 
 /**
  * Classe necessaria per riempire le righe della TabelView 

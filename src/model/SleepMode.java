@@ -14,6 +14,11 @@ public class SleepMode implements Serializable{
 	private String month;
 	private String day;
 	private String hour;
+	
+	
+	private String monthCompact;
+	private String dayCompact;
+	private String hourCompact;
 		
 	public SleepMode() {
 		month = null;
@@ -23,6 +28,10 @@ public class SleepMode implements Serializable{
 	
 	public SleepMode(String month,	String day,	String hour) {
 		
+		monthCompact = month;
+		dayCompact = day;
+		hourCompact = hour;
+				
 		StringBuilder monthString = new StringBuilder("000000000000");
 		StringBuilder dayString = new StringBuilder("0000000000000000000000000000000");
 		StringBuilder hourString = new StringBuilder("000000000000000000000000");
@@ -98,6 +107,56 @@ public class SleepMode implements Serializable{
 
 	@Override
 	public String toString() {
-		return month + "-" + day + "-" + hour;
+		return monthCompact + "-" + dayCompact + "-" + hourCompact;
 	}
+
+
+	
+//	public String toStringCompact() {
+//		return compactString(month) + "-" + compactString(day) + "-" + compactString(hour);
+//	}
+//	
+//	/**
+//	 * Restituisce la forma compatta, dove possibile, di una stringa binaria
+//	 * e.g: 000111 ---> 01, 000011111111 ---> 011, 00011011111 ---> 00011011111
+//	 * @param original
+//	 * @return forma compatta della stringa di partenza
+//	 */
+//	private String compactString(String originalString){
+//		String returnValue = "";
+//		Integer smallerGroupSize,groupNumber;
+//		
+//		smallerGroupSize = findSmallergroupSize(originalString);
+//		groupNumber = originalString.length()/smallerGroupSize;
+//		
+//		return returnValue;
+//	}
+//
+//	private Integer findSmallergroupSize(String originalString) {
+//		Integer returnValue;
+//		
+//		ArrayList<Integer> groupSizeList = new ArrayList<Integer>();
+//		groupSizeList.add(new Integer(1));
+//		int k = 0;
+//		for (int i = 0; i < originalString.length() - 1; i++) {
+//			if(originalString.charAt(i)==originalString.charAt(i+1)){
+//				groupSizeList.set(k, groupSizeList.get(k) + 1);
+//			}else{
+//				groupSizeList.add(new Integer(1));
+//				k++;
+//			}
+//		}
+//		
+//		returnValue = 1;
+//		for (int i = 0; i < groupSizeList.size(); i++) {
+//			if(groupSizeList.get(i)>returnValue){
+//				returnValue = groupSizeList.get(i);
+//			}
+//		}
+//		
+//		return returnValue;
+//	}
+	
+	
+
 }

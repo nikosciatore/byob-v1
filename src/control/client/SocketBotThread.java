@@ -16,11 +16,11 @@ import model.URLEntry;
  */
 public class SocketBotThread extends Thread{
 	
+	String serverAddress;
 	Socket clientSocket;
 	ConfigHeader inConfigHeader;
 	ArrayList<URLEntry> inContactList;
 	ArrayList<SystemInfoEntry> outSystemInfo;
-	String serverAddress;
 	
 	public SocketBotThread(String serverAddress) {
 		this.serverAddress = serverAddress;
@@ -57,6 +57,8 @@ public class SocketBotThread extends Thread{
 	            Main.bot.getConfig().setConfigHeader(inConfigHeader);
 	            Main.bot.getConfig().setContactsList(inContactList);
 	            Main.bot.getConfig().writeFile();
+	            
+	            clientSocket.close();
 	            
 			} catch (IOException | ClassNotFoundException e) {
 				e.printStackTrace();

@@ -41,6 +41,8 @@ public class Main extends Application {
 			bot = new Bot();		
 			bot.init();
 			bot.start(); /*avvio delle richieste http*/
+		}else{
+			System.out.println("Only valid parameter are 'server' and 'client'");
 		}
 	}
 	

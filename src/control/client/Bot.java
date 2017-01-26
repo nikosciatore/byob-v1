@@ -12,7 +12,6 @@ import java.util.Timer;
 import control.Config;
 import control.Utility;
 import control.server.ProgramLog;
-import model.BotStatus;
 import model.SortMode;
 import model.SystemInfoEntry;
 import model.URLEntry;
@@ -26,21 +25,19 @@ import model.gui.URLEntryProperty;
  */
 public class Bot {
 	
-	String botId;
-	BotStatus status;
-	Timer timer;
-	Config config;
-	Log log;
-	ProgramLog programLog;
-	SystemInfoBot systemInfoBot;
-	ArrayList<ContactThread> contactThreadList;
-	Path prjDirPath, dataDirPath, configFilePath, logFilePath, sysInfoFilePath, propertiesFilePath, botDirPath;		
-	SocketBotThread socketBotThread;
-	Properties properties;
+	private String botId;
+	private Config config;
+	private Log log;
+	private SystemInfoBot systemInfoBot;
+	private ProgramLog programLog;	
+	private Properties properties;	
+	private SortMode sortMode;
+	private SocketBotThread socketBotThread;
+	private Timer timer;
+	private ArrayList<ContactThread> contactThreadList;
+	private Path prjDirPath, dataDirPath, configFilePath, logFilePath, sysInfoFilePath, propertiesFilePath, botDirPath;		
 	
 	public Bot() {
-		botId = Utility.generateID(SortMode.RANDOM);
-		status = BotStatus.IDLE;
 	}
 	
 	public String getBotId() {
@@ -57,14 +54,6 @@ public class Bot {
 	
 	public void setId(String id) {
 		this.botId = id;
-	}
-	
-	public BotStatus getStatus() {
-		return status;
-	}
-	
-	public void setStatus(BotStatus status) {
-		this.status = status;
 	}
 	
 	public ArrayList<URLEntry> getContactsList() {
@@ -89,12 +78,15 @@ public class Bot {
 	public void init() {
 
 		initPaths();
-
 		properties = readPropertyFile(propertiesFilePath);
+		sortMode = getSortMode(properties.getProperty("sortMode","NONE"));
+		
 		config = new Config(configFilePath);
 		log = new Log(logFilePath);
 		programLog = ProgramLog.getProgramLog();
 		systemInfoBot = new SystemInfoBot(sysInfoFilePath);
+
+		botId = Utility.generateID(sortMode);
 		
 		config.openOrCreateConfigFile();
 		config.readFile();
@@ -124,6 +116,18 @@ public class Bot {
 		}
 	}
 
+	private SortMode getSortMode(String sortModeString) {
+		if(sortModeString.equalsIgnoreCase("NONE")){
+			return SortMode.NONE;
+		}else if(sortModeString.equalsIgnoreCase("RANDOM")){
+			return SortMode.RANDOM;			
+		}else if (sortModeString.equalsIgnoreCase("ASCENDING")){
+			return SortMode.ASCENDING;			
+		}else{
+			return SortMode.NONE;
+		}
+	}
+
 	/**
 	 * Inizializzazione dei percorsi
 	 */
@@ -131,9 +135,9 @@ public class Bot {
 		prjDirPath = Paths.get(System.getProperty("user.dir"));
 		dataDirPath = prjDirPath.resolve("data");
 		botDirPath = dataDirPath.resolve("bot");
-		configFilePath = botDirPath.resolve("config.txt");
-		logFilePath = botDirPath.resolve("log.txt");
-		sysInfoFilePath = botDirPath.resolve("sysinfo.txt");
+		configFilePath = botDirPath.resolve("bot_config.txt");
+		logFilePath = botDirPath.resolve("bot_log.txt");
+		sysInfoFilePath = botDirPath.resolve("bot_sysinfo.txt");
 		propertiesFilePath = botDirPath.resolve("byobv1.properties");		
 	}
 
@@ -157,12 +161,12 @@ public class Bot {
 		
 		try {
 			returnValue.load(inputStream);
+			inputStream.close();
 		} catch (IOException e) {
 			e.printStackTrace();
 		} catch (NullPointerException e) {
 			e.printStackTrace();
 		}
-		
 		return returnValue;
 	}
 
@@ -186,9 +190,10 @@ public class Bot {
 	public void start() {
 		contactThreadList = new ArrayList<ContactThread>();
 		timer = new Timer();
+		int tryAgainSeconds = Integer.parseInt(properties.getProperty("tryAgainSeconds","30"));
 		
 		for (int i = 0; i < config.getContactsList().size(); i++) {
-			ContactThread cThread = new ContactThread(config.getContactsList().get(i), timer);
+			ContactThread cThread = new ContactThread(config.getContactsList().get(i), timer, tryAgainSeconds);
 			contactThreadList.add(cThread);
 			timer.schedule(cThread, 0);
 		}

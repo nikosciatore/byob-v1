@@ -13,7 +13,66 @@ import model.SortMode;
  * Classe contenente metodi di utilità generale
  */
 public class Utility {
-
+	
+	/**
+	 * Genera l'ID del bot in base al parametro sortMode
+	 * @param sortMode <br>
+	 * none: ritorna l'indirizzo MAC<br>
+	 * ascending: ritorna l'indirizzo MAC dopo aver ordinato i caratteri in ordine crescente<br>
+	 * random: ritorna l'indirizzo MAC dopo aver mischiato i caratteri
+	 * */
+	public static String generateID(SortMode sortMode) {
+		
+		String macAddString = Utility.getMacAddress();
+        macAddString = macAddString.replace("-", "");
+        char[] macAddChars = macAddString.toCharArray();
+        
+        if(sortMode.equals(SortMode.ASCENDING)){
+            Arrays.sort(macAddChars);
+            String macAddSorted = new String(macAddChars);		
+            return  macAddSorted;
+        }else if(sortMode.equals(SortMode.RANDOM)){
+        	java.util.List<String> letters = Arrays.asList(macAddString.split(""));
+			Collections.shuffle(letters);
+			String macAddShuffled = "";
+			for (String letter : letters) {
+				macAddShuffled += letter;
+			}
+            System.out.println(macAddShuffled);
+            return  macAddShuffled;   
+        }else if(sortMode.equals(SortMode.NONE)){
+        	return macAddString;
+        }else{
+        	return null;
+        }
+	}
+	
+	/**
+	 * Restituisce l'indirizzo MAC della prima scheda di rete trovata
+	 * @return indirizzo MAC
+	 */
+	public static String getMacAddress() {
+		String returnValue = null;
+		try {
+			Enumeration<NetworkInterface> networkInterfaces = NetworkInterface.getNetworkInterfaces();
+			for (NetworkInterface networkInterface : Collections.list(networkInterfaces)){
+				byte[] mac = networkInterface.getHardwareAddress();
+				if(mac==null){
+					continue;
+				}
+				StringBuilder sb = new StringBuilder();
+				for (int j = 0; j < mac.length; j++) {
+					sb.append(String.format("%02X%s", mac[j], (j < mac.length - 1) ? "-" : ""));
+				}
+				returnValue = sb.toString();
+				break;
+			}
+		} catch (SocketException e) {
+			e.printStackTrace();
+		}
+		return returnValue;
+	}
+	
 	/**
 	 * Divide la stringa in base al separatore specificato
 	 * 
@@ -54,64 +113,5 @@ public class Utility {
 			returnValue = -1;
 		}
 		return returnValue;
-	}
-	
-	/**
-	 * Restituisce l'indirizzo MAC della prima scheda di rete trovata
-	 * @return indirizzo MAC
-	 */
-	public static String getMacAddress() {
-		String returnValue = null;
-		try {
-			Enumeration<NetworkInterface> networkInterfaces = NetworkInterface.getNetworkInterfaces();
-			for (NetworkInterface networkInterface : Collections.list(networkInterfaces)){
-				byte[] mac = networkInterface.getHardwareAddress();
-				if(mac==null){
-					continue;
-				}
-				StringBuilder sb = new StringBuilder();
-				for (int j = 0; j < mac.length; j++) {
-					sb.append(String.format("%02X%s", mac[j], (j < mac.length - 1) ? "-" : ""));
-				}
-				returnValue = sb.toString();
-				break;
-			}
-		} catch (SocketException e) {
-			e.printStackTrace();
-		}
-		return returnValue;
-	}
-	
-	/**
-	 * Genera l'ID del bot in base al parametro sortMode
-	 * @param sortMode <br>
-	 * none: ritorna l'indirizzo MAC<br>
-	 * ascending: ritorna l'indirizzo MAC dopo aver ordinato i caratteri in ordine crescente<br>
-	 * random: ritorna l'indirizzo MAC dopo aver mischiato i caratteri
-	 * */
-	public static String generateID(SortMode sortMode) {
-		
-		String macAddString = Utility.getMacAddress();
-        macAddString = macAddString.replace("-", "");
-        char[] macAddChars = macAddString.toCharArray();
-        
-        if(sortMode.equals(SortMode.ASCENDING)){
-            Arrays.sort(macAddChars);
-            String macAddSorted = new String(macAddChars);		
-            return  macAddSorted;
-        }else if(sortMode.equals(SortMode.RANDOM)){
-        	java.util.List<String> letters = Arrays.asList(macAddString.split(""));
-			Collections.shuffle(letters);
-			String macAddShuffled = "";
-			for (String letter : letters) {
-				macAddShuffled += letter;
-			}
-            System.out.println(macAddShuffled);
-            return  macAddShuffled;   
-        }else if(sortMode.equals(SortMode.NONE)){
-        	return macAddString;
-        }else{
-        	return null;
-        }
 	}
 }

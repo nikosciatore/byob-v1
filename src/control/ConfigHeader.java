@@ -38,7 +38,6 @@ public class ConfigHeader implements Serializable{
 		}else{
 			return false;
 		}
-		
 	}
 	
 	@Override

@@ -15,11 +15,11 @@ import application.Main;
 import control.Utility;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-import model.BotIdEntry;
 import model.SystemInfo;
 import model.SystemInfoEntry;
 import model.gui.BotIdEntryProperty;
 import model.gui.SystemInfoEntryProperty;
+import model.server.BotIdEntry;
 
 /**
  * Classe che rappresenta le informazioni di sistema collezionate dal server C&C.

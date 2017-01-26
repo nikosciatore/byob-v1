@@ -1,2 +1,0 @@
---ttl 0
---url http://www.google.it --period 1-1 --maxcontact 3 --sleepmode 111111111111-1111111111111111111111111111111-111111111111111111111111 --useragent BYOBv1 --proxy 97.77.104.22

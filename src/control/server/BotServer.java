@@ -4,11 +4,6 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
 import control.Config;
-import control.Utility;
-import control.client.ContactThread;
-import control.client.Log;
-import model.BotStatus;
-import model.SortMode;
 import model.SystemInfo;
 import model.SystemInfoEntry;
 import model.URLEntry;
@@ -21,38 +16,15 @@ import model.gui.URLEntryProperty;
  * Inolltre colleziona le informazioni di sistema ricevute dagli stessi bot *
  */
 public class BotServer {
-	String botServerId;
-	BotStatus status;
-	SocketBotServerThread socketBotServerThread;
-	Config config;
-	Log log;
-	ProgramLog programLog;
 	
-	SystemInfoBotServer systemInfoBotServer;
-
-	ArrayList<ContactThread> contactThreadList;
-
-	Path prjDirPath, dataDirPath, configFilePath, logFilePath, sysInfoFilePath, botServerDirPath;		
+	private Config config;
+	private ProgramLog programLog;
+	private SocketBotServerThread socketBotServerThread;
+	private SystemInfoBotServer systemInfoBotServer;
+	private Path prjDirPath, dataDirPath, configFilePath, sysInfoFilePath, botServerDirPath;		
 
 	public BotServer() {
-		botServerId = Utility.generateID(SortMode.ASCENDING);
-		status = BotStatus.IDLE;
-	}
-	
-	public String getBotServerId() {
-		return botServerId;
-	}
-	
-	public void setBotServerId(String id) {
-		this.botServerId = id;
-	}
-	
-	public BotStatus getStatus() {
-		return status;
-	}
-	
-	public void setStatus(BotStatus status) {
-		this.status = status;
+		
 	}
 	
 	public ArrayList<URLEntry> getContactsList() {
@@ -93,14 +65,12 @@ public class BotServer {
 		initPaths();
 
 		config = new Config(configFilePath);
-		log = new Log(logFilePath);
 		programLog = ProgramLog.getProgramLog();
 		systemInfoBotServer = new SystemInfoBotServer(sysInfoFilePath);
 		
 		config.readFile();
 		
-		log.openOrCreateLogFile();
-		programLog.addInfo("Program Started");
+		programLog.addInfo("C&C Server started");
 
 		systemInfoBotServer.openOrCreateSystemInfoFile();
 		systemInfoBotServer.readFile();
@@ -113,10 +83,9 @@ public class BotServer {
 	private void initPaths() {
 		prjDirPath = Paths.get(System.getProperty("user.dir"));
 		dataDirPath = prjDirPath.resolve("data");
-		botServerDirPath = dataDirPath.resolve("botmaster");
-		configFilePath = botServerDirPath.resolve("config.txt");
-		logFilePath = botServerDirPath.resolve("log.txt");
-		sysInfoFilePath = botServerDirPath.resolve("sysinfo.txt");
+		botServerDirPath = dataDirPath.resolve("server");
+		configFilePath = botServerDirPath.resolve("server_config.txt");
+		sysInfoFilePath = botServerDirPath.resolve("server_sysinfo.txt");
 	}
 
 	/**

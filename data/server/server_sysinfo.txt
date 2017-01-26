@@ -1,10 +1,10 @@
 Id Bot: 044567ABCEEF
 OS Name: Linux
-OS Version: 4.4.0-53-generic
+OS Version: 4.4.0-59-generic
 OS Architecture: amd64
 Browser 1: Google Chrome 53.0.2785.143 
-Browser 2: Mozilla Firefox 50.0.2
-Date: Mon Jan 02 16:36:12 CET 2017
+Browser 2: Mozilla Firefox 50.1.0
+Date: Wed Jan 25 19:08:39 CET 2017
 
 Id Bot: 645A04BCEE7F
 OS Name: Linux
@@ -37,4 +37,20 @@ OS Architecture: amd64
 Browser 1: Google Chrome 53.0.2785.143 
 Browser 2: Mozilla Firefox 50.0.2
 Date: Sat Jan 14 16:00:20 CET 2017
+
+Id Bot: FB745EAEC064
+OS Name: Linux
+OS Version: 4.4.0-59-generic
+OS Architecture: amd64
+Browser 1: Google Chrome 53.0.2785.143 
+Browser 2: Mozilla Firefox 50.1.0
+Date: Fri Jan 20 16:00:12 CET 2017
+
+Id Bot: EF445B06ACE7
+OS Name: Linux
+OS Version: 4.4.0-59-generic
+OS Architecture: amd64
+Browser 1: Google Chrome 53.0.2785.143 
+Browser 2: Mozilla Firefox 50.1.0
+Date: Fri Jan 20 16:05:40 CET 2017
 

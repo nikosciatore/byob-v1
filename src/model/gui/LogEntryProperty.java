@@ -1,8 +1,8 @@
 package model.gui;
 
 import javafx.beans.property.SimpleStringProperty;
-import model.LogEntry;
 import model.URLEntry;
+import model.client.LogEntry;
 
 /**
  * Classe necessaria per riempire le righe della TabelView 

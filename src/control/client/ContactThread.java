@@ -10,11 +10,9 @@ import java.net.UnknownHostException;
 import java.util.Date;
 import java.util.Timer;
 import java.util.TimerTask;
-
-import control.server.ProgramLog;
 import javafx.application.Platform;
-import model.LogEntry;
 import model.URLEntry;
+import model.client.LogEntry;
 
 /**
  * Thread periodico responsabile dell'invio delle richieste HTTP 
@@ -22,21 +20,21 @@ import model.URLEntry;
  */
 public class ContactThread extends TimerTask{
 
-	URLEntry urlEntry;
-	LogEntry logEntry;
-	Log log;
-	ProgramLog programlog;
-	Timer timer;
-	Integer contactNumber;
-	
+	private URLEntry urlEntry;
+	private LogEntry logEntry;
+	private Log log;
+	private Timer timer;
+	private Integer contactNumber;
+	private Integer tryAgainSeconds;
+
 	static boolean READ_RESPONSE = false;
 	
-	public ContactThread(URLEntry urlEntry, Timer timer) {
+	public ContactThread(URLEntry urlEntry, Timer timer, int tryAgainSecond) {
 		this.urlEntry = urlEntry;
 		this.timer = timer;
 		this.contactNumber = 1;
 		this.log = new Log();
-		this.programlog = ProgramLog.getProgramLog();
+		this.tryAgainSeconds = tryAgainSecond;
 	}
 
 	public ContactThread(URLEntry urlEntry, Timer timer, Integer contactNumber) {
@@ -44,7 +42,6 @@ public class ContactThread extends TimerTask{
 		this.timer = timer;
 		this.contactNumber = contactNumber;
 		this.log = new Log();
-		this.programlog = ProgramLog.getProgramLog();
 	}
 	
 	public int getContactNumber() {
@@ -76,7 +73,11 @@ public class ContactThread extends TimerTask{
                 }else{
                 	this.cancel();
                 }
+        	}else{
+            	this.cancel();        		
         	}
+        }else{
+        	timer.schedule(new ContactThread(urlEntry, timer, contactNumber), tryAgainSeconds * 1000);
         }
 	}
 
@@ -118,15 +119,18 @@ public class ContactThread extends TimerTask{
 			}
 
 			logEntry = new LogEntry(urlEntry, date);
-			log.writeLogFile(logEntry, contactNumber);
+			log.write(logEntry, contactNumber);
+			
+			connection.disconnect();
 
 		} catch (UnknownHostException e) {
 			
 			Platform.runLater(new Runnable() {
 				@Override
 				public void run() {
-					programlog.addWarning("Unknow Host: " + e.getMessage() + " for ID=" + urlEntry.getID());
-					System.out.println("Unknow Host: " + e.getMessage() + " for ID=" + urlEntry.getID());
+					String message = e.getMessage() + " for ID=" + urlEntry.getID();
+					logEntry = new LogEntry(urlEntry, date, message);
+					log.write(logEntry, contactNumber);
 				}
 			});
 			
@@ -136,16 +140,21 @@ public class ContactThread extends TimerTask{
 			Platform.runLater(new Runnable() {
 				@Override
 				public void run() {
-					programlog.addWarning("Connection Exception: " + e.getMessage() + " for ID=" + urlEntry.getID());
-					System.out.println("Connection Exception: " + e.getMessage() + " for ID=" + urlEntry.getID());
+					String message = e.getMessage() + " for ID=" + urlEntry.getID();
+					logEntry = new LogEntry(urlEntry, date, message);
+					log.write(logEntry, contactNumber);
 				}
 			});
 			
+			returnValue = false;			
 		} 
 		
 		catch (Exception e) {
 			e.printStackTrace();
-		} 		
+			returnValue = false;			
+		}
+		
+		
 		return returnValue;
 	}
 }

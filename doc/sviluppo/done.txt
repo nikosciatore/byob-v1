@@ -1,14 +1,14 @@
-TODO:
-log bot
-(opz)thread richieste periodiche
 
+TODO:
 relazione:installaizone
 
-platform.jar percorso locale
 
 DONE:
-commentare codice
-indirizzo del server su file di configurazione
+ContatctThread: risolto bug per cui il bot in caso di sleep mode non si svegliava più
+byobv1.properties: aggiunti campi sortMode e tryAgainSeconds
+aggiunti messaggi sul log
+forma compatta dello sleepmode sul log
+
 
 proxy list
 - 12.41.141.10

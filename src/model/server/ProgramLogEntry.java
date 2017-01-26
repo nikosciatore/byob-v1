@@ -1,4 +1,4 @@
-package model;
+package model.server;
 
 /**
  * Classe che rappresenta una riga del log di programma 

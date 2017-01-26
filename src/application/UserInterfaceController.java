@@ -70,8 +70,8 @@ public class UserInterfaceController implements Initializable{
 	@FXML private TextField ttlTextField, urlTextField, periodTextField, maxContactTextField, 
 							sleepModeTextField, userAgentTextField, proxyTextField;
 
-	ObservableList<URLEntryProperty> contactsObservableList;
-	ObservableList<SystemInfoEntryProperty> systemInfoObservableList;
+	private ObservableList<URLEntryProperty> contactsObservableList;
+	private ObservableList<SystemInfoEntryProperty> systemInfoObservableList;
 	
 	AppMode appMode;
 

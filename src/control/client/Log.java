@@ -7,7 +7,8 @@ import java.nio.charset.Charset;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.StandardOpenOption;
-import model.LogEntry;
+
+import model.client.LogEntry;
 
 /**
  * Classe per la gestione del log relativo ai contatti effettuati dal Bot
@@ -55,10 +56,10 @@ public class Log {
 	/**
 	 * Scrittura di una riga del file di log
 	 */
-	public void writeLogFile(LogEntry logEntry, Integer contactNumber){
+	public void write(LogEntry logEntry, Integer contactNumber){
 		Charset charset = Charset.forName("ISO-8859-1");
 		try (BufferedWriter writer = Files.newBufferedWriter(filePath, charset, StandardOpenOption.APPEND)) {
-				writer.write(logEntry.toString());
+				writer.write(logEntry.toString(contactNumber));
 				writer.newLine();
 				writer.newLine();
 			writer.close();

@@ -159,6 +159,7 @@ public class URLEntry  implements Serializable{
 	 * Metodo per la scrittura di un oggetto 
 	 * di tipo URLEntry in base al formato definito per il file di
 	 * di log
+	 * @param contactNumber 
 	 */
 	public String toStringForLog() {
 
@@ -173,6 +174,22 @@ public class URLEntry  implements Serializable{
 
 	  return url + "\n" + period + " " + maxcontact + " " + sleepmode + "\n" + useragent + " " + proxy;
 	}
+	
+	public String toStringForLog(Integer contactNumber) {
+
+		String url, period, maxcontact, sleepmode, useragent, proxy, contact;
+
+		contact = contactNumber.toString();
+
+		url = this.URL.toString();
+		period = this.period.toString();
+		maxcontact = this.maxContactNumber.toString();
+		sleepmode = this.sleepMode.toString();
+		useragent = this.userAgent;
+		proxy = this.proxy.toString();
+
+	  return url + "\n" + period + " " + contact + "/" + maxcontact + " " + sleepmode + "\n" + useragent + " " + proxy;
+	}
 
 	/**
 	 * Metodo per verificare se nell'istante attuale si debbano o meno
@@ -186,16 +203,16 @@ public class URLEntry  implements Serializable{
 		DateFormat dayFormat = new SimpleDateFormat("dd");
 		DateFormat hourFormat = new SimpleDateFormat("HH");
 		
-		Date date = new Date();
+		Date nowDate = new Date();
 		
 		Integer month,day,hour;
-		month = Integer.parseInt(monthFormat.format(date));
-		day = Integer.parseInt(dayFormat.format(date));
-		hour = Integer.parseInt(hourFormat.format(date));
+		month = Integer.parseInt(monthFormat.format(nowDate));
+		day = Integer.parseInt(dayFormat.format(nowDate));
+		hour = Integer.parseInt(hourFormat.format(nowDate));
 		
-		SleepMode now = SleepMode.integersToSleepMode(month, day, hour);
+		SleepMode nowSleepMode = SleepMode.integersToSleepMode(month, day, hour);
 		
-		return sleepMode.isIncluded(now);
+		return sleepMode.isIncluded(nowSleepMode);
 	}
 
 	/**

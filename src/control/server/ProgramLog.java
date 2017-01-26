@@ -3,17 +3,16 @@ package control.server;
 import java.util.Date;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-//import javafx.scene.paint.Color;
-import model.ProgramLogEntry;
 import model.gui.ProgramLogEntryProperty;
+import model.server.ProgramLogEntry;
 
 /**
- * Classe per la generazion del log di programma
+ * Classe per la generazione del log di programma
  */
 public class ProgramLog {
 	
     private static ProgramLog instance = null;
-	static ObservableList<ProgramLogEntryProperty> programLogEntryObservableList;
+	private static ObservableList<ProgramLogEntryProperty> programLogEntryObservableList;
 
     public static synchronized ProgramLog getProgramLog() {
         if (instance == null) {
@@ -32,27 +31,12 @@ public class ProgramLog {
 	}
 
 	public void add(String type, String message) {
-//		Color color = Color.GRAY;
-//		switch (type) {
-//		case "INFO":
-//			color = Color.LIGHTBLUE;
-//			break;
-//		case "WARNING":
-//			color = Color.ORANGE;
-//			break;
-//		case "ERROR":
-//			color = Color.RED;
-//			break;
-//		default:
-//			break;
-//		}
-
 		Date date = new Date();
 		programLogEntryObservableList.add(new ProgramLogEntryProperty(new ProgramLogEntry(date.toString(),type,message)));
 		
 		try {
-//			Main.uiController.setRightStatusLabelText(type + ": " + message, color);
 		} catch (NullPointerException e) {
+			e.printStackTrace();
 		}
 	}
 
