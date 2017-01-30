@@ -110,8 +110,7 @@ public class SystemInfoBot {
                 // Internet Explorer
                 String path = "SOFTWARE\\Microsoft\\Internet Explorer";
                 String vField = System.getProperty("os.name").toLowerCase().equals("windows 8")? "svcVersion" : "Version";
-                String version = Advapi32Util.registryGetStringValue(   
-                    WinReg.HKEY_LOCAL_MACHINE, path, vField);
+                String version = Advapi32Util.registryGetStringValue(WinReg.HKEY_LOCAL_MACHINE, path, vField);
                 browsers.add("Internet Explorer " + version);
                 
                 //Google Chrome
@@ -124,19 +123,21 @@ public class SystemInfoBot {
                 
                 try{
                     path = "SOFTWARE\\" + wowNode + "Google\\Update\\Clients";
-                    String key[] = Advapi32Util.registryGetKeys(
-                        WinReg.HKEY_LOCAL_MACHINE, path);
+                    String key[] = Advapi32Util.registryGetKeys(WinReg.HKEY_LOCAL_MACHINE, path);
                     for (String key1 : key) {
-                        
                         try {
                             String name = Advapi32Util.registryGetStringValue(WinReg.HKEY_LOCAL_MACHINE, path + "\\" + key1, "name");
                             if(name.toLowerCase().equals("google chrome")){
                                 version = Advapi32Util.registryGetStringValue(WinReg.HKEY_LOCAL_MACHINE, path + "\\" + key1, "pv");
                                 browsers.add("Google Chrome " + version);
                             }
-                        }catch (Exception e){}
+                        }catch (Exception e){
+                        	e.printStackTrace();
+                        }
                     }
-                } catch(Exception e){}
+                } catch(Exception e){
+                	e.printStackTrace();
+                }
                 
                 // Mozilla Firefox
                 try{
@@ -144,12 +145,15 @@ public class SystemInfoBot {
                         WinReg.HKEY_LOCAL_MACHINE, "SOFTWARE\\" + wowNode + "Mozilla\\Mozilla Firefox", "CurrentVersion");
                     browsers.add("Mozilla Firefox " + version);
 
-                } catch(Exception e){}
+                } catch(Exception e){
+                	e.printStackTrace();
+                }
             }
             else {
                 browsers.add("Unsupported OS");
             }			
 		} catch (Exception e) {
+        	e.printStackTrace();
 			return null;
 		}
         return browsers;

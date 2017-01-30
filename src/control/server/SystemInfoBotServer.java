@@ -10,7 +10,6 @@ import java.nio.file.NoSuchFileException;
 import java.nio.file.Path;
 import java.nio.file.StandardOpenOption;
 import java.util.ArrayList;
-
 import application.Main;
 import control.Utility;
 import javafx.collections.FXCollections;
@@ -55,7 +54,11 @@ public class SystemInfoBotServer {
 		SystemInfo tempSystemInfo;
 		
 		Charset charset = Charset.forName("ISO-8859-1");
-		try (BufferedReader reader = Files.newBufferedReader(filePath, charset)) {
+		
+		try {
+			
+			BufferedReader reader = Files.newBufferedReader(filePath, charset);
+			
 			String line = null;
 		    while ((line = reader.readLine()) != null) {
 		    	if(line.charAt(0)=='#'){
@@ -130,9 +133,9 @@ public class SystemInfoBotServer {
 	 * Se non già presente, crea il file dove andranno le informazioni di sistema
 	 */
 	public void openOrCreateSystemInfoFile() {
-		File logFile = new File(filePath.toString());
+		File sysInfoFile = new File(filePath.toString());	
 		try {
-			if(logFile.createNewFile()){
+			if(sysInfoFile.createNewFile()){
 				Charset charset = Charset.forName("ISO-8859-1");
 				try (BufferedWriter writer = Files.newBufferedWriter(filePath, charset)) {
 					writer.close();
@@ -144,14 +147,13 @@ public class SystemInfoBotServer {
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
-
 	}
 	
 	/**
 	 * Elimina quindi crea un nuovo file contenente le informazioni di sistema
 	 */
 	public void overwriteSystemInfoFile() {
-		File sysInfoFile = new File(filePath.toString());
+		File sysInfoFile = new File(filePath.toString());	
 		try {
 			sysInfoFile.delete();
 			sysInfoFile.createNewFile();

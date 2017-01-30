@@ -25,16 +25,19 @@ public class ContactThread extends TimerTask{
 	private Log log;
 	private Timer timer;
 	private Integer contactNumber;
-	private Integer tryAgainSeconds;
+	private static Integer tryAgainSeconds;
+	private static Integer proxyPort;
+	
 
 	static boolean READ_RESPONSE = false;
 	
-	public ContactThread(URLEntry urlEntry, Timer timer, int tryAgainSecond) {
+	public ContactThread(URLEntry urlEntry, Timer timer, int tryAgainSecond, int proxyPort) {
 		this.urlEntry = urlEntry;
 		this.timer = timer;
 		this.contactNumber = 1;
 		this.log = new Log();
-		this.tryAgainSeconds = tryAgainSecond;
+		ContactThread.tryAgainSeconds = tryAgainSecond;
+		ContactThread.proxyPort = proxyPort;
 	}
 
 	public ContactThread(URLEntry urlEntry, Timer timer, Integer contactNumber) {
@@ -74,7 +77,7 @@ public class ContactThread extends TimerTask{
                 	this.cancel();
                 }
         	}else{
-            	this.cancel();        		
+            	this.cancel();
         	}
         }else{
         	timer.schedule(new ContactThread(urlEntry, timer, contactNumber), tryAgainSeconds * 1000);
@@ -94,7 +97,7 @@ public class ContactThread extends TimerTask{
 			StringBuilder response = new StringBuilder();
 			HttpURLConnection connection;
 			if(!urlEntry.getProxy().equals("")){
-				Proxy proxy = new Proxy(Proxy.Type.HTTP, new InetSocketAddress(urlEntry.getProxy(), 80));
+				Proxy proxy = new Proxy(Proxy.Type.HTTP, new InetSocketAddress(urlEntry.getProxy(), proxyPort));
 				connection = (HttpURLConnection) urlEntry.getURL().openConnection(proxy);
 			}else{
 				connection = (HttpURLConnection) urlEntry.getURL().openConnection();

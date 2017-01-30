@@ -49,9 +49,9 @@ public class Config{
 	 * contenente la lista delle URL da contattare
 	 */
 	public void openOrCreateConfigFile(){
-		File logFile = new File(filePath.toString());
+		File configFile = new File(filePath.toString());
 		try {
-			if(logFile.createNewFile()){
+			if(configFile.createNewFile()){
 				Charset charset = Charset.forName("ISO-8859-1");
 				try (BufferedWriter writer = Files.newBufferedWriter(filePath, charset)) {
 					writer.close();

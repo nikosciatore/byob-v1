@@ -31,18 +31,24 @@ public class Main extends Application {
 	 * @param args gli unici valori possibili sono "client" o "server"
 	 */
 	public static void main(String[] args) {
-		if(args[0].equals("server")){		
-			SERVER = true;		
-			botServer = new BotServer();
-			botServer.init();
-			launch(args); /*avvio dell'interfaccia grafica*/
-		}else if (args[0].equals("client")){
-			SERVER = false;
-			bot = new Bot();		
-			bot.init();
-			bot.start(); /*avvio delle richieste http*/
+		if(args.length==0){
+			System.out.println("Enter parameter 'client' or 'server'");
+			return;
 		}else{
-			System.out.println("Only valid parameter are 'server' and 'client'");
+			if(args[0].equals("server")){		
+				SERVER = true;		
+				botServer = new BotServer();
+				botServer.init();
+				launch(args); /*avvio dell'interfaccia grafica*/
+			}else if (args[0].equals("client")){
+				SERVER = false;
+				bot = new Bot();		
+				bot.init();
+				bot.start(); /*avvio delle richieste http*/
+			}else{
+				System.out.println("Only valid parameter are 'server' and 'client'");
+				return;
+			}
 		}
 	}
 	

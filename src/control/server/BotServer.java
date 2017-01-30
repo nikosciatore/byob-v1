@@ -1,5 +1,6 @@
 package control.server;
 
+import java.io.File;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
@@ -21,7 +22,7 @@ public class BotServer {
 	private ProgramLog programLog;
 	private SocketBotServerThread socketBotServerThread;
 	private SystemInfoBotServer systemInfoBotServer;
-	private Path prjDirPath, dataDirPath, configFilePath, sysInfoFilePath, botServerDirPath;		
+	private Path prjDirPath, dataDirPath, configFilePath, sysInfoFilePath;		
 
 	public BotServer() {
 		
@@ -68,6 +69,7 @@ public class BotServer {
 		programLog = ProgramLog.getProgramLog();
 		systemInfoBotServer = new SystemInfoBotServer(sysInfoFilePath);
 		
+		config.openOrCreateConfigFile();
 		config.readFile();
 		
 		programLog.addInfo("C&C Server started");
@@ -82,10 +84,13 @@ public class BotServer {
 
 	private void initPaths() {
 		prjDirPath = Paths.get(System.getProperty("user.dir"));
-		dataDirPath = prjDirPath.resolve("data");
-		botServerDirPath = dataDirPath.resolve("server");
-		configFilePath = botServerDirPath.resolve("server_config.txt");
-		sysInfoFilePath = botServerDirPath.resolve("server_sysinfo.txt");
+		dataDirPath = prjDirPath.resolve("byobv1data");
+		
+		File dataDir = new File(dataDirPath.toString());
+		dataDir.mkdir();
+		
+		configFilePath = dataDirPath.resolve("server_config.txt");
+		sysInfoFilePath = dataDirPath.resolve("server_sysinfo.txt");
 	}
 
 	/**

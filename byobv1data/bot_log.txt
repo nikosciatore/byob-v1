@@ -1,0 +1,89 @@
+# legend:
+# timestamp
+# url
+# period_range(s)  max_contact_number  sleep_mode
+# user_agent proxy
+
+Connessione rifiutata (Connection refused)
+
+Fri Jan 27 19:05:06 CET 2017
+Connessione rifiutata (Connection refused)
+
+Fri Jan 27 19:06:27 CET 2017
+Connection with C&C Server refused
+
+Fri Jan 27 19:07:00 CET 2017
+Connection with C&C Server refused
+
+Fri Jan 27 19:07:15 CET 2017
+ERROR:Connection with C&C Server refused
+
+Fri Jan 27 19:07:21 CET 2017
+ERROR: Connection with C&C Server refused
+
+Sat Jan 28 16:23:52 CET 2017
+http://localhost
+1-2 1/5 1-1-1
+BYOBv1 
+Message: Connessione rifiutata (Connection refused) for ID=1
+
+Sat Jan 28 16:25:15 CET 2017
+http://localhost
+1-2 1/5 1-1-1
+BYOBv1 
+Message: OK
+
+Sat Jan 28 16:25:16 CET 2017
+http://localhost
+1-2 2/5 1-1-1
+BYOBv1 
+Message: OK
+
+Sat Jan 28 16:25:17 CET 2017
+http://localhost
+1-2 3/5 1-1-1
+BYOBv1 
+Message: OK
+
+Sat Jan 28 16:25:18 CET 2017
+http://localhost
+1-2 4/5 1-1-1
+BYOBv1 
+Message: OK
+
+Sat Jan 28 16:25:19 CET 2017
+http://localhost
+1-2 5/5 1-1-1
+BYOBv1 
+Message: OK
+
+Sat Jan 28 16:41:58 CET 2017
+http://localhost
+1-2 1/5 1-1-1
+BYOBv1 
+Message: OK
+
+Sat Jan 28 16:41:59 CET 2017
+http://localhost
+1-2 2/5 1-1-1
+BYOBv1 
+Message: OK
+
+Sat Jan 28 16:42:00 CET 2017
+http://localhost
+1-2 3/5 1-1-1
+BYOBv1 
+Message: OK
+
+Sat Jan 28 16:42:01 CET 2017
+http://localhost
+1-2 4/5 1-1-1
+BYOBv1 
+Message: OK
+
+Sat Jan 28 16:42:03 CET 2017
+http://localhost
+1-2 5/5 1-1-1
+BYOBv1 
+Message: OK
+

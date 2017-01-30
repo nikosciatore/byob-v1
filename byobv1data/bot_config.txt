@@ -1,0 +1,2 @@
+--ttl 0
+--url http://localhost --period 1-2 --maxcontact 5 --sleepmode 1-1-1 --useragent BYOBv1

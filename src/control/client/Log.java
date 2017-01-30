@@ -7,6 +7,7 @@ import java.nio.charset.Charset;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.StandardOpenOption;
+import java.util.Date;
 
 import model.client.LogEntry;
 
@@ -30,6 +31,7 @@ public class Log {
 			+ "# url\n"
 			+ "# period_range(s)  max_contact_number  sleep_mode\n"
 			+ "# user_agent proxy\n"
+			+ "# message"
 			+ "\n";
 	
 	/**
@@ -60,6 +62,24 @@ public class Log {
 		Charset charset = Charset.forName("ISO-8859-1");
 		try (BufferedWriter writer = Files.newBufferedWriter(filePath, charset, StandardOpenOption.APPEND)) {
 				writer.write(logEntry.toString(contactNumber));
+				writer.newLine();
+				writer.newLine();
+			writer.close();
+		} catch (IOException x) {
+		    System.err.format("IOException: %s%n", x);
+		}
+	}
+	
+	/**
+	 * Scrittura di un messaggio nel file di log
+	 */
+	public void writeMessage(String message){
+		Date date = new Date();
+		Charset charset = Charset.forName("ISO-8859-1");
+		try (BufferedWriter writer = Files.newBufferedWriter(filePath, charset, StandardOpenOption.APPEND)) {
+				writer.write(date.toString());
+				writer.newLine();
+				writer.write(message);
 				writer.newLine();
 				writer.newLine();
 			writer.close();

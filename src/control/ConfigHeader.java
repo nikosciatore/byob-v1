@@ -10,7 +10,11 @@ public class ConfigHeader implements Serializable{
 	
 	private static final long serialVersionUID = -4355442191360068798L;
 
-	private Integer ttl; 
+	private Integer ttl;
+	
+	public ConfigHeader() {
+		ttl = 1;
+	}
 
 	public Integer getTtl() {
 		return ttl;
